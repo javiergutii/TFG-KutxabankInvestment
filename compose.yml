@@ -29,13 +29,16 @@ services:
       MYSQL_DATABASE: reports
       MYSQL_USER: reports_user
       MYSQL_PASSWORD: reports_pass
-
+      COMPANY_NAME: empresa A
+      VIDEO_TITLE: Conference demo
+      VIDEO_URL: ""
+      VIDEO_DATE: "2026-02-03 10:00"
     depends_on:
       - db
     
     volumes:
       - ./services/extractor/src:/app/src
-      - ./shared:/app/shared
+      - ./data:/data
     
     command: ["python", "-m", "src.main"]
   

@@ -29,8 +29,8 @@ else:
 cur = conn.cursor()
 cur.execute(
     """
-    INSERT INTO reports (source, title, url, body)
-    VALUES (%s, %s, %s, %s)
+    INSERT INTO reports (empresa, titulo, url, texto_transcrito, fecha)
+    VALUES (%s, %s, %s, %s, %s)
     ON DUPLICATE KEY UPDATE fetched_at=CURRENT_TIMESTAMP
     """,
     ("demo", "Noticia de prueba", "https://noticia.de/prueba", "Texto transcrito"),

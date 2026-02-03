@@ -1,0 +1,67 @@
+services:
+
+# mirar por qué aparece reports.reports
+  db:
+    image: mysql:8.0
+    environment:
+     MYSQL_DATABASE: reports
+     MYSQL_USER: reports_user
+     MYSQL_PASSWORD: reports_pass
+     MYSQL_ROOT_PASSWORD: root_pass
+
+    ports:
+      - "3306:3306"
+
+    volumes:
+    - mysqldata:/var/lib/mysql
+    - ./db/init:/docker-entrypoint-initdb.d
+
+    command: --default-authentication-plugin=mysql_native_password
+  
+
+
+  extractor:
+    build: ./services/extractor
+    
+    environment:
+      MYSQL_HOST: db
+      MYSQL_PORT: 3306
+      MYSQL_DATABASE: reports
+      MYSQL_USER: reports_user
+      MYSQL_PASSWORD: reports_pass
+
+    depends_on:
+      - db
+    
+    volumes:
+      - ./services/extractor/src:/app/src
+      - ./shared:/app/shared
+    
+    command: ["python", "-m", "src.main"]
+  
+
+
+  processor:
+    build: ./services/processor
+    
+    environment:
+      MYSQL_HOST: db
+      MYSQL_PORT: 3306
+      MYSQL_DATABASE: reports
+      MYSQL_USER: reports_user
+      MYSQL_PASSWORD: reports_pass
+
+    depends_on:
+      - db
+    
+    volumes:
+      - ./services/processor/src:/app/src
+      - ./shared:/app/shared
+    
+    command: ["python", "-m", "src.main"]
+  
+
+
+volumes:
+  mysqldata:
+

@@ -1,0 +1,17 @@
+# Python
+__pycache__/
+*.pyc
+.env
+
+# Docker
+*.log
+
+# MySQL / volumes
+mysqldata/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# VS Code
+.vscode/

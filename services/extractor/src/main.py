@@ -465,11 +465,14 @@ else:
     raise SystemExit("MySql no ha arrancado")
 
 
+# Meter en la bbdd una noticia dummy.
+# IMPORTANTE BORRARLA LUEGO
+
 cur = conn.cursor()
 cur.execute(
     """
-    INSERT INTO reports (empresa, titulo, url, texto_transcrito, fecha)
-    VALUES (%s, %s, %s, %s, %s)
+    INSERT INTO reports (empresa, url, texto_transcrito, fecha)
+    VALUES (%s, %s, %s, %s)
     ON DUPLICATE KEY UPDATE fetched_at=CURRENT_TIMESTAMP
     """,
     ("demo", "Noticia de prueba", "https://noticia.de/prueba", "Texto transcrito"),

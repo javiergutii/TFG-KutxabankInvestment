@@ -387,10 +387,16 @@ def insert_report(texto: str, url: str):
 
     cur.execute(
         """
-        INSERT INTO reports (empresa, url, texto_transcrito, fecha)
-        VALUES (%s, %s, %s, %s)
-        """,
-        (EMPRESA, url, texto, fecha_val)
+        INSERT INTO reports (empresa, url, texto_transcrito, fecha, resumen)
+        VALUES (%s, %s, %s, %s, %s)
+        ON DUPLICATE KEY UPDATE
+            empresa = VALUES(empresa),
+            texto_transcrito = VALUES(texto_transcrito),
+            fecha = VALUES(fecha),
+            resumen = VALUES(resumen),
+            procesado = VALUES(procesado)
+      """,
+        (EMPRESA, url, texto, fecha_val, "")
     )
     conn.commit()
     cur.close()

@@ -1,0 +1,25 @@
+------WebKitFormBoundary3DAXqvqpwV3EQW1h
+Content-Disposition: form-data; name="omit_control_elements"
+
+true
+------WebKitFormBoundary3DAXqvqpwV3EQW1h
+Content-Disposition: form-data; name="token"
+
+
+------WebKitFormBoundary3DAXqvqpwV3EQW1h
+Content-Disposition: form-data; name="tech_data[referer]"
+
+
+------WebKitFormBoundary3DAXqvqpwV3EQW1h
+Content-Disposition: form-data; name="tech_data[domain]"
+
+edge.media-server.com
+------WebKitFormBoundary3DAXqvqpwV3EQW1h
+Content-Disposition: form-data; name="tech_data[screen_height]"
+
+720
+------WebKitFormBoundary3DAXqvqpwV3EQW1h
+Content-Disposition: form-data; name="tech_data[screen_width]"
+
+1280
+------WebKitFormBoundary3DAXqvqpwV3EQW1h--

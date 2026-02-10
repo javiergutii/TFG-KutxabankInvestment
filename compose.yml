@@ -49,8 +49,9 @@ services:
       - ./data:/data
       - ./artifacts:/app/artifacts
       - ./artifacts:/app
+      - ./outputs:/app/outputs
 
-    command: ["python", "-m", "src.main"]
+    command: ["python", "-m", "main"]
 
   processor:
     build:

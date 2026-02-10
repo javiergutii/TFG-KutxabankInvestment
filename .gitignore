@@ -17,5 +17,4 @@ Thumbs.db
 .vscode/
 
 # Data
-artifacts/*.wav
-artifacts/*.mp4
+artifacts/*

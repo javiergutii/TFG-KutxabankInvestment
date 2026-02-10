@@ -1,6 +1,6 @@
 FROM mcr.microsoft.com/playwright/python:v1.58.0-noble
 
-WORKDIR /app
+WORKDIR /app/src
 
 # Evita prompts interactivos en apt
 ENV DEBIAN_FRONTEND=noninteractive
@@ -48,4 +48,4 @@ RUN mkdir -p /app/out
 # Si tu main escribe ficheros, puedes forzar cwd o un path de salida en tu app.
 # WORKDIR /app
 
-CMD ["python", "-m", "src.main"]
+CMD ["python", "-m", "main.py"]

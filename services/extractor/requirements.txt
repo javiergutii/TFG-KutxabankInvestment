@@ -1,3 +1,5 @@
 playwright
 faster-whisper
 mysql-connector-python
+requests
+python-dotenv

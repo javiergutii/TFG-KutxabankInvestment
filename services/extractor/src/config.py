@@ -42,3 +42,11 @@ DEBUG_PNG = os.path.join(ARTIFACTS_DIR, "debug.png")
 
 VIDEO_FILE = os.path.join(ARTIFACTS_DIR, "output.mp4")
 AUDIO_FILE = os.path.join(ARTIFACTS_DIR, "audio.wav")
+
+SHAREPOINT_ENABLED = os.getenv("SHAREPOINT_ENABLED", "false").lower() == "true"
+SHAREPOINT_TENANT_ID = os.getenv("SHAREPOINT_TENANT_ID", "")
+SHAREPOINT_CLIENT_ID = os.getenv("SHAREPOINT_CLIENT_ID", "")
+SHAREPOINT_CLIENT_SECRET = os.getenv("SHAREPOINT_CLIENT_SECRET", "")
+SHAREPOINT_SITE_ID = os.getenv("SHAREPOINT_SITE_ID", "")
+SHAREPOINT_DRIVE_ID = os.getenv("SHAREPOINT_DRIVE_ID", "")  # Opcional
+SHAREPOINT_FOLDER = os.getenv("SHAREPOINT_FOLDER", "Transcripciones")  # Carpeta destino en SharePoint

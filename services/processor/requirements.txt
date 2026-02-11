@@ -1,6 +1,6 @@
-mysql-connector-python
-sentence-transformers
-faiss-cpu
-numpy
-nltk
-python-dotenv
+mysql-connector-python==8.3.0
+sentence-transformers==2.5.1
+faiss-cpu==1.8.0
+numpy==1.26.4
+requests==2.31.0
+python-dotenv==1.0.1

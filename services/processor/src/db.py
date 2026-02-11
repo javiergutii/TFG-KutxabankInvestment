@@ -98,6 +98,34 @@ def mark_as_processed(report_id: int, success: bool = True):
         conn.close()
 
 
+def update_report_summary(report_id: int, resumen: str):
+    """
+    Actualizar el resumen de un reporte.
+    
+    Args:
+        report_id: ID del reporte
+        resumen: Texto del resumen generado
+    """
+    conn = mysql_conn()
+    cur = conn.cursor()
+    
+    try:
+        cur.execute(
+            """
+            UPDATE reports
+            SET resumen = %s
+            WHERE id = %s
+            """,
+            (resumen, report_id)
+        )
+        conn.commit()
+        print(f"[processor] Resumen actualizado para reporte {report_id} ✅")
+        
+    finally:
+        cur.close()
+        conn.close()
+
+
 def get_report_by_id(report_id: int) -> Optional[Dict]:
     """
     Obtener un reporte específico por ID.
@@ -114,7 +142,7 @@ def get_report_by_id(report_id: int) -> Optional[Dict]:
     try:
         cur.execute(
             """
-            SELECT id, empresa, url, texto_transcrito, fecha, fetched_at, procesado
+            SELECT id, empresa, url, texto_transcrito, fecha, fetched_at, procesado, resumen
             FROM reports
             WHERE id = %s
             """,

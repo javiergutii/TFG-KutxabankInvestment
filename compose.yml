@@ -18,6 +18,28 @@ services:
       timeout: 3s
       retries: 30
 
+  ollama:
+    image: ollama/ollama:latest
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+    environment:
+      - OLLAMA_HOST=0.0.0.0
+    healthcheck:
+      test: ["CMD", "ollama", "list"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    # Después de iniciar, descarga el modelo automáticamente
+    entrypoint: ["/bin/sh", "-c"]
+    command:
+      - |
+        /bin/ollama serve &
+        sleep 5
+        ollama pull llama3.2:3b
+        wait
+
   extractor:
     build:
       context: ./services/extractor
@@ -37,7 +59,7 @@ services:
       # Metadata / app config
       COMPANY_NAME: "empresa A"
       VIDEO_TITLE: "Conference demo"
-      VIDEO_URL: ""              # si lo usas, pon la URL aquí
+      VIDEO_URL: ""
       VIDEO_DATE: "2026-02-03 10:00"
 
       # SharePoint - Activar/Desactivar
@@ -57,7 +79,6 @@ services:
       - ./services/extractor/src:/app/src
       - ./data:/data
       - ./artifacts:/app/artifacts
-      - ./artifacts:/app
       - ./outputs:/app/outputs
 
     command: ["python", "-m", "main"]
@@ -68,24 +89,41 @@ services:
       args:
         HTTP_PROXY: http://proxy.norbolsa.es:8080
         HTTPS_PROXY: http://proxy.norbolsa.es:8080
-        NO_PROXY: localhost,127.0.0.1,::1,db
+        NO_PROXY: localhost,127.0.0.1,::1,db,ollama
 
     environment:
+      # MySQL
       MYSQL_HOST: db
       MYSQL_PORT: "3306"
       MYSQL_DATABASE: reports
       MYSQL_USER: reports_user
       MYSQL_PASSWORD: reports_pass
 
+      # Procesamiento
       PROCESSING_INTERVAL: "60"
       BATCH_SIZE: "10"
+      
+      # Chunks
       CHUNK_SIZE: "500"
-      ZHUNK_OVERLAP: "50"
+      CHUNK_OVERLAP: "50"
 
-      # (Opcional) TZ: "Europe/Madrid"
+      # Embeddings
+      EMBEDDING_MODEL: "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2"
+
+      # FAISS
+      FAISS_INDEX_DIR: "/app/shared/faiss_index"
+      FAISS_INDEX_FILE: "index.faiss"
+      FAISS_METADATA_FILE: "metadata.pkl"
+
+      # Ollama
+      OLLAMA_HOST: "http://ollama:11434"
+      OLLAMA_MODEL: "llama3.2:3b"
+      OLLAMA_TIMEOUT: "120"
 
     depends_on:
       db:
+        condition: service_healthy
+      ollama:
         condition: service_healthy
 
     volumes:
@@ -96,3 +134,4 @@ services:
 
 volumes:
   mysqldata:
+  ollama_data:

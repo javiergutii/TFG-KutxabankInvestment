@@ -161,7 +161,7 @@ def process_batch(batch_size: int = BATCH_SIZE):
 
 def main():
     """
-    Loop principal del processor
+    Ejecución única del processor (sin loop)
     """
     print("""
     ╔═══════════════════════════════════════════════════════════════╗
@@ -173,36 +173,25 @@ def main():
     # Esperar a que MySQL esté listo
     wait_for_mysql()
     
-    print(f"⏱️  Intervalo de procesamiento: {PROCESSING_INTERVAL} segundos")
     print(f"📦 Tamaño de batch: {BATCH_SIZE} reportes")
-    print(f"\n🚀 Iniciando loop de procesamiento...\n")
+    print(f"\n🚀 Procesando reportes pendientes...\n")
     
-    iteration = 0
+    try:
+        print(f"\n{'#'*80}")
+        print(f"# PROCESAMIENTO ÚNICO - {time.strftime('%Y-%m-%d %H:%M:%S')}")
+        print(f"{'#'*80}")
+        
+        # Procesar batch
+        process_batch(BATCH_SIZE)
+        
+        print("\n✅ Procesamiento completado exitosamente")
+        
+    except Exception as e:
+        print(f"\n❌ Error en el procesamiento: {e}")
+        traceback.print_exc()
+        raise  # Re-lanzar error para que Docker lo capture
     
-    while True:
-        try:
-            iteration += 1
-            print(f"\n{'#'*80}")
-            print(f"# ITERACIÓN {iteration} - {time.strftime('%Y-%m-%d %H:%M:%S')}")
-            print(f"{'#'*80}")
-            
-            # Procesar batch
-            process_batch(BATCH_SIZE)
-            
-            # Esperar antes del siguiente ciclo
-            print(f"\n⏳ Esperando {PROCESSING_INTERVAL} segundos hasta la próxima iteración...")
-            time.sleep(PROCESSING_INTERVAL)
-            
-        except KeyboardInterrupt:
-            print("\n\n⚠️  Interrupción del usuario - Deteniendo processor...")
-            break
-        except Exception as e:
-            print(f"\n❌ Error en el loop principal: {e}")
-            traceback.print_exc()
-            print(f"⏳ Esperando {PROCESSING_INTERVAL} segundos antes de reintentar...")
-            time.sleep(PROCESSING_INTERVAL)
-    
-    print("\n👋 Processor detenido")
+    print("\n👋 Processor terminado")
 
 
 if __name__ == "__main__":

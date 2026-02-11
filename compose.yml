@@ -70,9 +70,22 @@ services:
       SHAREPOINT_SITE_ID: "${SHAREPOINT_SITE_ID:-}"
       SHAREPOINT_DRIVE_ID: "${SHAREPOINT_DRIVE_ID:-}"
       SHAREPOINT_FOLDER: "${SHAREPOINT_FOLDER:-Transcripciones}"
+      
+      # 🆕 Configuración del processor (para ejecutarlo integrado)
+      CHUNK_SIZE: "500"
+      CHUNK_OVERLAP: "50"
+      EMBEDDING_MODEL: "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2"
+      FAISS_INDEX_DIR: "/app/shared/faiss_index"
+      FAISS_INDEX_FILE: "index.faiss"
+      FAISS_METADATA_FILE: "metadata.pkl"
+      OLLAMA_HOST: "http://ollama:11434"
+      OLLAMA_MODEL: "llama3.2:3b"
+      OLLAMA_TIMEOUT: "120"
 
     depends_on:
       db:
+        condition: service_healthy
+      ollama:
         condition: service_healthy
 
     volumes:
@@ -80,6 +93,9 @@ services:
       - ./data:/data
       - ./artifacts:/app/artifacts
       - ./outputs:/app/outputs
+      # 🆕 Montar código del processor para ejecutarlo desde extractor
+      - ./services/processor:/app/processor_code:ro
+      - ./shared:/app/shared
 
     command: ["python", "-m", "main"]
 
@@ -100,7 +116,6 @@ services:
       MYSQL_PASSWORD: reports_pass
 
       # Procesamiento
-      PROCESSING_INTERVAL: "60"
       BATCH_SIZE: "10"
       
       # Chunks
@@ -130,6 +145,10 @@ services:
       - ./services/processor/src:/app/src
       - ./shared:/app/shared
 
+    # 🆕 CAMBIO: Se ejecuta bajo demanda, no automáticamente
+    profiles:
+      - manual  # No se inicia con "docker compose up"
+    
     command: ["python", "-m", "src.main"]
 
 volumes:

@@ -1,5 +1,11 @@
+# Dependencias originales del extractor
 playwright
 faster-whisper
 mysql-connector-python
 requests
 python-dotenv
+
+# 🆕 Dependencias del processor (para ejecutarlo integrado)
+sentence-transformers==2.5.1
+faiss-cpu==1.8.0
+numpy==1.26.4

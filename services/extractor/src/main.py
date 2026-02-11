@@ -1,4 +1,6 @@
 import asyncio
+import sys
+import os
 
 from db import wait_for_mysql, insert_report, save_transcription_to_file
 from scraping import find_stream_url, extract_candidates_from_har, choose_best_stream
@@ -11,6 +13,41 @@ from config import (
 # Importar SharePoint solo si está habilitado
 if SHAREPOINT_ENABLED:
     from sharepoint_uploader import create_uploader_from_env
+
+
+def run_processor():
+    """
+    Ejecuta el código del processor directamente (compartido via volumen)
+    """
+    print("\n" + "="*80)
+    print("🧠 INICIANDO PROCESAMIENTO CON FAISS Y OLLAMA")
+    print("="*80 + "\n")
+    
+    try:
+        # El processor está montado en /app/processor_code
+        sys.path.insert(0, '/app/processor_code')
+        
+        # Importar y ejecutar main del processor
+        import src.main as processor_main
+        
+        # Ejecutar procesamiento
+        processor_main.main()
+        
+        print("\n" + "="*80)
+        print("✅ PROCESAMIENTO COMPLETADO EXITOSAMENTE")
+        print("="*80)
+        
+        return True
+        
+    except Exception as e:
+        print("\n" + "="*80)
+        print("❌ ERROR EN PROCESAMIENTO")
+        print("="*80)
+        print(f"\nError: {e}")
+        import traceback
+        traceback.print_exc()
+        print("\n💡 Revisa los logs para más detalles\n")
+        return False
 
 
 async def main():
@@ -51,8 +88,8 @@ async def main():
             
             resultado = uploader.upload_file(
                 file_path=filepath,
-                sharepoint_folder=None,  # Usa la carpeta configurada en SHAREPOINT_FOLDER
-                file_name=None  # Usa el nombre original del archivo
+                sharepoint_folder=None,
+                file_name=None
             )
             
             print(f"[SharePoint] ✅ Archivo subido exitosamente")
@@ -62,10 +99,29 @@ async def main():
         except Exception as e:
             print(f"[SharePoint] ❌ Error al subir archivo: {e}")
             print("[SharePoint] La transcripción está guardada localmente pero no se pudo subir a SharePoint")
-            # No detenemos el proceso, solo reportamos el error
     else:
         print("\n[SharePoint] Deshabilitado (SHAREPOINT_ENABLED=false)")
         print(f"[SharePoint] Archivo disponible localmente en: {filepath}")
+
+    # 🆕 7) EJECUTAR PROCESSOR AUTOMÁTICAMENTE
+    print("\n" + "="*80)
+    print("🔄 FASE 2: PROCESAMIENTO")
+    print("="*80)
+    
+    processor_success = run_processor()
+    
+    if processor_success:
+        print("\n" + "="*80)
+        print("🎉 PROCESO COMPLETO EXITOSO")
+        print("="*80)
+        print(f"\n✅ Video extraído y transcrito")
+        print(f"✅ Texto guardado en MySQL")
+        print(f"✅ Indexado en FAISS")
+        print(f"✅ Resumen generado con Ollama")
+        print(f"\n🔍 Puedes consultar con: query_faiss.py\n")
+    else:
+        print("\n⚠️  ATENCIÓN: Extracción OK pero procesamiento falló")
+        print("   El reporte está en MySQL pero NO está en FAISS")
 
 
 if __name__ == "__main__":

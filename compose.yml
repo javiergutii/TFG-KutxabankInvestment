@@ -77,6 +77,11 @@ services:
       MYSQL_USER: reports_user
       MYSQL_PASSWORD: reports_pass
 
+      PROCESSING_INTERVAL: "60"
+      BATCH_SIZE: "10"
+      CHUNK_SIZE: "500"
+      ZHUNK_OVERLAP: "50"
+
       # (Opcional) TZ: "Europe/Madrid"
 
     depends_on:

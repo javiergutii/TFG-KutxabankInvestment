@@ -10,44 +10,27 @@ from config import (
     SHAREPOINT_ENABLED
 )
 
-# Importar SharePoint solo si está habilitado
 if SHAREPOINT_ENABLED:
     from sharepoint_uploader import create_uploader_from_env
 
 
 def run_processor():
     """
-    Ejecuta el código del processor directamente (compartido via volumen)
+    Llama al módulo puente run_processor.py que gestiona
+    los imports del processor sin conflictos con el extractor
     """
-    print("\n" + "="*80)
-    print("🧠 INICIANDO PROCESAMIENTO CON FAISS Y OLLAMA")
-    print("="*80 + "\n")
-    
-    try:
-        # El processor está montado en /app/processor_code
-        sys.path.insert(0, '/app/processor_code')
-        
-        # Importar y ejecutar main del processor
-        import src.main as processor_main
-        
-        # Ejecutar procesamiento
-        processor_main.main()
-        
-        print("\n" + "="*80)
-        print("✅ PROCESAMIENTO COMPLETADO EXITOSAMENTE")
-        print("="*80)
-        
-        return True
-        
-    except Exception as e:
-        print("\n" + "="*80)
-        print("❌ ERROR EN PROCESAMIENTO")
-        print("="*80)
-        print(f"\nError: {e}")
-        import traceback
-        traceback.print_exc()
-        print("\n💡 Revisa los logs para más detalles\n")
+    bridge_path = '/app/src/run_processor.py'
+
+    if not os.path.exists(bridge_path):
+        print(f"❌ No se encontró run_processor.py en {bridge_path}")
         return False
+
+    import importlib.util
+    spec = importlib.util.spec_from_file_location("run_processor", bridge_path)
+    bridge = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(bridge)
+
+    return bridge.run()
 
 
 async def main():
@@ -74,42 +57,39 @@ async def main():
     print("\n--------- TEXTO ---------")
     print(texto_final[:2000])
 
-    # 4) mysql (tu insert_report debe hacer UPSERT por empresa)
+    # 4) mysql
     insert_report(texto_final, TARGET_URL, EMPRESA)
 
     # 5) Guardar transcripción en archivo .txt
     filepath = save_transcription_to_file(texto_final, EMPRESA)
-    
+
     # 6) Subir a SharePoint si está habilitado
     if SHAREPOINT_ENABLED:
         try:
             print("\n[SharePoint] Iniciando subida...")
             uploader = create_uploader_from_env()
-            
             resultado = uploader.upload_file(
                 file_path=filepath,
                 sharepoint_folder=None,
                 file_name=None
             )
-            
             print(f"[SharePoint] ✅ Archivo subido exitosamente")
             print(f"[SharePoint] Nombre: {resultado.get('name', 'N/A')}")
             print(f"[SharePoint] URL: {resultado.get('webUrl', 'N/A')}")
-            
         except Exception as e:
             print(f"[SharePoint] ❌ Error al subir archivo: {e}")
-            print("[SharePoint] La transcripción está guardada localmente pero no se pudo subir a SharePoint")
+            print("[SharePoint] Transcripción guardada localmente pero no subida a SharePoint")
     else:
         print("\n[SharePoint] Deshabilitado (SHAREPOINT_ENABLED=false)")
         print(f"[SharePoint] Archivo disponible localmente en: {filepath}")
 
-    # 🆕 7) EJECUTAR PROCESSOR AUTOMÁTICAMENTE
+    # 7) EJECUTAR PROCESSOR AUTOMÁTICAMENTE
     print("\n" + "="*80)
     print("🔄 FASE 2: PROCESAMIENTO")
     print("="*80)
-    
+
     processor_success = run_processor()
-    
+
     if processor_success:
         print("\n" + "="*80)
         print("🎉 PROCESO COMPLETO EXITOSO")

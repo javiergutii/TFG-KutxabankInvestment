@@ -7,7 +7,7 @@ docker compose up -d db ollama
 
 docker compose run --rm extractor
 
-docker compose exec db mysql -u reports_user -preports_pass -D reports -e \
+docker compose exec db mysql -u reports_user -preports_pass -D reports -e \t
   "SELECT id, empresa, procesado, LENGTH(resumen) as resumen_length FROM reports;"
 
 ls -lh shared/faiss_index/

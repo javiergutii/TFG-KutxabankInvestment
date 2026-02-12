@@ -61,15 +61,6 @@ services:
       VIDEO_TITLE: "Conference demo"
       VIDEO_URL: ""
       VIDEO_DATE: "2026-02-03 10:00"
-
-      # SharePoint - Activar/Desactivar
-      SHAREPOINT_ENABLED: "${SHAREPOINT_ENABLED:-false}"
-      SHAREPOINT_TENANT_ID: "${SHAREPOINT_TENANT_ID:-}"
-      SHAREPOINT_CLIENT_ID: "${SHAREPOINT_CLIENT_ID:-}"
-      SHAREPOINT_CLIENT_SECRET: "${SHAREPOINT_CLIENT_SECRET:-}"
-      SHAREPOINT_SITE_ID: "${SHAREPOINT_SITE_ID:-}"
-      SHAREPOINT_DRIVE_ID: "${SHAREPOINT_DRIVE_ID:-}"
-      SHAREPOINT_FOLDER: "${SHAREPOINT_FOLDER:-Transcripciones}"
       
       # 🆕 Configuración del processor (para ejecutarlo integrado)
       CHUNK_SIZE: "500"
@@ -142,7 +133,7 @@ services:
         condition: service_healthy
 
     volumes:
-      - ./services/processor/src:/app/src
+      - ./services/processor/src:/app/
       - ./shared:/app/shared
 
     # 🆕 CAMBIO: Se ejecuta bajo demanda, no automáticamente

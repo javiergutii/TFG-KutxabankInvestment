@@ -1,4 +1,6 @@
-FROM python:3.11-slim
+# Usamos la imagen del extractor ya construida localmente
+# (evita descargar de Docker Hub, que está bloqueado por el proxy)
+FROM tfg-extractor:latest
 
 ARG HTTP_PROXY
 ARG HTTPS_PROXY
@@ -10,16 +12,12 @@ ENV NO_PROXY=${NO_PROXY}
 
 WORKDIR /app
 
-RUN apt-get update && apt-get install -y \
-    gcc \
-    g++ \
-    && rm -rf /var/lib/apt/lists/*
-
-COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
-
-# Copiar src directamente en /app (no en /app/src)
-COPY src/ /app/
+# Instalar dependencias adicionales del processor
+# (el extractor ya tiene: playwright, faster-whisper, mysql-connector, requests, python-dotenv)
+COPY requirements.txt /tmp/processor_requirements.txt
+RUN pip install --no-cache-dir \
+    --proxy=${HTTP_PROXY} \
+    -r /tmp/processor_requirements.txt
 
 RUN mkdir -p /app/shared/faiss_index
 

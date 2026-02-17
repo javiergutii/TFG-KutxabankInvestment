@@ -58,7 +58,7 @@ class OllamaSummarizer:
         self,
         text: str,
         empresa: str,
-        max_tokens: int = 500
+        max_tokens: int = 800
     ) -> Optional[str]:
         """
         Genera un resumen del texto
@@ -154,7 +154,7 @@ RESUMEN EJECUTIVO:"""
         question: str,
         context_chunks: list,
         empresa: Optional[str] = None,
-        max_tokens: int = 300
+        max_tokens: int = 800
     ) -> Optional[str]:
         """
         Genera una respuesta basada en chunks de contexto (para RAG)

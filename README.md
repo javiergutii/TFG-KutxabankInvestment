@@ -15,3 +15,13 @@ ls -lh shared/faiss_index/
 docker compose run --rm processor python query_faiss.py stats
 
 ocker compose run --rm processor python query_faiss.py query "resultados financieros"
+
+## Ejecutar queries sobre empresas
+
+docker compose run --rm processor python main.py
+
+docker compose run --rm processor python query_faiss.py search
+
+docker compose run --rm processor python query_faiss.py stats
+
+docker compose run --rm processor python regenerate_summaries.py

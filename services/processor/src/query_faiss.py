@@ -54,10 +54,51 @@ def search_interactive():
 
             if not query:
                 continue
+            
+            translations = {
+                'ingresos': 'revenue',
+                'beneficios': 'profit',
+                'deuda': 'debt',
+                'trimestre': 'quarter',
+                'semestre': 'half',
+                'dividendo': 'dividend',
+                'acciones': 'shares',
+                'crecimiento': 'growth',
+                'resultados': 'results',
+                'ventas': 'sales',
+                'facturación': 'revenue',
+                'ganancias': 'earnings',
+                'pérdidas': 'losses',
+                'margen': 'margin',
+                'capex': 'capex',
+                'ebitda': 'ebitda',
+                'flujo': 'cash flow',
+                'caja': 'cash',
+                'apalancamiento': 'leverage',
+                'latinoamérica': 'latin america',
+                'países': 'countries',
+                'vendido': 'sold sale',
+                'venta': 'sale',
+                'comprado': 'acquired',
+                'adquisición': 'acquisition',
+            }
+            query_en = query.lower()
+            for es, en in translations.items():
+                query_en = query_en.replace(es, en)
 
-            # Buscar en FAISS con k=10 para más cobertura
-            print("\n🔎 Buscando en índice FAISS...")
-            results = manager.search(query, k=10)
+            # Buscar con ambas queries y combinar
+            results_es = manager.search(query, k=7)
+            results_en = manager.search(query_en, k=7)
+
+            # Combinar evitando duplicados
+            seen = set()
+            results = []
+            for r in results_es + results_en:
+                pos = r[0].get('index_position')
+                if pos not in seen:
+                    seen.add(pos)
+                    results.append(r)
+            results = sorted(results, key=lambda x: x[1], reverse=True)[:10]
 
             if not results:
                 print("❌ No se encontraron resultados\n")

@@ -81,7 +81,7 @@ def run():
 
                 # Dividir en chunks
                 print("✂️  Dividiendo en chunks...")
-                chunks = split_into_chunks(texto_limpio)
+                chunks = split_into_chunks(texto_limpio, chunk_size=proc_config.CHUNK_SIZE, overlap=proc_config.CHUNK_OVERLAP)
                 print(f"   📦 {len(chunks)} chunks generados")
 
                 if not chunks:

@@ -83,13 +83,15 @@ def process_single_report(
             print(f"   ✅ Resumen generado ({len(resumen)} caracteres)")
             preview = resumen[:200] + "..." if len(resumen) > 200 else resumen
             print(f"   📄 Preview: {preview}")
+            
+            # 5. Guardar resumen en base de datos
+            print("💾 Guardando resumen en base de datos...")
+            update_report_summary(report_id, resumen)
+            
         else:
             print(f"   ⚠️  No se pudo generar resumen, usando texto truncado")
             resumen = texto_limpio[:500] + "..."
 
-        # 5. Guardar resumen en base de datos
-        print("💾 Guardando resumen en base de datos...")
-        update_report_summary(report_id, resumen)
 
         # 6. Guardar índice FAISS
         print("💾 Guardando índice FAISS...")

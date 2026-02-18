@@ -33,7 +33,6 @@ class OllamaSummarizer:
         Verifica que Ollama esté disponible y el modelo descargado
         """
         try:
-            # Verificar endpoint /api/tags
             response = requests.get(
                 f"{self.host}/api/tags",
                 timeout=10
@@ -58,34 +57,25 @@ class OllamaSummarizer:
         self,
         text: str,
         empresa: str,
-        max_tokens: int = 800
+        max_tokens: int = 800  # Subido de 500 a 800
     ) -> Optional[str]:
         """
         Genera un resumen del texto
-        
-        Args:
-            text: Texto a resumir
-            empresa: Nombre de la empresa (para contexto)
-            max_tokens: Longitud máxima del resumen
-            
-        Returns:
-            Resumen generado o None si falla
         """
         if not text or len(text.strip()) < 100:
             print(f"   ⚠️  Texto demasiado corto para resumir")
             return None
         
-        # Limitar longitud del texto de entrada (Ollama tiene límites de contexto)
+        # Limitar longitud del texto de entrada
         max_input_chars = 15000
         if len(text) > max_input_chars:
             print(f"   ✂️  Texto truncado de {len(text)} a {max_input_chars} caracteres")
             text = text[:max_input_chars] + "..."
         
-        # Crear prompt para resumen
+        # Crear prompt mejorado
         prompt = self._create_summary_prompt(text, empresa)
         
         try:
-            # Llamar a Ollama API
             response = requests.post(
                 f"{self.host}/api/generate",
                 json={
@@ -106,6 +96,8 @@ class OllamaSummarizer:
             summary = result.get('response', '').strip()
             
             if summary:
+                # Asegurar encoding UTF-16 correcto
+                summary = summary.encode('utf-16', errors='ignore').decode('utf-16')
                 return summary
             else:
                 print(f"   ⚠️  Respuesta vacía de Ollama")
@@ -123,27 +115,37 @@ class OllamaSummarizer:
     
     def _create_summary_prompt(self, text: str, empresa: str) -> str:
         """
-        Crea el prompt para generar el resumen
-        
-        Args:
-            text: Texto a resumir
-            empresa: Nombre de la empresa
-            
-        Returns:
-            Prompt formateado
+        Prompt mejorado para resúmenes más completos y estructurados
         """
-        prompt = f"""Eres un analista financiero experto. Tu tarea es crear un resumen ejecutivo de la siguiente transcripción de una presentación de resultados de {empresa}.
+        prompt = f"""Eres un analista financiero senior especializado en presentaciones de resultados trimestrales. Tu tarea es crear un resumen ejecutivo profesional de la siguiente transcripción de {empresa}.
 
 TRANSCRIPCIÓN:
 {text}
 
-INSTRUCCIONES:
-1. Crea un resumen estructurado y conciso
-2. Incluye los puntos más importantes: resultados financieros, proyecciones, anuncios relevantes
-3. Usa lenguaje profesional y claro
-4. Organiza la información en secciones lógicas
-5. Destaca métricas clave y cifras importantes
-6. Escribe en español
+INSTRUCCIONES DETALLADAS:
+1. ESTRUCTURA: Usa las siguientes secciones obligatorias:
+   - Resumen de Resultados Financieros (Revenue, EBITDA, FCF, Deuda Neta)
+   - Métricas Clave por Geografía (España, Brasil, Alemania, otros)
+   - Transacciones y Anuncios Estratégicos (ventas, adquisiciones, acuerdos)
+   - Proyecciones y Guidance
+   - Otros Puntos Relevantes
+
+2. CONTENIDO OBLIGATORIO - INCLUYE SIEMPRE:
+   - Todas las cifras numéricas con sus unidades (millones/billones de euros, porcentajes)
+   - Comparativas year-on-year cuando estén disponibles
+   - Todas las transacciones mencionadas (ventas, compras, acuerdos) con montos
+   - Guidance completo para el año
+   - Dividendos si se mencionan
+   - Métricas operativas clave (net adds, churn, ARPU)
+
+3. ESTILO:
+   - Profesional y conciso
+   - Sin opiniones, solo hechos
+   - Usa bullet points dentro de cada sección
+   - Escribe SOLO en español, sin caracteres corruptos
+   - No uses asteriscos para negritas, usa texto plano
+
+4. LONGITUD: Entre 600-800 palabras (este es el resumen de una presentación completa)
 
 RESUMEN EJECUTIVO:"""
         
@@ -154,19 +156,10 @@ RESUMEN EJECUTIVO:"""
         question: str,
         context_chunks: list,
         empresa: Optional[str] = None,
-        max_tokens: int = 800
+        max_tokens: int = 800  # Ya actualizado
     ) -> Optional[str]:
         """
         Genera una respuesta basada en chunks de contexto (para RAG)
-        
-        Args:
-            question: Pregunta del usuario
-            context_chunks: Lista de chunks relevantes (texto)
-            empresa: Empresa específica (opcional)
-            max_tokens: Longitud máxima de la respuesta
-            
-        Returns:
-            Respuesta generada o None si falla
         """
         if not context_chunks:
             return "No se encontró información relevante para responder a tu pregunta."
@@ -174,7 +167,7 @@ RESUMEN EJECUTIVO:"""
         # Combinar chunks en contexto
         context = "\n\n".join([
             f"[Fragmento {i+1}]: {chunk}"
-            for i, chunk in enumerate(context_chunks[:5])  # Limitar a 5 chunks
+            for i, chunk in enumerate(context_chunks[:5])
         ])
         
         # Crear prompt para Q&A
@@ -200,6 +193,10 @@ RESUMEN EJECUTIVO:"""
             result = response.json()
             answer = result.get('response', '').strip()
             
+            # Asegurar encoding UTF-16
+            if answer:
+                answer = answer.encode('utf-16', errors='ignore').decode('utf-16')
+            
             return answer if answer else None
                 
         except Exception as e:
@@ -213,15 +210,7 @@ RESUMEN EJECUTIVO:"""
         empresa: Optional[str] = None
     ) -> str:
         """
-        Crea el prompt para responder preguntas
-        
-        Args:
-            question: Pregunta del usuario
-            context: Contexto relevante
-            empresa: Empresa específica (opcional)
-            
-        Returns:
-            Prompt formateado
+        Prompt para responder preguntas con contexto
         """
         empresa_text = f" de {empresa}" if empresa else ""
         
@@ -236,7 +225,9 @@ INSTRUCCIONES:
 1. Responde basándote ÚNICAMENTE en el contexto proporcionado
 2. Si la información no está en el contexto, indícalo claramente
 3. Sé específico y menciona cifras o datos concretos cuando sea posible
-4. Responde en español de forma clara y concisa
+4. Cita el número de fragmento de donde sacas la información
+5. Responde en español de forma clara y concisa
+6. IMPORTANTE: "billion" en inglés = mil millones (no billón español)
 
 RESPUESTA:"""
         

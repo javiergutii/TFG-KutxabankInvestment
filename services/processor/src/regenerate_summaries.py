@@ -106,7 +106,7 @@ def main():
     summarizer = OllamaSummarizer()
 
     # 3. Buscar reportes con resumen malo
-    to_regenerate = get_reports_needing_summary(min_chars=200)
+    to_regenerate = get_reports_needing_summary(min_chars=800)
 
     if not to_regenerate:
         print("\n✅ Todos los reportes tienen resúmenes correctos!")

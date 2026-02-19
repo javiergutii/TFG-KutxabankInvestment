@@ -123,7 +123,7 @@ class FAISSManager:
             normalize_embeddings=True
         )
         distances, indices = self.index.search(
-            query_embedding.astype('float32'), min(k * 3, self.index.ntotal)
+            query_embedding.astype('float32'), min(k * 5, self.index.ntotal)
         )
 
         semantic_results = {}
@@ -188,3 +188,18 @@ class FAISSManager:
 
     def get_all_empresas(self) -> List[str]:
         return sorted(set(m.get('empresa', '') for m in self.metadata if m.get('empresa')))
+    
+    def report_exists(self, report_id: int) -> bool:
+        """
+        Verifica si un reporte ya está indexado en FAISS
+        
+        Args:
+            report_id: ID del reporte a verificar
+            
+        Returns:
+            True si el reporte ya existe en el índice
+        """
+        for meta in self.metadata:
+            if meta.get('report_id') == report_id:
+                return True
+        return False

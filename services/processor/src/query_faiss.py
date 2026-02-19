@@ -1,5 +1,7 @@
+#!/usr/bin/env python3
 """
 Script de utilidad para buscar en el índice FAISS y hacer preguntas con RAG
+CON FILTRO AUTOMÁTICO POR EMPRESA
 """
 import sys
 import os
@@ -35,7 +37,7 @@ def show_stats():
 
 
 def search_interactive():
-    """Modo interactivo de búsqueda con RAG"""
+    """Modo interactivo de búsqueda con RAG y filtro automático"""
     print_separator()
     print("🔍 BÚSQUEDA INTERACTIVA CON RAG")
     print_separator()
@@ -55,6 +57,16 @@ def search_interactive():
             if not query:
                 continue
             
+            # 🆕 AUTO-DETECTAR EMPRESA en la pregunta
+            empresas_disponibles = manager.get_all_empresas()
+            empresa_filter = None
+            for empresa in empresas_disponibles:
+                if empresa.lower() in query.lower():
+                    empresa_filter = empresa
+                    print(f"🔍 Filtrando automáticamente por: {empresa}")
+                    break
+            
+            # Traducir términos financieros clave ES → EN
             translations = {
                 'ingresos': 'revenue',
                 'beneficios': 'profit',
@@ -87,8 +99,9 @@ def search_interactive():
                 query_en = query_en.replace(es, en)
 
             # Buscar con ambas queries y combinar
-            results_es = manager.search(query, k=7)
-            results_en = manager.search(query_en, k=7)
+            print("\n🔎 Buscando en índice FAISS...")
+            results_es = manager.search(query, k=7, filter_empresa=empresa_filter)
+            results_en = manager.search(query_en, k=7, filter_empresa=empresa_filter)
 
             # Combinar evitando duplicados
             seen = set()
@@ -117,17 +130,13 @@ def search_interactive():
                 print()
                 context_chunks.append(meta['text'])
 
-            print("\n📋 CHUNKS ENVIADOS A OLLAMA:")
-            for i, c in enumerate(context_chunks, 1):
-                print(f"  [{i}] {c[:100]}...")
-            print()
-            # Generar respuesta con Ollama (max_tokens subido a 800)
+            # Generar respuesta con Ollama
             print("🤖 Generando respuesta con Ollama...")
             answer = summarizer.generate_answer(
                 question=query,
                 context_chunks=context_chunks,
                 empresa=results[0][0].get('empresa') if results else None,
-                max_tokens=800   # ← aumentado de 300 a 800
+                max_tokens=800
             )
 
             if answer:
@@ -154,7 +163,17 @@ def search_once(query: str, k: int = 10):
     print_separator()
 
     manager = FAISSManager()
-    results = manager.search(query, k=k)
+    
+    # Auto-detectar empresa
+    empresas_disponibles = manager.get_all_empresas()
+    empresa_filter = None
+    for empresa in empresas_disponibles:
+        if empresa.lower() in query.lower():
+            empresa_filter = empresa
+            print(f"🔍 Filtrando por: {empresa}")
+            break
+    
+    results = manager.search(query, k=k, filter_empresa=empresa_filter)
 
     if not results:
         print("\n❌ No se encontraron resultados")
@@ -177,6 +196,7 @@ def main():
         print("""
 ╔═══════════════════════════════════════════════════════════════╗
 ║                   FAISS Search Utility                        ║
+║              CON FILTRO AUTOMÁTICO POR EMPRESA                ║
 ╚═══════════════════════════════════════════════════════════════╝
 
 Uso:
@@ -187,7 +207,11 @@ Uso:
 Ejemplos:
   python query_faiss.py stats
   python query_faiss.py search
-  python query_faiss.py query "¿Cuáles fueron los ingresos?"
+  python query_faiss.py query "¿Cuáles fueron los ingresos de Telefónica?"
+  
+🆕 FILTRO AUTOMÁTICO:
+  Si mencionas una empresa en tu pregunta, el sistema filtrará
+  automáticamente solo los resultados de esa empresa.
         """)
         return
 

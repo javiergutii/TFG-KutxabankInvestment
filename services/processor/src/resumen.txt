@@ -1,0 +1,38 @@
+**Resumen Ejecutivo**
+
+Telefónica ha presentado sus resultados financieros para el segundo trimestre del año 2025, con un enfoque en la ejecución de su estrategia de transformación y crecimiento sostenible.
+
+**Resultados Financieros**
+
+* **Revenu**: El grupo alcanzó una renta de casi 9 billones de euros en el segundo trimestre, creciendo 1.5% organicamente.
+* **EBITDA**: La EBITDA del grupo fue de casi 3 billones de euros, con un aumento del 2% year-on-year.
+* **FCF**: El flujo de efectivo libre (FCF) se convirtió en positivo por primera vez en el año, alcanzando 505 millones de euros.
+
+**Métricas Clave por Geografía**
+
+* **España**: La empresa reportó un crecimiento sólido en operaciones y finanzas, con una mejora del 6% year-on-year en la renta y un aumento del 2% en la EBITDA.
+ + Net adds: 2 millones de accesos
+ + Churn: 1.1%
+* **Brasil**: La empresa reportó un crecimiento sólido en operaciones y finanzas, con una mejora del 7% year-on-year en la renta y un aumento del 6% en la EBITDA.
+ + Contract accesses: 6 millones de contratos
+ + Vivo total: 42%
+* **Alemania**: La empresa reportó una performance sólida, aunque impactada por la migración de los clientes One2One, con una renta que creció un 1% year-on-year y una EBITDA que cayó un 6%.
+ + O2 contract chance: 1%
+* **Otros**: La empresa reportó una performance sólida en otros mercados, con una mejora del 5% year-on-year en la renta y un aumento del 3% en la EBITDA.
+
+**Transacciones y Anuncios Estratégicos**
+
+* **Ventas**: Telefónica completó las ventas de Argentina y Perú por aproximadamente 3 billones de euros.
+* **Acuerdos**: La empresa firmó acuerdos con varias empresas para expandir su presencia en mercados selectos, incluyendo Colombia y Ecuador.
+* **Adquisiciones**: Telefónica adquirió el 50% de Fibra Cell por aproximadamente R$850 millones.
+
+**Proyecciones y Guidance**
+
+* **Revenu**: El grupo espera crecer un 5% year-on-year en la renta para el año completo.
+* **EBITDA**: La EBITDA del grupo se espera que crezca un 10% year-on-year para el año completo.
+* **FCF**: El flujo de efectivo libre se espera que mejore significativamente en el segundo semestre.
+
+**Otros Puntos Relevantes**
+
+* **Dividendos**: Telefónica anunció una distribución de dividendos de 7 centavos por acción, con un total de aproximadamente 1 billón de euros.
+* **Métricas operativas clave**: La empresa reportó un crecimiento sólido en net adds y una reducción significativa en el churn.

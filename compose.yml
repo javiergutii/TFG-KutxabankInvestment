@@ -141,6 +141,7 @@ services:
     volumes:
       - ./services/processor/src:/app/
       - ./shared:/app/shared
+      - ./exports:/app/exports  # ← añadir esto
 
     # 🆕 CAMBIO: Se ejecuta bajo demanda, no automáticamente
     profiles:

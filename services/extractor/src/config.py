@@ -3,8 +3,8 @@ import re
 
 
 
-TARGET_URL = os.getenv("TARGET_URL", "https://edge.media-server.com/mmc/p/namtxtbr/")
-EMPRESA = os.getenv("EMPRESA", "Telefónica")
+TARGET_URL = os.getenv("TARGET_URL", "https://streamstudio.world-television.com/CCUIv3/registration.aspx?ticket=495-496-41018&target=es-default-&status=ondemand&browser=ns-0-1-0-0-0")
+EMPRESA = os.getenv("EMPRESA", "Enagas")
 
 
 FECHA = os.getenv("FECHA", "")  # opcional; si viene vacío usamos now()

@@ -1,32 +1,39 @@
 ﻿*************************** 1. row ***************************
 resumen: **Resumen Ejecutivo**
 
-Telef├│nica ha presentado sus resultados financieros para el primer semestre de 2025, con un enfoque en la transformaci├│n y el crecimiento sostenible. A continuaci├│n, se presentan los principales puntos clave:
+Telef├│nica ha presentado sus resultados financieros para el segundo trimestre del a├▒o 2025, con un enfoque en la ejecuci├│n de su estrategia de transformaci├│n y crecimiento sostenible.
 
 **Resultados Financieros**
 
-*   **Revenue**: 8,9 mil millones de euros, creciendo 1,5% organicamente.
-*   **EBITDA**: 2,9 mil millones de euros, con una tendencia estabilizadora en EBITDA menos CAPEX.
-*   **Free Cash Flow**: 505 millones de euros, con un aumento del 718% en el primer trimestre.
+* **Revenu**: El grupo alcanz├│ una renta de casi 9 billones de euros en el segundo trimestre, creciendo 1.5% organicamente.
+* **EBITDA**: La EBITDA del grupo fue de casi 3 billones de euros, con un aumento del 2% year-on-year.
+* **FCF**: El flujo de efectivo libre (FCF) se convirti├│ en positivo por primera vez en el a├▒o, alcanzando 505 millones de euros.
 
 **M├®tricas Clave por Geograf├¡a**
 
-*   **Espa├▒a**: Crece 1,5% organicamente, con una mejora en la adquisici├│n de clientes y una tendencia estabilizadora en EBITDA menos CAPEX.
-*   **Brasil**: Registra un crecimiento del 7%, con una expansi├│n en el negocio de fibra y una mejora en la post-paid churn.
-*   **Alemania**: Presenta una ca├¡da en la rentabilidad debido a la migraci├│n de clientes, pero mantiene una s├│lida adquisici├│n de clientes.
+* **Espa├▒a**: La empresa report├│ un crecimiento s├│lido en operaciones y finanzas, con una mejora del 6% year-on-year en la renta y un aumento del 2% en la EBITDA.
+ + Net adds: 2 millones de accesos
+ + Churn: 1.1%
+* **Brasil**: La empresa report├│ un crecimiento s├│lido en operaciones y finanzas, con una mejora del 7% year-on-year en la renta y un aumento del 6% en la EBITDA.
+ + Contract accesses: 6 millones de contratos
+ + Vivo total: 42%
+* **Alemania**: La empresa report├│ una performance s├│lida, aunque impactada por la migraci├│n de los clientes One2One, con una renta que creci├│ un 1% year-on-year y una EBITDA que cay├│ un 6%.
+ + O2 contract chance: 1%
+* **Otros**: La empresa report├│ una performance s├│lida en otros mercados, con una mejora del 5% year-on-year en la renta y un aumento del 3% en la EBITDA.
 
 **Transacciones y Anuncios Estrat├®gicos**
 
-*   Se han completado las ventas de Argentina y Per├║, con un valor total de 3 mil millones de euros.
-*   Se ha firmado un acuerdo para la compra de Fibra Cell en Brasil por 850 millones de d├│lares.
-*   Se ha anunciado una alianza estrat├®gica con Siemens para transformar el sector del agua.
+* **Ventas**: Telef├│nica complet├│ las ventas de Argentina y Per├║ por aproximadamente 3 billones de euros.
+* **Acuerdos**: La empresa firm├│ acuerdos con varias empresas para expandir su presencia en mercados selectos, incluyendo Colombia y Ecuador.
+* **Adquisiciones**: Telef├│nica adquiri├│ el 50% de Fibra Cell por aproximadamente R$850 millones.
 
 **Proyecciones y Guidance**
 
-*   Se reitera la gu├¡a para el a├▒o 2025, con un crecimiento de 1% en revenue y EBITDA.
-*   Se espera que el Free Cash Flow mejore a lo largo del a├▒o, siguiendo el patr├│n estacional.
+* **Revenu**: El grupo espera crecer un 5% year-on-year en la renta para el a├▒o completo.
+* **EBITDA**: La EBITDA del grupo se espera que crezca un 10% year-on-year para el a├▒o completo.
+* **FCF**: El flujo de efectivo libre se espera que mejore significativamente en el segundo semestre.
 
 **Otros Puntos Relevantes**
 
-*   La compa├▒├¡a ha completado la desactivaci├│n de sus redes de cobre en Espa├▒a, lo que permite una mayor eficiencia y concentraci├│n de recursos.
-*   Se ha implementado un plan de simplificaci├│n de la organizaci├│n para mejorar la productividad y la competitividad.
+* **Dividendos**: Telef├│nica anunci├│ una distribuci├│n de dividendos de 7 centavos por acci├│n, con un total de aproximadamente 1 bill├│n de euros.
+* **M├®tricas operativas clave**: La empresa report├│ un crecimiento s├│lido en net adds y una reducci├│n significativa en el churn.

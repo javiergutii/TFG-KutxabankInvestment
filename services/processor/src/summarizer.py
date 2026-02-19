@@ -57,7 +57,7 @@ class OllamaSummarizer:
         self,
         text: str,
         empresa: str,
-        max_tokens: int = 800  # Subido de 500 a 800
+        max_tokens: int = 800
     ) -> Optional[str]:
         """
         Genera un resumen del texto

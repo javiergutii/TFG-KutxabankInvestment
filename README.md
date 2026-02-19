@@ -34,3 +34,6 @@ docker compose exec db mysql -u reports_user -preports_pass -D reports -e "UPDAT
 docker compose exec db mysql -u reports_user -preports_pass -D reports --default-character-set=utf8mb4 -e "SELECT resumen FROM reports WHERE id=1\G" | Out-File -Encoding UTF8 resumen.txt
 
 notepad resumen.txt
+
+#### Cambiar el estado del report de procesado a no procesado
+docker compose exec db mysql -u reports_user -preports_pass -D reports -e "UPDATE reports SET procesado = 0 WHERE id = 1;"

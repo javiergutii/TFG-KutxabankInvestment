@@ -1,20 +1,20 @@
-CREATE DATABASE IF NOT EXISTS reports;
+CREATE DATABASE IF NOT EXISTS reports 
+CHARACTER SET utf8mb4 
+COLLATE utf8mb4_unicode_ci;
+
 USE reports;
 
 CREATE TABLE IF NOT EXISTS reports (
   id BIGINT AUTO_INCREMENT PRIMARY KEY,
-
   empresa VARCHAR(200) NOT NULL,
   url VARCHAR(1000) NOT NULL,
-
   texto_transcrito LONGTEXT NOT NULL,
   fecha DATETIME NULL,
-
   fetched_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   procesado TINYINT(1) NOT NULL DEFAULT 0,
   resumen LONGTEXT NOT NULL,
-
   UNIQUE KEY uniq_empresa (empresa),
   UNIQUE KEY uniq_url (url(255))
-);
-
+) ENGINE=InnoDB 
+DEFAULT CHARSET=utf8mb4 
+COLLATE=utf8mb4_unicode_ci;

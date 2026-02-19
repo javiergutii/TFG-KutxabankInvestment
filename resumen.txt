@@ -1,31 +1,32 @@
 ﻿*************************** 1. row ***************************
 resumen: **Resumen Ejecutivo**
 
-Telef├│nica ha presentado sus resultados financieros del segundo trimestre de 2025, con un enfoque en la ejecuci├│n estrat├®gica y la mejora continua de la operativa.
+Telef├│nica ha presentado sus resultados financieros para el primer semestre de 2025, con un enfoque en la transformaci├│n y el crecimiento sostenible. A continuaci├│n, se presentan los principales puntos clave:
 
 **Resultados Financieros**
 
-*   **Revenue**: El ingreso total alcanz├│ los 8.900 millones de euros, creciendo 1,5% organicamente.
-*   **EBITDA**: El beneficio antes de impuestos y amortizaciones (EBITDA) se estabiliz├│ en casi 3.000 millones de euros.
-*   **FCF**: La fluidez financiera (FCF) se convirti├│ en positiva, alcanzando 505 millones de euros.
+*   **Revenue**: 8,9 mil millones de euros, creciendo 1,5% organicamente.
+*   **EBITDA**: 2,9 mil millones de euros, con una tendencia estabilizadora en EBITDA menos CAPEX.
+*   **Free Cash Flow**: 505 millones de euros, con un aumento del 718% en el primer trimestre.
 
 **M├®tricas Clave por Geograf├¡a**
 
-*   **Espa├▒a**: El mercado lider├│ el crecimiento del grupo, con una expansi├│n de 2 millones de accesorios y una mejora en la satisfacci├│n del cliente. La empresa tambi├®n ha logrado la primera copper shutdown en Espa├▒a.
-*   **Brasil**: Telef├│nica Brasil continu├│ su trayectoria de crecimiento s├│lido, con una expansi├│n de 6 millones de contratos y un aumento significativo en las ventas de servicios de fibra.
-*   **Alemania**: La empresa enfrenta desaf├¡os debido a la migraci├│n de los clientes One2One. A pesar de esto, O2 sigue siendo competitiva y ha logrado una mejora en el contrato de suscriptores.
+*   **Espa├▒a**: Crece 1,5% organicamente, con una mejora en la adquisici├│n de clientes y una tendencia estabilizadora en EBITDA menos CAPEX.
+*   **Brasil**: Registra un crecimiento del 7%, con una expansi├│n en el negocio de fibra y una mejora en la post-paid churn.
+*   **Alemania**: Presenta una ca├¡da en la rentabilidad debido a la migraci├│n de clientes, pero mantiene una s├│lida adquisici├│n de clientes.
 
 **Transacciones y Anuncios Estrat├®gicos**
 
-*   Telef├│nica ha completado la venta de Argentina y Per├║, y ha firmado acuerdos para adquirir Fibra Cell en Brasil.
-*   La empresa tambi├®n ha anunciado un acuerdo con Siemens para desarrollar una soluci├│n de conectividad basada en 5G.
+*   Se han completado las ventas de Argentina y Per├║, con un valor total de 3 mil millones de euros.
+*   Se ha firmado un acuerdo para la compra de Fibra Cell en Brasil por 850 millones de d├│lares.
+*   Se ha anunciado una alianza estrat├®gica con Siemens para transformar el sector del agua.
 
 **Proyecciones y Guidance**
 
-*   Telef├│nica reitera su gu├¡a de crecimiento para el a├▒o 2025, con expectativas de crecimiento en la EBITDA y la fluidez financiera.
-*   La empresa espera que la FCF mejore a lo largo del a├▒o, aunque reconoce que la temporada puede afectar los resultados.
+*   Se reitera la gu├¡a para el a├▒o 2025, con un crecimiento de 1% en revenue y EBITDA.
+*   Se espera que el Free Cash Flow mejore a lo largo del a├▒o, siguiendo el patr├│n estacional.
 
 **Otros Puntos Relevantes**
 
-*   Telef├│nica ha implementado una serie de medidas para mejorar su eficiencia operativa y reducir costos.
-*   La empresa tambi├®n ha anunciado planes para expandir sus servicios en nuevos mercados y desarrollar nuevas tecnolog├¡as.
+*   La compa├▒├¡a ha completado la desactivaci├│n de sus redes de cobre en Espa├▒a, lo que permite una mayor eficiencia y concentraci├│n de recursos.
+*   Se ha implementado un plan de simplificaci├│n de la organizaci├│n para mejorar la productividad y la competitividad.

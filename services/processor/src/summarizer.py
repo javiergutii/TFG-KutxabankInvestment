@@ -53,6 +53,35 @@ class OllamaSummarizer:
             print(f"   ⚠️  No se pudo conectar a Ollama: {e}")
             print(f"   💡 Asegúrate de que Ollama esté ejecutándose")
     
+    def _fix_encoding(self, text: str) -> str:
+        """
+        Corrige problemas de encoding comunes en texto generado por Ollama
+        """
+        # Mapeo de caracteres mal codificados a correctos
+        replacements = {
+            '├│': 'ó',
+            '├í': 'á',
+            '├®': 'é',
+            '├¡': 'í',
+            '├║': 'ú',
+            '├▒': 'ñ',
+            '┬░': '°',
+            '├Ç': 'Á',
+            '├ë': 'É',
+            '├ô': 'Ó',
+            '├Ü': 'Ú',
+            '├æ': 'Ñ',
+            '┬¿': '¿',
+            '┬í': '¡',
+            '├¿': 'ü',
+            '├ô': 'Ô',
+        }
+        
+        for bad, good in replacements.items():
+            text = text.replace(bad, good)
+        
+        return text
+    
     def generate_summary(
         self,
         text: str,
@@ -96,8 +125,8 @@ class OllamaSummarizer:
             summary = result.get('response', '').strip()
             
             if summary:
-                # Asegurar encoding UTF-16 correcto
-                summary = summary.encode('utf-16', errors='ignore').decode('utf-16')
+                # Corregir encoding
+                summary = self._fix_encoding(summary)
                 return summary
             else:
                 print(f"   ⚠️  Respuesta vacía de Ollama")
@@ -156,7 +185,7 @@ RESUMEN EJECUTIVO:"""
         question: str,
         context_chunks: list,
         empresa: Optional[str] = None,
-        max_tokens: int = 800  # Ya actualizado
+        max_tokens: int = 800
     ) -> Optional[str]:
         """
         Genera una respuesta basada en chunks de contexto (para RAG)
@@ -193,11 +222,12 @@ RESUMEN EJECUTIVO:"""
             result = response.json()
             answer = result.get('response', '').strip()
             
-            # Asegurar encoding UTF-16
             if answer:
-                answer = answer.encode('utf-16', errors='ignore').decode('utf-16')
-            
-            return answer if answer else None
+                # Corregir encoding
+                answer = self._fix_encoding(answer)
+                return answer
+            else:
+                return None
                 
         except Exception as e:
             print(f"   ❌ Error generando respuesta: {e}")

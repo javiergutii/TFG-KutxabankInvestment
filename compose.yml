@@ -26,6 +26,8 @@ services:
       - ollama_data:/root/.ollama
     environment:
       - OLLAMA_HOST=0.0.0.0
+      - LC_ALL=C.UTF-8
+      - LANG=C.UTF-8
     healthcheck:
       test: ["CMD", "ollama", "list"]
       interval: 10s
@@ -63,8 +65,8 @@ services:
       VIDEO_DATE: "2026-02-03 10:00"
       
       # 🆕 Configuración del processor (para ejecutarlo integrado)
-      CHUNK_SIZE: "500"
-      CHUNK_OVERLAP: "50"
+      CHUNK_SIZE: "200"
+      CHUNK_OVERLAP: "100"
       EMBEDDING_MODEL: "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2"
       FAISS_INDEX_DIR: "/app/shared/faiss_index"
       FAISS_INDEX_FILE: "index.faiss"
@@ -87,6 +89,9 @@ services:
       # 🆕 Montar código del processor para ejecutarlo desde extractor
       - ./services/processor:/app/processor_code:ro
       - ./shared:/app/shared
+    
+    profiles:
+      - manual
 
     command: ["python", "-m", "main"]
 

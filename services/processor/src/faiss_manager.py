@@ -123,7 +123,7 @@ class FAISSManager:
             normalize_embeddings=True
         )
         distances, indices = self.index.search(
-            query_embedding.astype('float32'), min(k * 5, self.index.ntotal)
+            query_embedding.astype('float32'), min(k * 15, self.index.ntotal)
         )
 
         semantic_results = {}

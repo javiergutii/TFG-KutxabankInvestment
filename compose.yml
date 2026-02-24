@@ -67,7 +67,7 @@ services:
       # 🆕 Configuración del processor (para ejecutarlo integrado)
       CHUNK_SIZE: "200"
       CHUNK_OVERLAP: "100"
-      EMBEDDING_MODEL: "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2"
+      EMBEDDING_MODEL: "sentence-transformers/paraphrase-multilingual-mpnet-base-v2"
       FAISS_INDEX_DIR: "/app/shared/faiss_index"
       FAISS_INDEX_FILE: "index.faiss"
       FAISS_METADATA_FILE: "metadata.pkl"

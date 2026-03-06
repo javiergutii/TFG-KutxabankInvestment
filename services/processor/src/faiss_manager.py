@@ -57,8 +57,18 @@ class FAISSManager:
             raise ValueError("texts y metadata_list deben tener la misma longitud")
 
         print(f"   🔢 Generando embeddings para {len(texts)} textos...")
+        
+        # 🆕 AÑADIR CONTEXTO: Enriquecer chunks con empresa antes de generar embeddings
+        enriched_texts = []
+        for text, meta in zip(texts, metadata_list):
+            empresa = meta.get('empresa', 'Unknown')
+            # Prefijo con contexto de empresa y tipo de documento
+            enriched_text = f"Empresa: {empresa}. Resultados financieros. {text}"
+            enriched_texts.append(enriched_text)
+        
+        # Generar embeddings con texto enriquecido
         embeddings = self.model.encode(
-            texts,
+            enriched_texts,  # ← Cambio: usar enriched_texts en lugar de texts
             show_progress_bar=False,
             convert_to_numpy=True,
             normalize_embeddings=True
@@ -68,7 +78,7 @@ class FAISSManager:
 
         for i, (text, meta) in enumerate(zip(texts, metadata_list)):
             meta_with_text = meta.copy()
-            meta_with_text['text'] = text
+            meta_with_text['text'] = text  # ← Guardar texto ORIGINAL (sin prefijo)
             meta_with_text['index_position'] = self.index.ntotal - len(texts) + i
             self.metadata.append(meta_with_text)
 

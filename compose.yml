@@ -29,18 +29,11 @@ services:
       - LC_ALL=C.UTF-8
       - LANG=C.UTF-8
     healthcheck:
-      test: ["CMD", "ollama", "list"]
+      test: ["CMD-SHELL", "ollama", "list"]
       interval: 10s
-      timeout: 5s
-      retries: 5
-    # Después de iniciar, descarga el modelo automáticamente
-    entrypoint: ["/bin/sh", "-c"]
-    command:
-      - |
-        /bin/ollama serve &
-        sleep 5
-        ollama pull llama3.2:3b
-        wait
+      timeout: 10s
+      retries: 30
+      start_period: 30s
 
   extractor:
     build:
@@ -49,7 +42,6 @@ services:
         HTTP_PROXY: http://proxy.norbolsa.es:8080
         HTTPS_PROXY: http://proxy.norbolsa.es:8080
         NO_PROXY: localhost,127.0.0.1,::1,db
-
     environment:
       # MySQL
       MYSQL_HOST: db
@@ -57,14 +49,13 @@ services:
       MYSQL_DATABASE: reports
       MYSQL_USER: reports_user
       MYSQL_PASSWORD: reports_pass
-
       # Metadata / app config
       COMPANY_NAME: "empresa A"
       VIDEO_TITLE: "Conference demo"
       VIDEO_URL: ""
       VIDEO_DATE: "2026-02-03 10:00"
       
-      # 🆕 Configuración del processor (para ejecutarlo integrado)
+      # Configuración del processor
       CHUNK_SIZE: "200"
       CHUNK_OVERLAP: "100"
       EMBEDDING_MODEL: "sentence-transformers/paraphrase-multilingual-mpnet-base-v2"
@@ -72,27 +63,23 @@ services:
       FAISS_INDEX_FILE: "index.faiss"
       FAISS_METADATA_FILE: "metadata.pkl"
       OLLAMA_HOST: "http://ollama:11434"
-      OLLAMA_MODEL: "llama3.2:3b"
-      OLLAMA_TIMEOUT: "120"
-
+      OLLAMA_MODEL: "qwen2.5:14b"
+      OLLAMA_TIMEOUT: "3600"
     depends_on:
       db:
         condition: service_healthy
       ollama:
         condition: service_healthy
-
     volumes:
       - ./services/extractor/src:/app/src
       - ./data:/data
       - ./artifacts:/app/artifacts
       - ./outputs:/app/outputs
-      # 🆕 Montar código del processor para ejecutarlo desde extractor
       - ./services/processor:/app/processor_code:ro
       - ./shared:/app/shared
-    
+      - ./exports:/app/exports
     profiles:
       - manual
-
     command: ["python", "-m", "main"]
 
   processor:
@@ -102,7 +89,6 @@ services:
         HTTP_PROXY: http://proxy.norbolsa.es:8080
         HTTPS_PROXY: http://proxy.norbolsa.es:8080
         NO_PROXY: localhost,127.0.0.1,::1,db,ollama
-
     environment:
       # MySQL
       MYSQL_HOST: db
@@ -110,44 +96,34 @@ services:
       MYSQL_DATABASE: reports
       MYSQL_USER: reports_user
       MYSQL_PASSWORD: reports_pass
-
       # Procesamiento
       BATCH_SIZE: "10"
-      
       # Chunks
       CHUNK_SIZE: "200"
       CHUNK_OVERLAP: "100"
-
       # Embeddings
       EMBEDDING_MODEL: "sentence-transformers/paraphrase-multilingual-mpnet-base-v2"
-
       # FAISS
       FAISS_INDEX_DIR: "/app/shared/faiss_index"
       FAISS_INDEX_FILE: "index.faiss"
       FAISS_METADATA_FILE: "metadata.pkl"
-
       # Ollama
       OLLAMA_HOST: "http://ollama:11434"
-      OLLAMA_MODEL: "llama3.2:3b"
-      OLLAMA_TIMEOUT: "1800"
-      OLLAMA_MAX_TOKENS: "80"
-
+      OLLAMA_MODEL: "qwen2.5:14b"
+      OLLAMA_TIMEOUT: "3600"
+      OLLAMA_MAX_TOKENS: "800"
     depends_on:
       db:
         condition: service_healthy
       ollama:
         condition: service_healthy
-
     volumes:
       - ./services/processor/src:/app/
       - ./shared:/app/shared
-      - ./exports:/app/exports  # ← añadir esto
-
-    # 🆕 CAMBIO: Se ejecuta bajo demanda, no automáticamente
+      - ./exports:/app/exports
     profiles:
-      - manual  # No se inicia con "docker compose up"
-    
-    command: ["python", "-m", "src.main"]
+      - manual
+    command: ["python", "main.py"]
 
 volumes:
   mysqldata:

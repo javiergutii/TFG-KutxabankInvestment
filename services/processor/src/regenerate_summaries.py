@@ -135,6 +135,14 @@ def main():
             print(f"\n   Preview:")
             print(f"   {resumen[:300]}...\n")
             update_summary(report_id, resumen)
+
+            # Exportar automáticamente
+            from export_summary import export_summary
+            export_file = f"/app/exports/resumen_{empresa.replace(' ', '_')}_id{report_id}.txt"
+            export_summary(report_id, export_file)
+            print(f"   📄 Exportado a: {export_file}")
+
+            
         else:
             print(f"   ❌ Ollama no generó un resumen válido")
             print(f"   💡 Verifica que Ollama esté activo: docker compose exec ollama ollama list")

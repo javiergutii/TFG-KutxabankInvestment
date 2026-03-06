@@ -166,6 +166,7 @@ INSTRUCCIONES DETALLADAS:
    - Guidance completo para el año
    - Dividendos si se mencionan
    - Métricas operativas clave (net adds, churn, ARPU)
+   - Cuando atribuyas una métrica a una geografía específica, asegúrate de que la fuente la mencione explícitamente para ese mercado, no la asumas por proximidad contextual.
 
 3. ESTILO:
    - Profesional y conciso
@@ -174,7 +175,11 @@ INSTRUCCIONES DETALLADAS:
    - Escribe SOLO en español, sin caracteres corruptos
    - No uses asteriscos para negritas, usa texto plano
 
-4. LONGITUD: Entre 600-800 palabras (este es el resumen de una presentación completa)
+4. LONGITUD: Suficiente para cubrir todos los puntos obligatorios del punto 2, sin exceder 1000 palabras.
+
+Quiero que extraigas solo cifras mencionadas explícitamente, no calcules ni infergas datos.
+
+Si una cifra no aparece literalmente en la transcripción, escribe "no especificado" en lugar de omitirla o estimarla.
 
 RESUMEN EJECUTIVO:"""
         

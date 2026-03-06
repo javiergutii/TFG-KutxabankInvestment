@@ -1,41 +1,50 @@
 RESUMEN EJECUTIVO - Telefónica
 ================================================================================
 
-**Resumen Ejecutivo**
+### Resumen Ejecutivo
 
-Telefónica ha presentado sus resultados financieros para el segundo trimestre de 2025, con un enfoque en la ejecución estratégica y la mejora continua de los operativos. A continuación, se presentan los puntos clave del informe:
+#### Resumen de Resultados Financieros
+- **Revenue**: 8.9 mil millones de euros en el segundo trimestre.
+- **EBITDA**: 2.9 mil millones de euros, crecimiento del 1.2%.
+- **Free Cash Flow (FCF)**: Positivo en 505 millones de euros en el segundo trimestre, mejora de 718 millones respecto al primer trimestre.
+- **Net Financial Debt**: Disminuyó a 27.6 mil millones de euros año tras año.
 
-**Resultados Financieros**
+#### Métricas Clave por Geografía
+**España**
+- Revenue: Crecimiento superior a la inflación.
+- EBITDA Minus CAPEX: Mejora en comparación con el mismo período del año anterior.
+- Net Adds: 2 millones, el mejor trimestre desde Q318.
+- Churn: Bajo nivel de churn.
+- ARPU: Más de 90 euros.
 
-* **Revenue**: 8,9 billones de euros, creciendo 1,5% organicamente
-* **EBITDA**: 2,9 billones de euros, con una tendencia estabilizadora
-* **FCF**: 505 millones de euros, con un aumento del 718% en comparación con el primer trimestre
+**Brasil**
+- Revenue: Aumento del 7%.
+- EBITDA Minus CAPEX: Crecimiento por encima de la inflación.
+- Net Adds: Incremento del 6% en accesos contractuales y más del 60% en VIVO Total.
+- Churn: Bajo nivel de churn, alrededor del 1.1%.
 
-**Métricas Clave por Geografía**
+**Alemania**
+- Revenue: Disminución año tras año debido a la migración de clientes uno-a-uno.
+- EBITDA: Descenso del 6% por el impacto de la migración de clientes.
 
-* **España**: crecimiento neto de 2 millones de accesos, alcanzando 349 millones; ARPU superior a 90 euros
-* **Brasil**: crecimiento neto de 6 millones de accesos, aumento del 60% en Vivo; post-paid churn inferior al 1%
-* **Alemania**: impacto de la migración de los clientes One2One; EBITDA en declive
+#### Transacciones y Anuncios Estratégicos
+- **Ventas**: Argentina, Perú, Colombia (acuerdo vinculante), Uruguay y Ecuador (acuerdos vinculantes).
+- Montos Totales: Aproximadamente 3 mil millones de euros en valor firme.
+- Adquisiciones:
+  - Fibra Cell: Telefónica adquirió el 50% restante por R$850 millones.
 
-**Transacciones y Anuncios Estratégicos**
+#### Proyecciones y Guidance
+- Revenue y EBITDA: En línea con objetivos para todo el año 2025.
+- EBITDA Minus CAPEX: Estable en el primer semestre, mejora a lo largo del año.
+- Free Cash Flow: Mejora continua en la segunda mitad del año debido a la estacionalidad típica.
 
-* **Ventas**: Telefónica ha completado las ventas de Argentina y Perú, con un valor total de 3 billones de euros
-* **Adquisiciones**: Telefónica ha anunciado la adquisición del 50% de Fibra Cell por 850 millones de dólares
-* **Acuerdos**: Telefónica ha firmado un acuerdo estratégico con Siemens para transformar el sector de las telecomunicaciones
+#### Otros Puntos Relevantes
+- **Red de Fibra**: Ampliación con 1.5 millones de hogares adicionales.
+- **Cobre Shutdown**: España completó el apagado del cobre, primera gran operador europeo en lograrlo.
+- **Innovación y Alianzas**:
+  - Telefónica Deutschland anunció una alianza estratégica con Siemens para transformar la industria de agua mediante soluciones basadas en 5G.
 
-**Proyecciones y Guidance**
-
-* **Revenue**: crecimiento del 1,5% organicamente en el año
-* **EBITDA**: estabilidad en el segundo semestre, con una tendencia a la mejora
-* **FCF**: crecimiento del 718% en comparación con el primer trimestre
-
-**Otros Puntos Relevantes**
-
-* Telefónica ha completado la desactivación de los sistemas de cobertura de copper en España
-* La empresa ha anunciado un plan para reducir su capital neto a 20 billones de euros en el plazo de 2 años
-* La compañía ha establecido un objetivo de alcanzar una tasa de crecimiento del 10% anual en los próximos 3 años
-
-En resumen, Telefónica ha presentado resultados financieros sólidos y una estrategia clara para la ejecución continua. La empresa se enfoca en la mejora de los operativos y la expansión de su presencia en mercados clave como Brasil y España.
+Este resumen ejecutivo proporciona un panorama completo de los resultados financieros, métricas operativas clave y las iniciativas estratégicas de Telefonica durante el segundo trimestre del año 2025.
 
 ================================================================================
 Reporte ID: 1

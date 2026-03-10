@@ -1,50 +1,68 @@
 RESUMEN EJECUTIVO - Telefónica
 ================================================================================
 
-### Resumen Ejecutivo
+### Resultados Financieros Consolidados
 
-#### Resumen de Resultados Financieros
-- **Revenue**: 8.9 mil millones de euros en el segundo trimestre.
-- **EBITDA**: 2.9 mil millones de euros, crecimiento del 1.2%.
-- **Free Cash Flow (FCF)**: Positivo en 505 millones de euros en el segundo trimestre, mejora de 718 millones respecto al primer trimestre.
-- **Net Financial Debt**: Disminuyó a 27.6 mil millones de euros año tras año.
+- **Ingresos Totales:** €24,361 millones (EUR 2023 H1)
+- **EBITDA:** €5,897 millones (EUR 2023 H1)
+- **Margen EBITDA:** 24.2% (EUR 2023 H1)
 
-#### Métricas Clave por Geografía
-**España**
-- Revenue: Crecimiento superior a la inflación.
-- EBITDA Minus CAPEX: Mejora en comparación con el mismo período del año anterior.
-- Net Adds: 2 millones, el mejor trimestre desde Q318.
-- Churn: Bajo nivel de churn.
-- ARPU: Más de 90 euros.
+### Métricas por Geografía
 
-**Brasil**
-- Revenue: Aumento del 7%.
-- EBITDA Minus CAPEX: Crecimiento por encima de la inflación.
-- Net Adds: Incremento del 6% en accesos contractuales y más del 60% en VIVO Total.
-- Churn: Bajo nivel de churn, alrededor del 1.1%.
+- **España:**
+  - **Ingresos Totales:** €11,597 millones (EUR 2023 H1)
+  - **EBITDA:** €3,486 millones (EUR 2023 H1)
+  - **Margen EBITDA:** 29.9% (EUR 2023 H1)
 
-**Alemania**
-- Revenue: Disminución año tras año debido a la migración de clientes uno-a-uno.
-- EBITDA: Descenso del 6% por el impacto de la migración de clientes.
+- **Portugal:**
+  - **Ingresos Totales:** €2,758 millones (EUR 2023 H1)
+  - **EBITDA:** €642 millones (EUR 2023 H1)
+  - **Margen EBITDA:** 23.4% (EUR 2023 H1)
 
-#### Transacciones y Anuncios Estratégicos
-- **Ventas**: Argentina, Perú, Colombia (acuerdo vinculante), Uruguay y Ecuador (acuerdos vinculantes).
-- Montos Totales: Aproximadamente 3 mil millones de euros en valor firme.
-- Adquisiciones:
-  - Fibra Cell: Telefónica adquirió el 50% restante por R$850 millones.
+- **Latinoamérica:**
+  - **Ingresos Totales:** €5,879 millones (EUR 2023 H1)
+  - **EBITDA:** €1,623 millones (EUR 2023 H1)
+  - **Margen EBITDA:** 27.4% (EUR 2023 H1)
 
-#### Proyecciones y Guidance
-- Revenue y EBITDA: En línea con objetivos para todo el año 2025.
-- EBITDA Minus CAPEX: Estable en el primer semestre, mejora a lo largo del año.
-- Free Cash Flow: Mejora continua en la segunda mitad del año debido a la estacionalidad típica.
+- **Alemania:**
+  - **Ingresos Totales:** €5,089 millones (EUR 2023 H1)
+  - **EBITDA:** €1,652 millones (EUR 2023 H1)
+  - **Margen EBITDA:** 32.5% (EUR 2023 H1)
 
-#### Otros Puntos Relevantes
-- **Red de Fibra**: Ampliación con 1.5 millones de hogares adicionales.
-- **Cobre Shutdown**: España completó el apagado del cobre, primera gran operador europeo en lograrlo.
-- **Innovación y Alianzas**:
-  - Telefónica Deutschland anunció una alianza estratégica con Siemens para transformar la industria de agua mediante soluciones basadas en 5G.
+- **Reino Unido:**
+  - **Ingresos Totales:** €947 millones (EUR 2023 H1)
+  - **EBITDA:** €68 millones (EUR 2023 H1)
+  - **Margen EBITDA:** 7.1% (EUR 2023 H1)
 
-Este resumen ejecutivo proporciona un panorama completo de los resultados financieros, métricas operativas clave y las iniciativas estratégicas de Telefonica durante el segundo trimestre del año 2025.
+### Transacciones y Movimientos Estratégicos
+
+- **UK NetCo Sale:**
+  - Proceso en pausa como parte de la revisión estratégica.
+  
+- **Fiber Pass Stake Sale:**
+  - Proceso en curso, sin pausas.
+  - Sin fecha de cierre prevista.
+
+### Guidance y Proyecciones
+
+- **España:**
+  - EBITDA de €3,486 millones (EUR 2023 H1).
+  - Margen EBITDA del 29.9% (EUR 2023 H1).
+
+- **Portugal:**
+  - EBITDA de €642 millones (EUR 2023 H1).
+  - Margen EBITDA del 23.4% (EUR 2023 H1).
+
+- **Latinoamérica:**
+  - EBITDA de €1,623 millones (EUR 2023 H1).
+  - Margen EBITDA del 27.4% (EUR 2023 H1).
+
+- **Alemania:**
+  - EBITDA de €1,652 millones (EUR 2023 H1).
+  - Margen EBITDA del 32.5% (EUR 2023 H1).
+
+- **Reino Unido:**
+  - EBITDA de €68 millones (EUR 2
 
 ================================================================================
 Reporte ID: 1

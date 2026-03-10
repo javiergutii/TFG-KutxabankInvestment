@@ -121,8 +121,12 @@ def run():
                 print("💾 Guardando índice FAISS...")
                 faiss_manager.save()
 
-                proc_db.mark_as_processed(report_id, success=True)
-                print(f"✅ Reporte {report_id} procesado exitosamente")
+                if resumen and len(resumen) > 500:  # ← Resumen real, no truncado
+                    proc_db.mark_as_processed(report_id, success=True)
+                    print(f"✅ Reporte {report_id} procesado exitosamente")
+                else:
+                    proc_db.mark_as_processed(report_id, success=False)
+                    print(f"⚠️  Reporte {report_id} procesado PARCIALMENTE (sin resumen)")
                 successful += 1
 
             except Exception as e:

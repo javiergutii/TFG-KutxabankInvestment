@@ -86,7 +86,7 @@ class OllamaSummarizer:
         self,
         text: str,
         empresa: str,
-        max_tokens: int = 800
+        max_tokens: int = 1200
     ) -> Optional[str]:
         """
         Genera un resumen del texto
@@ -94,12 +94,6 @@ class OllamaSummarizer:
         if not text or len(text.strip()) < 100:
             print(f"   ⚠️  Texto demasiado corto para resumir")
             return None
-        
-        # Limitar longitud del texto de entrada
-        max_input_chars = 15000
-        if len(text) > max_input_chars:
-            print(f"   ✂️  Texto truncado de {len(text)} a {max_input_chars} caracteres")
-            text = text[:max_input_chars] + "..."
         
         # Crear prompt mejorado
         prompt = self._create_summary_prompt(text, empresa)
@@ -112,9 +106,10 @@ class OllamaSummarizer:
                     "prompt": prompt,
                     "stream": False,
                     "options": {
-                        "temperature": 0.3,
+                        "temperature": 0.15,
                         "num_predict": max_tokens,
                         "top_p": 0.9,
+                        "num_ctx": 32768,
                     }
                 },
                 timeout=self.timeout
@@ -143,46 +138,40 @@ class OllamaSummarizer:
             return None
     
     def _create_summary_prompt(self, text: str, empresa: str) -> str:
-        """
-        Prompt mejorado para resúmenes más completos y estructurados
-        """
-        prompt = f"""Eres un analista financiero senior especializado en presentaciones de resultados trimestrales. Tu tarea es crear un resumen ejecutivo profesional de la siguiente transcripción de {empresa}.
-
-TRANSCRIPCIÓN:
-{text}
-
-INSTRUCCIONES DETALLADAS:
-1. ESTRUCTURA: Usa las siguientes secciones obligatorias:
-   - Resumen de Resultados Financieros (Revenue, EBITDA, FCF, Deuda Neta)
-   - Métricas Clave por Geografía (España, Brasil, Alemania, otros)
-   - Transacciones y Anuncios Estratégicos (ventas, adquisiciones, acuerdos)
-   - Proyecciones y Guidance
-   - Otros Puntos Relevantes
-
-2. CONTENIDO OBLIGATORIO - INCLUYE SIEMPRE:
-   - Todas las cifras numéricas con sus unidades (millones/billones de euros, porcentajes)
-   - Comparativas year-on-year cuando estén disponibles
-   - Todas las transacciones mencionadas (ventas, compras, acuerdos) con montos
-   - Guidance completo para el año
-   - Dividendos si se mencionan
-   - Métricas operativas clave (net adds, churn, ARPU)
-   - Cuando atribuyas una métrica a una geografía específica, asegúrate de que la fuente la mencione explícitamente para ese mercado, no la asumas por proximidad contextual.
-
-3. ESTILO:
-   - Profesional y conciso
-   - Sin opiniones, solo hechos
-   - Usa bullet points dentro de cada sección
-   - Escribe SOLO en español, sin caracteres corruptos
-   - No uses asteriscos para negritas, usa texto plano
-
-4. LONGITUD: Suficiente para cubrir todos los puntos obligatorios del punto 2, sin exceder 1000 palabras.
-
-Quiero que extraigas solo cifras mencionadas explícitamente, no calcules ni infergas datos.
-
-Si una cifra no aparece literalmente en la transcripción, escribe "no especificado" en lugar de omitirla o estimarla.
-
-RESUMEN EJECUTIVO:"""
         
+        prompt = f"""
+            Eres un analista financiero senior. Tu única tarea es extraer y resumir información \
+            de la siguiente transcripción de {empresa}. 
+
+            REGLA ABSOLUTA: Solo puedes incluir datos que aparezcan literalmente en el texto. \
+            Si un dato no está en la transcripción, escribe "no mencionado". \
+            Nunca calcules, interpoloes ni infergas cifras. Ante la duda, "no mencionado".
+
+            TRANSCRIPCIÓN:
+            {text}
+
+            INSTRUCCIONES:
+
+            1. ESTRUCTURA - usa estas secciones:
+            - Resultados Financieros Consolidados
+            - Métricas por Geografía (solo incluye las geografías y métricas mencionadas explícitamente)
+            - Transacciones y Movimientos Estratégicos
+            - Guidance y Proyecciones
+            - Otros puntos relevantes
+
+            2. FORMATO:
+            - Profesional y conciso
+            - Bullet points dentro de cada sección
+            - Solo español, sin caracteres corruptos
+            - Sin negritas ni asteriscos
+            - Máximo 1000 palabras
+
+            3. CUANDO NO ENCUENTRES UN DATO:
+            - No lo omitas silenciosamente
+            - Escribe explícitamente "no mencionado en la transcripción"
+            - Nunca uses cifras de tu conocimiento previo sobre {empresa}
+            """
+
         return prompt
     
     def generate_answer(
@@ -190,7 +179,7 @@ RESUMEN EJECUTIVO:"""
         question: str,
         context_chunks: list,
         empresa: Optional[str] = None,
-        max_tokens: int = 800
+        max_tokens: int = 1200
     ) -> Optional[str]:
         """
         Genera una respuesta basada en chunks de contexto (para RAG)
@@ -215,9 +204,10 @@ RESUMEN EJECUTIVO:"""
                     "prompt": prompt,
                     "stream": False,
                     "options": {
-                        "temperature": 0.2,
+                        "temperature": 0.15,
                         "num_predict": max_tokens,
                         "top_p": 0.9,
+                        "num_ctx": 32768,
                     }
                 },
                 timeout=self.timeout

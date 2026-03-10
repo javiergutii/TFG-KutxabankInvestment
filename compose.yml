@@ -63,7 +63,7 @@ services:
       FAISS_INDEX_FILE: "index.faiss"
       FAISS_METADATA_FILE: "metadata.pkl"
       OLLAMA_HOST: "http://ollama:11434"
-      OLLAMA_MODEL: "qwen2.5:14b"
+      OLLAMA_MODEL: "qwen2.5:7b"
       OLLAMA_TIMEOUT: "3600"
     depends_on:
       db:
@@ -109,7 +109,7 @@ services:
       FAISS_METADATA_FILE: "metadata.pkl"
       # Ollama
       OLLAMA_HOST: "http://ollama:11434"
-      OLLAMA_MODEL: "qwen2.5:14b"
+      OLLAMA_MODEL: "qwen2.5:7b"
       OLLAMA_TIMEOUT: "3600"
       OLLAMA_MAX_TOKENS: "800"
     depends_on:

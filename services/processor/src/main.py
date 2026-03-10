@@ -92,6 +92,9 @@ def process_single_report(
         # 5. Guardar resumen en base de datos
         print("💾 Guardando resumen en base de datos...")
         update_report_summary(report_id, resumen)
+
+        resumen_valido = resumen and len(resumen) > 500
+
         
         # 🆕 6. Exportar resumen a archivo
         print("📄 Exportando resumen a archivo...")
@@ -110,7 +113,14 @@ def process_single_report(
             print("💾 Guardando índice FAISS...")
             faiss_manager.save()
         
-        print(f"✅ Reporte {report_id} procesado exitosamente")
+        if resumen_valido:
+            mark_as_processed(report_id, success=True)
+            print(f"✅ Reporte {report_id} procesado exitosamente")
+            successful += 1
+        else:
+            mark_as_processed(report_id, success=False)  # ← Cambio aquí
+            print(f"⚠️  Reporte {report_id} indexado pero SIN resumen")
+            failed += 1  # ← Cambio aquí
         return True
         
     except Exception as e:

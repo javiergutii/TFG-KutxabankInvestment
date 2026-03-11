@@ -6,7 +6,9 @@ docker compose build --no-cache
 docker compose up -d
 
 Comprobar si están levantados: docker compose ps
-Una vez levantados: docker compose exec ollama ollama pull qwen2.5:7b
+Una vez levantados: docker compose exec ollama ollama pull qwen2.5:14b
+
+docker compose exec ollama ollama list
 
 docker compose exec db mysql -u reports_user -preports_pass -D reports -e "SELECT id, empresa, procesado, LENGTH(resumen) as resumen_length FROM reports;"
 

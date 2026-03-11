@@ -38,18 +38,29 @@ def clean_text(text: str) -> str:
     return text
 
 
-def split_into_chunks(text: str, chunk_size: int = 500, overlap: int = 50) -> List[str]:
+def split_into_chunks(text: str, chunk_size: int = None, overlap: int = None) -> List[str]:
     """
     Divide el texto en chunks de tamaño aproximado.
     
     Args:
         text: Texto a dividir
-        chunk_size: Tamaño del chunk en palabras
-        overlap: Número de palabras de solapamiento entre chunks
+        chunk_size: Tamaño del chunk en palabras (None = usar config)
+        overlap: Número de palabras de solapamiento entre chunks (None = usar config)
         
     Returns:
         Lista de chunks
     """
+    # Importar config solo si no se proporcionan parámetros
+    if chunk_size is None or overlap is None:
+        try:
+            from config import CHUNK_SIZE, CHUNK_OVERLAP
+            chunk_size = chunk_size or int(CHUNK_SIZE)
+            overlap = overlap or int(CHUNK_OVERLAP)
+        except ImportError:
+            # Fallback a valores por defecto si no hay config
+            chunk_size = chunk_size or 200
+            overlap = overlap or 100
+    
     if not text:
         return []
     
@@ -79,7 +90,6 @@ def split_into_chunks(text: str, chunk_size: int = 500, overlap: int = 50) -> Li
             start = len(words) - chunk_size if len(words) > chunk_size else 0
     
     return chunks
-
 
 def split_into_sentences(text: str) -> List[str]:
     """

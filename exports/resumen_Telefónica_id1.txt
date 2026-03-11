@@ -1,68 +1,7 @@
 RESUMEN EJECUTIVO - Telefónica
 ================================================================================
 
-### Resultados Financieros Consolidados
-
-- **Ingresos Totales:** €24,361 millones (EUR 2023 H1)
-- **EBITDA:** €5,897 millones (EUR 2023 H1)
-- **Margen EBITDA:** 24.2% (EUR 2023 H1)
-
-### Métricas por Geografía
-
-- **España:**
-  - **Ingresos Totales:** €11,597 millones (EUR 2023 H1)
-  - **EBITDA:** €3,486 millones (EUR 2023 H1)
-  - **Margen EBITDA:** 29.9% (EUR 2023 H1)
-
-- **Portugal:**
-  - **Ingresos Totales:** €2,758 millones (EUR 2023 H1)
-  - **EBITDA:** €642 millones (EUR 2023 H1)
-  - **Margen EBITDA:** 23.4% (EUR 2023 H1)
-
-- **Latinoamérica:**
-  - **Ingresos Totales:** €5,879 millones (EUR 2023 H1)
-  - **EBITDA:** €1,623 millones (EUR 2023 H1)
-  - **Margen EBITDA:** 27.4% (EUR 2023 H1)
-
-- **Alemania:**
-  - **Ingresos Totales:** €5,089 millones (EUR 2023 H1)
-  - **EBITDA:** €1,652 millones (EUR 2023 H1)
-  - **Margen EBITDA:** 32.5% (EUR 2023 H1)
-
-- **Reino Unido:**
-  - **Ingresos Totales:** €947 millones (EUR 2023 H1)
-  - **EBITDA:** €68 millones (EUR 2023 H1)
-  - **Margen EBITDA:** 7.1% (EUR 2023 H1)
-
-### Transacciones y Movimientos Estratégicos
-
-- **UK NetCo Sale:**
-  - Proceso en pausa como parte de la revisión estratégica.
-  
-- **Fiber Pass Stake Sale:**
-  - Proceso en curso, sin pausas.
-  - Sin fecha de cierre prevista.
-
-### Guidance y Proyecciones
-
-- **España:**
-  - EBITDA de €3,486 millones (EUR 2023 H1).
-  - Margen EBITDA del 29.9% (EUR 2023 H1).
-
-- **Portugal:**
-  - EBITDA de €642 millones (EUR 2023 H1).
-  - Margen EBITDA del 23.4% (EUR 2023 H1).
-
-- **Latinoamérica:**
-  - EBITDA de €1,623 millones (EUR 2023 H1).
-  - Margen EBITDA del 27.4% (EUR 2023 H1).
-
-- **Alemania:**
-  - EBITDA de €1,652 millones (EUR 2023 H1).
-  - Margen EBITDA del 32.5% (EUR 2023 H1).
-
-- **Reino Unido:**
-  - EBITDA de €68 millones (EUR 2
+Good morning and welcome to Telefonica s conference call to discuss January to June 2025 results. I m Thorsten Achtmann from Investor Relations. Before proceeding let me mention that the financial information contained in this document has been prepared under international financial reporting standards as adopted by the European Union. This financial information is unaudited. This conference call and webcast including the Q A session may contain forward-looking statements and information relatin...
 
 ================================================================================
 Reporte ID: 1

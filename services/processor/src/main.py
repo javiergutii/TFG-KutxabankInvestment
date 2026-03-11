@@ -25,6 +25,10 @@ def process_single_report(
 ) -> bool:
     """
     Procesa un único reporte: limpia, chunking, embeddings, FAISS, resumen
+    
+    Returns:
+        True si el procesamiento fue exitoso (con resumen válido)
+        False si falló o el resumen es inválido
     """
     try:
         report_id = report['id']
@@ -76,27 +80,31 @@ def process_single_report(
             
             faiss_manager.add_texts(chunks, metadata_list)
             print(f"   ✅ {len(chunks)} chunks indexados en FAISS")
+            
+            # Guardar índice FAISS
+            print("💾 Guardando índice FAISS...")
+            faiss_manager.save()
         
         # 4. Generar resumen (siempre, incluso si ya existe en FAISS)
         print("📄 Generando resumen con Ollama...")
         resumen = summarizer.generate_summary(texto_limpio, empresa)
         
-        if resumen:
+        # Validar resumen
+        resumen_valido = resumen and len(resumen) > 500
+        
+        if resumen_valido:
             print(f"   ✅ Resumen generado ({len(resumen)} caracteres)")
             preview = resumen[:200] + "..." if len(resumen) > 200 else resumen
             print(f"   📄 Preview: {preview}")
         else:
-            print(f"   ⚠️  No se pudo generar resumen, usando texto truncado")
+            print(f"   ⚠️  No se pudo generar resumen válido, usando texto truncado")
             resumen = texto_limpio[:500] + "..."
         
         # 5. Guardar resumen en base de datos
         print("💾 Guardando resumen en base de datos...")
         update_report_summary(report_id, resumen)
-
-        resumen_valido = resumen and len(resumen) > 500
-
         
-        # 🆕 6. Exportar resumen a archivo
+        # 6. Exportar resumen a archivo
         print("📄 Exportando resumen a archivo...")
         try:
             from export_summary import export_summary
@@ -108,20 +116,15 @@ def process_single_report(
         except Exception as e:
             print(f"   ⚠️  Error exportando resumen: {e}")
         
-        # 7. Guardar índice FAISS (solo si añadimos chunks nuevos)
-        if not skip_faiss:
-            print("💾 Guardando índice FAISS...")
-            faiss_manager.save()
-        
+        # 7. Marcar como procesado según validez del resumen
         if resumen_valido:
             mark_as_processed(report_id, success=True)
             print(f"✅ Reporte {report_id} procesado exitosamente")
-            successful += 1
+            return True
         else:
-            mark_as_processed(report_id, success=False)  # ← Cambio aquí
-            print(f"⚠️  Reporte {report_id} indexado pero SIN resumen")
-            failed += 1  # ← Cambio aquí
-        return True
+            mark_as_processed(report_id, success=False)
+            print(f"⚠️  Reporte {report_id} indexado pero SIN resumen válido")
+            return False
         
     except Exception as e:
         print(f"❌ Error procesando reporte {report_id}: {e}")
@@ -155,10 +158,8 @@ def process_batch(batch_size: int = BATCH_SIZE):
         success = process_single_report(report, faiss_manager, summarizer)
         
         if success:
-            mark_as_processed(report['id'], success=True)
             successful += 1
         else:
-            mark_as_processed(report['id'], success=False)
             failed += 1
     
     print(f"\n{'='*80}")

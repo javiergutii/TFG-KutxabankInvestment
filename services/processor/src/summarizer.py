@@ -139,38 +139,33 @@ class OllamaSummarizer:
     
     def _create_summary_prompt(self, text: str, empresa: str) -> str:
         
-        prompt = f"""
-            Eres un analista financiero senior. Tu única tarea es extraer y resumir información \
-            de la siguiente transcripción de {empresa}. 
+        prompt = f"""Eres un extractor de información financiera. Tu tarea es ÚNICAMENTE copiar y reorganizar datos que aparezcan literalmente en el texto. No eres un analista, no interpretas, no complementas.
 
-            REGLA ABSOLUTA: Solo puedes incluir datos que aparezcan literalmente en el texto. \
-            Si un dato no está en la transcripción, escribe "no mencionado". \
-            Nunca calcules, interpoloes ni infergas cifras. Ante la duda, "no mencionado".
+        REGLA ABSOLUTA: Antes de escribir cualquier cifra o dato, pregúntate: "¿Puedo señalar con el dedo exactamente dónde aparece esto en la transcripción?". Si la respuesta es no, escribe "no mencionado en la transcripción". Esto incluye cifras que te parezcan razonables o que conozcas de {empresa}.
 
-            TRANSCRIPCIÓN:
-            {text}
+        TRANSCRIPCIÓN:
+        {text}
 
-            INSTRUCCIONES:
+        INSTRUCCIONES:
 
-            1. ESTRUCTURA - usa estas secciones:
-            - Resultados Financieros Consolidados
-            - Métricas por Geografía (solo incluye las geografías y métricas mencionadas explícitamente)
-            - Transacciones y Movimientos Estratégicos
-            - Guidance y Proyecciones
-            - Otros puntos relevantes
+        1. ESTRUCTURA - usa estas secciones:
+        - Resultados Financieros Consolidados
+        - Métricas por Geografía (solo geografías y métricas con cita literal posible)
+        - Transacciones y Movimientos Estratégicos
+        - Guidance y Proyecciones
+        - Otros puntos relevantes
 
-            2. FORMATO:
-            - Profesional y conciso
-            - Bullet points dentro de cada sección
-            - Solo español, sin caracteres corruptos
-            - Sin negritas ni asteriscos
-            - Máximo 1000 palabras
+        2. FORMATO:
+        - Bullet points dentro de cada sección
+        - Solo español, sin caracteres corruptos
+        - Sin negritas ni asteriscos
+        - Máximo 1000 palabras
 
-            3. CUANDO NO ENCUENTRES UN DATO:
-            - No lo omitas silenciosamente
-            - Escribe explícitamente "no mencionado en la transcripción"
-            - Nunca uses cifras de tu conocimiento previo sobre {empresa}
-            """
+        3. EJEMPLOS DE COMPORTAMIENTO CORRECTO:
+        - La transcripción dice "revenue reached almost 9 billion euro" → escribes "Revenue: casi 9.000 millones de euros"
+        - La transcripción NO menciona el churn de Brasil → escribes "Churn Brasil: no mencionado en la transcripción"
+        - Conoces el ARPU de España de tu entrenamiento → NO lo incluyas, escribe "no mencionado en la transcripción"
+    """
 
         return prompt
     

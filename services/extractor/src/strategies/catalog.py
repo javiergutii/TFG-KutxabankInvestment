@@ -177,7 +177,7 @@ class NavigateThenStreamStrategy(StreamStrategy):
         # Buscar links que parezcan webcasts/eventos/earnings
         event_keywords = ["webcast", "earnings", "results", "investor", "conference", "event", "live", "replay"]
         for kw in event_keywords:
-            links = page.locator(f'a:has-text("{kw}" i)')
+            links = page.locator(f'a:has-text("{kw}")')
             count = await links.count()
             if count > 0:
                 try:
@@ -350,6 +350,83 @@ Si no hay nada más que hacer, usa action="done".
             await page.wait_for_timeout(min(timeout_ms, 20000))
 
         return self.found_stream
+    
+# ──────────────────────────────────────────────────────────────────────────────
+# Estrategia 7: Email only
+# ──────────────────────────────────────────────────────────────────────────────
+class EmailOnlyFormStrategy(StreamStrategy):
+    """
+    La web solo pide email para registrarse, sin más campos.
+    Ej: world-television.com (Tubacex, etc.)
+    """
+    name = "email_only_form"
+
+    async def execute(self, page: Page, url: str, timeout_ms: int) -> str | None:
+        print(f"  [EmailOnlyForm] Navegando a {url[:60]}...")
+        self._attach_listener(page)
+
+        await page.goto(url, wait_until="domcontentloaded")
+        await self._accept_cookies(page)
+        await page.wait_for_timeout(3000)  # dar tiempo a que carguen los iframes
+
+        email = self.form_data.get("email", "")
+        filled = False
+
+        # Buscar primero en la página principal
+        for sel in ['input[type="email"]', 'input[placeholder*="email" i]', 'input[id="email"]']:
+            inp = page.locator(sel).first
+            if await inp.count() > 0:
+                await inp.fill(email)
+                filled = True
+                print(f"  [EmailOnlyForm] Email rellenado (página principal)")
+                break
+
+        # Si no, buscar dentro de cada iframe
+        if not filled:
+            for frame in page.frames:
+                if frame == page.main_frame:
+                    continue
+                for sel in ['input[type="email"]', 'input[placeholder*="email" i]', 'input[id="email"]']:
+                    try:
+                        inp = frame.locator(sel).first
+                        if await inp.count() > 0:
+                            await inp.fill(email)
+                            filled = True
+                            print(f"  [EmailOnlyForm] Email rellenado (iframe: {frame.url[:60]})")
+                            # También adjuntar listener al frame
+                            frame.on("request", lambda req: self._on_request(req))
+                            break
+                    except Exception:
+                        pass
+                if filled:
+                    break
+
+        if not filled:
+            print("  [EmailOnlyForm] ⚠️  No se encontró campo de email")
+            return None
+
+        # Submit — intentar en página principal y en iframes
+        ok = await self._submit_form(page)
+        if not ok:
+            for frame in page.frames:
+                if frame == page.main_frame:
+                    continue
+                try:
+                    submit = frame.locator('button:has-text("Submit"), button[type="submit"], input[type="submit"]').first
+                    if await submit.count() > 0:
+                        await submit.click(timeout=10000)
+                        ok = True
+                        print(f"  [EmailOnlyForm] Submit en iframe")
+                        break
+                except Exception:
+                    pass
+
+        print(f"  [EmailOnlyForm] Submit: {ok}")
+        await self._click_play(page)
+
+        print(f"  [EmailOnlyForm] Esperando tráfico ({timeout_ms}ms)...")
+        await page.wait_for_timeout(timeout_ms)
+        return self.found_stream
 
 
 # ──────────────────────────────────────────────────────────────────────────────
@@ -358,6 +435,7 @@ Si no hay nada más que hacer, usa action="done".
 STRATEGY_CLASSES = [
     DirectStreamStrategy,
     FormFirstStrategy,
+    EmailOnlyFormStrategy,
     LoginThenFormStrategy,
     FormThenLoginStrategy,
     NavigateThenStreamStrategy,

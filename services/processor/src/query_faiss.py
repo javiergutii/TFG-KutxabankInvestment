@@ -8,7 +8,7 @@ import os
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 from faiss_manager import FAISSManager
-from summarizer import OllamaSummarizer
+from summarizer import GroqSummarizer
 
 
 def print_separator(char='=', length=80):
@@ -44,7 +44,7 @@ def search_interactive():
     print("\nEscribe 'exit' para salir\n")
 
     manager = FAISSManager()
-    summarizer = OllamaSummarizer()
+    summarizer = GroqSummarizer()
 
     while True:
         try:
@@ -164,20 +164,19 @@ def search_interactive():
                 print()
                 context_chunks.append(meta['text'])
 
-            # Generar respuesta con Ollama
-            print("🤖 Generando respuesta con Ollama...")
+            # Generar respuesta con Groq
+            print("🤖 Generando respuesta con Groq...")
             answer = summarizer.generate_answer(
                 question=query,
                 context_chunks=context_chunks,
                 empresa=results[0][0].get('empresa') if results else None,
-                max_tokens=800
             )
 
             if answer:
                 print(f"\n💡 RESPUESTA:")
                 print(f"{answer}\n")
             else:
-                print("\n⚠️  No se pudo generar respuesta con Ollama")
+                print("\n⚠️  No se pudo generar respuesta con Groq")
                 print("💡 Pero aquí tienes los fragmentos relevantes encontrados arriba\n")
 
             print_separator('-')

@@ -33,9 +33,9 @@ services:
       MYSQL_USER: reports_user
       MYSQL_PASSWORD: reports_pass
       # Metadata / app config
-      EMPRESA: "Telefónica"                          # antes COMPANY_NAME — alinear con config.py
+      EMPRESA: "Tubacex"                          # antes COMPANY_NAME — alinear con config.py
       VIDEO_TITLE: "Conference demo"
-      TARGET_URL: "https://edge.media-server.com/mmc/p/4phi6xni/"            # antes VIDEO_URL — alinear con config.py
+      TARGET_URL: "https://connectstudio-portal.world-television.com/es/6662bf3dc17eeb24a83e4506/session?current=696f5fd3def8f23ffe1921bb"            # antes VIDEO_URL — alinear con config.py
       FECHA: "2026-02-03 10:00"                     # antes VIDEO_DATE — alinear con config.py
       # Datos del formulario de registro
       FORM_FIRST_NAME: "Javier"
@@ -67,7 +67,6 @@ services:
       - ./data:/data
       - ./artifacts:/app/artifacts
       - ./outputs:/app/outputs
-      - ./services/processor:/app/processor_code:ro
       - ./shared:/app/shared
       - ./exports:/app/exports
     profiles:
@@ -96,6 +95,7 @@ services:
       BATCH_SIZE: "10"
       CHUNK_SIZE: "200"
       CHUNK_OVERLAP: "100"
+      PROCESSING_INTERVAL: "30"
       # Embeddings
       EMBEDDING_MODEL: "sentence-transformers/paraphrase-multilingual-mpnet-base-v2"
       # FAISS
@@ -103,7 +103,7 @@ services:
       FAISS_INDEX_FILE: "index.faiss"
       FAISS_METADATA_FILE: "metadata.pkl"
       # Groq
-      GROQ_API_KEY: ${GROQ_API_KEY}                 # 🔑 leer del .env
+      GROQ_API_KEY: ${GROQ_API_KEY}
       GROQ_MODEL: "llama-3.3-70b-versatile"
       GROQ_MAX_TOKENS: "2000"
     depends_on:
@@ -113,9 +113,8 @@ services:
       - ./services/processor/src:/app/
       - ./shared:/app/shared
       - ./exports:/app/exports
-    profiles:
-      - manual
-    command: ["python", "main.py"]
+    restart: unless-stopped
+    command: ["python", "-u", "main.py"]
 
 volumes:
   mysqldata:

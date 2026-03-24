@@ -1,6 +1,7 @@
 """
 Generador de resúmenes usando Groq (llama-3.3-70b)
 """
+from pathlib import Path
 from typing import Optional
 from groq import Groq
 
@@ -70,56 +71,17 @@ class GroqSummarizer:
             return None
 
     def _create_summary_prompt(self, text: str, empresa: str) -> str:
+        prompt_path = Path(__file__).parent / "prompt_earnings_calls.txt"
 
-        prompt = f"""Eres un analista de inteligencia prospectiva especializado en conferencias de resultados corporativos. Tu único objetivo es extraer lo que se dice sobre el FUTURO: perspectivas, tendencias, riesgos y preocupaciones. No resumes el pasado; identificas señales hacia adelante.
+        try:
+            template = prompt_path.read_text(encoding="utf-8")
+        except FileNotFoundError:
+            raise FileNotFoundError(
+                f"❌ No se encontró el archivo de prompt en '{prompt_path}'. "
+                "Asegúrate de que 'prompt_earnings_calls.txt' está en el mismo directorio que summarizer.py."
+            )
 
-TRANSCRIPCIÓN:
-{text}
-
-EMPRESA: {empresa}
-
----
-
-SECCIÓN 1 — PERSPECTIVAS DE LA COMPAÑÍA
-
-Extrae únicamente declaraciones explícitas sobre el futuro de la compañía: guidance, objetivos, planes estratégicos, inversiones previstas, cambios de modelo de negocio, expansión geográfica, lanzamientos de productos, M&A, etc.
-
-- Solo incluye lo que aparezca literalmente en la transcripción.
-- ANTES DE ESCRIBIR CUALQUIER DATO: localiza la frase exacta en la transcripción. Si no puedes citar textualmente de dónde viene, NO lo incluyas y escribe "no mencionado". Esto aplica especialmente a cifras y porcentajes.
-- Si no se menciona guidance o proyecciones concretas, escribe: "no se proporcionó guidance en esta conferencia".
-- Formato: bullet points con la métrica o tema, el horizonte temporal si se menciona, y la cifra o dirección indicada.
-
----
-
-SECCIÓN 2 — PERSPECTIVAS DEL SECTOR
-
-Extrae lo que la dirección dice sobre el entorno macroeconómico, la industria, la competencia, los cambios regulatorios o tecnológicos que se esperan. Solo lo que ellos mencionan; no aportes contexto externo. No añadas observaciones generales del sector que no aparezcan explícitamente en la transcripción.
-
----
-
-SECCIÓN 3 — INQUIETUDES DE LOS ANALISTAS
-
-Esta es la sección más importante. Sigue estos pasos en orden:
-
-PASO 1: Recorre la transcripción de principio a fin e identifica CADA pregunta formulada por un analista. Haz una lista numerada exhaustiva de todas ellas, indicando el nombre del analista y su banco si aparecen en la transcripción.
-
-PASO 2: Con esa lista, responde:
-
-a) TEMAS MÁS REPETIDOS: Agrupa las preguntas por tema e indica cuántas preguntas corresponden a cada tema y qué analistas las formularon. Ordena por frecuencia descendente.
-
-b) PREOCUPACIONES PRINCIPALES: ¿Qué subyace en las preguntas? Identifica la inquietud real detrás de cada bloque temático (ej: si varios preguntan por el capex, la inquietud real puede ser la presión sobre el flujo de caja libre).
-
-c) PREGUNTAS SIN RESPUESTA CLARA: Señala preguntas donde la dirección esquivó, respondió de forma vaga, redirigió, o dijo explícitamente que no puede dar detalles hasta completar la revisión estratégica. Para cada una, indica textualmente qué respondió la dirección.
-
----
-
-REGLAS ABSOLUTAS:
-- Nada de datos históricos salvo que sirvan de base para una proyección explícita.
-- Si algo no aparece en la transcripción, escribe "no mencionado".
-- Solo español. Sin negritas, sin asteriscos.
-- Máximo 1200 palabras en total."""
-
-        return prompt
+        return template.replace("{text}", text).replace("{empresa}", empresa)
 
     def generate_answer(
         self,
@@ -152,7 +114,6 @@ REGLAS ABSOLUTAS:
         except Exception as e:
             print(f"   ❌ Error generando respuesta: {e}")
             return None
-
     def _create_qa_prompt(
         self,
         question: str,
@@ -160,22 +121,20 @@ REGLAS ABSOLUTAS:
         empresa: Optional[str] = None
     ) -> str:
         empresa_text = f" de {empresa}" if empresa else ""
-
-        prompt = f"""Eres un asistente experto en análisis de transcripciones financieras{empresa_text}.
-
-CONTEXTO RELEVANTE:
-{context}
-
-PREGUNTA: {question}
-
-INSTRUCCIONES:
-1. Responde basándote ÚNICAMENTE en el contexto proporcionado
-2. Si la información no está en el contexto, indícalo claramente
-3. Sé específico y menciona cifras o datos concretos cuando sea posible
-4. Cita el número de fragmento de donde sacas la información
-5. Responde en español de forma clara y concisa
-6. IMPORTANTE: "billion" en inglés = mil millones (no billón español)
-
-RESPUESTA:"""
-
-        return prompt
+ 
+        prompt_path = Path(__file__).parent / "prompt_qa.txt"
+ 
+        try:
+            template = prompt_path.read_text(encoding="utf-8")
+        except FileNotFoundError:
+            raise FileNotFoundError(
+                f"❌ No se encontró el archivo de prompt en '{prompt_path}'. "
+                "Asegúrate de que 'prompt_qa.txt' está en el mismo directorio que summarizer.py."
+            )
+ 
+        return (
+            template
+            .replace("{empresa_text}", empresa_text)
+            .replace("{context}", context)
+            .replace("{question}", question)
+        )

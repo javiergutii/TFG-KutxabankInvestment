@@ -3,43 +3,47 @@ RESUMEN EJECUTIVO - Telefónica
 
 **SECCIÓN 1 — PERSPECTIVAS DE LA COMPAÑÍA**
 
-* Guidance para 2026: crecimiento en ingresos y ajuste de EBITDA, con un crecimiento acelerado en flujo de efectivo operativo ajustado después de arrendamientos y un flujo de efectivo libre de aproximadamente 3.000 millones de euros.
-* Objetivo de deuda neta/EBITDA: alcanzar 2,5 veces para 2028.
-* Dividendo por acción en 2026: 15 céntimos de euro.
-* Expectativa de crecimiento en España, Brasil, Alemania y el Reino Unido.
-* Plan de simplificación y transformación de la empresa, con un enfoque en la eficiencia y el crecimiento sostenible.
+* Guidance para 2026: crecimiento en ingresos y ajuste de EBITDA del 1.5% al 2.5%, con una relación de CAPEX a ventas del 12%.
+* Expectativa de crecimiento en flujo de caja operativo ajustado después de arrendamientos de más del 2%.
+* Previsión de flujo de caja libre de 3.000 millones de euros en 2026.
+* Objetivo de deuda neta sobre EBITDA ajustado de alrededor de 2,5 veces para 2028.
+* Dividendo por acción de 0,15 euros en 2026.
+* Expectativa de aceleración en el crecimiento de EBITDA en España, incluyendo el ahorro de 250 millones de euros procedente de la reestructuración.
+* Plan de simplificar la empresa, optimizar arrendamientos, renegociar contratos con proveedores y racionalizar estructuras en 2026.
+* Expectativa de que el negocio en Brasil continúe creciendo en términos de ingresos y EBITDA ajustado, apoyado por el crecimiento en móviles, fibra, servicios B2B y nuevos negocios B2C.
 
 **SECCIÓN 2 — PERSPECTIVAS DEL SECTOR**
 
-* La empresa menciona que la industria está experimentando cambios regulatorios y tecnológicos, pero no proporciona detalles específicos.
-* Se menciona la competencia en el mercado español, especialmente en el segmento de bajo costo, pero no se proporcionan detalles sobre las tendencias del sector en general.
+* Se menciona la competencia en el mercado alemán y el impacto de la promoción en la ARPU.
+* Se habla de la importancia de la consolidación en el sector de las telecomunicaciones europeas y los desafíos regulatorios asociados.
+* Se menciona el entorno competitivo en España, especialmente en el segmento de bajo costo, pero se destaca la posición fuerte de Telefónica en el segmento de alto valor.
 
 **SECCIÓN 3 — INQUIETUDES DE LOS ANALISTAS**
 
-**PASO 1: Lista de preguntas**
+**PASO 1: Lista de preguntas de los analistas**
 
-1. Andrew Lee (Goldman Sachs): preguntas sobre el crecimiento en España y el flujo de efectivo libre en 2026.
-2. Keval Kiroja (Dolce Bank): preguntas sobre la margen de flujo de efectivo libre en Alemania y la consolidación en el sector.
-3. Joshua Mead (Vienna): preguntas sobre el crecimiento de EBITDA en España y el flujo de efectivo libre en 2026.
-4. Nick (Berenberg): preguntas sobre el ARPU móvil en Alemania y la consolidación en el sector.
-5. James Ruther (New Street Research): preguntas sobre la valoración de Virgin Media O2 y la posible venta de Telefonica Deutschland.
-6. Emmett Kelly (Morgan Stanley): preguntas sobre la consolidación en el sector y la competencia en el mercado español.
+1. Andrew Lee (Goldman Sachs) - Crecimiento en España y flujo de caja libre.
+2. Keval Kiroya (Deutsche Bank) - Margen de flujo de caja libre en Alemania y barreras para la consolidación.
+3. Joshua Mead (B B) - Diferencia entre crecimiento de EBITDA y EBITDA ajustado, y expectativas para 2026.
+4. Nick (Berenberg) - ARPU móvil en Alemania y perspectivas de consolidación.
+5. James Radster (New Street Research) - Impairment de Virgin Media O2 y posibles adquisiciones en Alemania.
+6. Emmett Kelly (Morgan Stanley) - Consolidación y competencia en España.
 
 **PASO 2: Temas más repetidos y preocupaciones principales**
 
 * Temas más repetidos:
- + Consolidación en el sector (3 preguntas)
- + Crecimiento y flujo de efectivo libre en 2026 (3 preguntas)
- + Competencia en el mercado español (2 preguntas)
+ + Crecimiento y flujo de caja (4 preguntas)
+ + Consolidación y competencia (3 preguntas)
+ + Desempeño en mercados específicos (España, Alemania) (3 preguntas)
 * Preocupaciones principales:
- + La posible consolidación en el sector y su impacto en la empresa
- + La capacidad de la empresa para generar crecimiento y flujo de efectivo libre en 2026
- + La competencia en el mercado español y su impacto en la empresa
+ + Sostenibilidad del crecimiento y el flujo de caja libre.
+ + Impacto de la competencia en los mercados clave.
+ + Perspectivas de consolidación en el sector de las telecomunicaciones europeas.
 
-**PASO 2: Preguntas sin respuesta clara**
+**Preguntas sin respuesta clara**
 
-* La pregunta de James Ruther sobre la posible venta de Telefonica Deutschland no recibió una respuesta clara, ya que la dirección mencionó que siempre es racional con sus activos, pero no proporcionó detalles adicionales.
-* La pregunta de Nick sobre el ARPU móvil en Alemania no recibió una respuesta clara, ya que la dirección mencionó que la promoción es intensa en el mercado alemán, pero no proporcionó detalles adicionales.
+* La dirección no proporcionó una respuesta clara sobre el impacto específico de la consolidación en el sector de las telecomunicaciones europeas en los planes de Telefónica.
+* No se dio una respuesta directa sobre la posibilidad de adquisiciones en Alemania, más allá de mencionar que la compañía siempre evalúa oportunidades racionales.
 
 ================================================================================
 Reporte ID: 1

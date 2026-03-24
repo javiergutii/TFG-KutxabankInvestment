@@ -1,214 +1,195 @@
 """
 Processor Service - Procesa transcripciones y genera resúmenes
+Corre en bucle continuo: detecta reportes pendientes en MySQL y los procesa.
 """
+import os
 import time
 import traceback
 from typing import List, Dict
 
-from config import BATCH_SIZE
+from config import BATCH_SIZE, PROCESSING_INTERVAL
 from db import (
     wait_for_mysql,
     get_unprocessed_reports,
     mark_as_processed,
     update_report_summary,
-    get_processing_stats
+    get_processing_stats,
 )
 from text_cleaner import clean_text, split_into_chunks, get_text_stats
 from faiss_manager import FAISSManager
 from summarizer import GroqSummarizer
 
 
+def export_summary_to_file(report_id: int, empresa: str, resumen: str):
+    """
+    Exporta el resumen a /app/exports como archivo .txt
+    """
+    try:
+        exports_dir = "/app/exports"
+        os.makedirs(exports_dir, exist_ok=True)
+        empresa_clean = empresa.replace(' ', '_').replace('/', '_')
+        export_file = os.path.join(exports_dir, f"resumen_{empresa_clean}_id{report_id}.txt")
+        with open(export_file, 'w', encoding='utf-8') as f:
+            f.write(f"RESUMEN EJECUTIVO - {empresa}\n")
+            f.write("=" * 80 + "\n\n")
+            f.write(resumen)
+            f.write("\n\n" + "=" * 80 + "\n")
+            f.write(f"Reporte ID: {report_id}\n")
+        print(f"   ✅ Exportado: {export_file}")
+        return True
+    except Exception as e:
+        print(f"   ⚠️  Error exportando resumen: {e}")
+        return False
+
+
 def process_single_report(
     report: Dict,
     faiss_manager: FAISSManager,
-    summarizer: GroqSummarizer
+    summarizer: GroqSummarizer,
 ) -> bool:
     """
-    Procesa un único reporte: limpia, chunking, embeddings, FAISS, resumen
-    
-    Returns:
-        True si el procesamiento fue exitoso (con resumen válido)
-        False si falló o el resumen es inválido
+    Procesa un único reporte: limpia, chunking, embeddings, FAISS, resumen, exportación.
+    Devuelve True si el procesamiento fue exitoso con resumen válido.
     """
+    report_id = report['id']
+    empresa = report['empresa']
+    texto_original = report['texto_transcrito']
+
     try:
-        report_id = report['id']
-        empresa = report['empresa']
-        texto_original = report['texto_transcrito']
-        
         print(f"\n{'='*80}")
         print(f"🔄 Procesando reporte {report_id} - {empresa}")
         print(f"{'='*80}")
-        
-        # 🆕 CHECK: Verificar si este reporte ya está en FAISS
-        print("🔍 Verificando duplicados en FAISS...")
+
+        # 1. Verificar duplicados en FAISS
         if faiss_manager.report_exists(report_id):
-            print(f"   ⚠️  El reporte {report_id} ya está indexado en FAISS")
-            print(f"   💡 Saltando indexación (pero regeneraré resumen si es necesario)")
+            print(f"   ⚠️  Ya indexado en FAISS, regenerando resumen únicamente")
             skip_faiss = True
         else:
-            print(f"   ✅ Reporte nuevo, procederá con indexación")
             skip_faiss = False
-        
-        # 1. Limpiar texto
+
+        # 2. Limpiar texto
         print("📝 Limpiando texto...")
         texto_limpio = clean_text(texto_original)
         stats = get_text_stats(texto_limpio)
-        print(f"   📊 Stats: {stats['num_words']} palabras, {stats['num_sentences']} oraciones")
-        
-        # 2. Dividir en chunks (solo si vamos a indexar)
+        print(f"   📊 {stats['num_words']} palabras, {stats['num_sentences']} oraciones")
+
+        # 3. Chunking + FAISS (solo si no está ya indexado)
         if not skip_faiss:
             print("✂️  Dividiendo en chunks...")
             chunks = split_into_chunks(texto_limpio)
             print(f"   📦 {len(chunks)} chunks generados")
-            
+
             if not chunks:
-                print(f"⚠️  No se generaron chunks para el reporte {report_id}")
+                print(f"⚠️  Sin chunks para el reporte {report_id}")
                 return False
-            
-            # 3. Generar embeddings y añadir a FAISS
+
             print("🧠 Generando embeddings y añadiendo a FAISS...")
-            metadata_list = []
-            for i, chunk in enumerate(chunks):
-                metadata_list.append({
+            metadata_list = [
+                {
                     'report_id': report_id,
                     'empresa': empresa,
                     'chunk_index': i,
                     'total_chunks': len(chunks),
                     'fecha': str(report['fecha']) if report['fecha'] else 'N/A',
-                    'url': report['url']
-                })
-            
+                    'url': report['url'],
+                }
+                for i, _ in enumerate(chunks)
+            ]
             faiss_manager.add_texts(chunks, metadata_list)
-            print(f"   ✅ {len(chunks)} chunks indexados en FAISS")
-            
-            # Guardar índice FAISS
+            print(f"   ✅ {len(chunks)} chunks indexados")
+
             print("💾 Guardando índice FAISS...")
             faiss_manager.save()
-        
-        # 4. Generar resumen (siempre, incluso si ya existe en FAISS)
+
+        # 4. Generar resumen
         print("📄 Generando resumen con Groq...")
         resumen = summarizer.generate_summary(texto_limpio, empresa)
-        
-        # Validar resumen
-        resumen_valido = resumen and len(resumen) > 500
-        
+        resumen_valido = bool(resumen and len(resumen) > 500)
+
         if resumen_valido:
             print(f"   ✅ Resumen generado ({len(resumen)} caracteres)")
-            preview = resumen[:200] + "..." if len(resumen) > 200 else resumen
-            print(f"   📄 Preview: {preview}")
         else:
-            print(f"   ⚠️  No se pudo generar resumen válido, usando texto truncado")
+            print(f"   ⚠️  Sin resumen válido, usando texto truncado")
             resumen = texto_limpio[:500] + "..."
-        
+
         # 5. Guardar resumen en base de datos
         print("💾 Guardando resumen en base de datos...")
         update_report_summary(report_id, resumen)
-        
-        # 6. Exportar resumen a archivo
+
+        # 6. Exportar a archivo .txt
         print("📄 Exportando resumen a archivo...")
-        try:
-            from export_summary import export_summary
-            export_file = f"/app/exports/resumen_{empresa.replace(' ', '_')}_id{report_id}.txt"
-            if export_summary(report_id, export_file):
-                print(f"   ✅ Resumen exportado: {export_file}")
-            else:
-                print(f"   ⚠️  No se pudo exportar el resumen")
-        except Exception as e:
-            print(f"   ⚠️  Error exportando resumen: {e}")
-        
-        # 7. Marcar como procesado según validez del resumen
+        export_summary_to_file(report_id, empresa, resumen)
+
+        # 7. Marcar como procesado
+        mark_as_processed(report_id, success=resumen_valido)
+
         if resumen_valido:
-            mark_as_processed(report_id, success=True)
             print(f"✅ Reporte {report_id} procesado exitosamente")
-            return True
         else:
-            mark_as_processed(report_id, success=False)
-            print(f"⚠️  Reporte {report_id} indexado pero SIN resumen válido")
-            return False
-        
+            print(f"⚠️  Reporte {report_id} procesado SIN resumen válido")
+
+        return resumen_valido
+
     except Exception as e:
         print(f"❌ Error procesando reporte {report_id}: {e}")
         traceback.print_exc()
         return False
 
 
-def process_batch(batch_size: int = BATCH_SIZE):
+def process_pending():
     """
-    Procesa un lote de reportes no procesados
+    Busca y procesa todos los reportes pendientes en un único batch.
+    Devuelve (exitosos, fallidos).
     """
-    print(f"\n{'='*80}")
-    print(f"🔍 Buscando reportes sin procesar (max: {batch_size})...")
-    print(f"{'='*80}")
-    
-    reports = get_unprocessed_reports(limit=batch_size)
-    
+    reports = get_unprocessed_reports(limit=BATCH_SIZE)
+
     if not reports:
-        print("✨ No hay reportes pendientes de procesar")
-        return
-    
-    print(f"📋 Encontrados {len(reports)} reportes para procesar")
-    
+        return 0, 0
+
+    print(f"📋 {len(reports)} reporte(s) pendiente(s)")
+
     faiss_manager = FAISSManager()
     summarizer = GroqSummarizer()
-    
-    successful = 0
-    failed = 0
-    
+
+    successful = failed = 0
     for report in reports:
-        success = process_single_report(report, faiss_manager, summarizer)
-        
-        if success:
+        if process_single_report(report, faiss_manager, summarizer):
             successful += 1
         else:
             failed += 1
-    
+
     print(f"\n{'='*80}")
-    print(f"📊 RESUMEN DEL BATCH")
-    print(f"{'='*80}")
-    print(f"✅ Exitosos: {successful}")
-    print(f"❌ Fallidos: {failed}")
-    
+    print(f"📊 Batch: ✅ {successful} exitosos | ❌ {failed} fallidos")
+
     stats = get_processing_stats()
-    print(f"\n📈 ESTADÍSTICAS GENERALES:")
-    print(f"   Total reportes: {stats['total']}")
-    print(f"   Procesados: {stats['procesados']}")
-    print(f"   Pendientes: {stats['pendientes']}")
+    print(f"📈 Global: {stats['procesados']} procesados | {stats['pendientes']} pendientes")
     print(f"{'='*80}\n")
+
+    return successful, failed
 
 
 def main():
-    """
-    Ejecución única del processor (sin loop)
-    """
     print("""
-    ╔═══════════════════════════════════════════════════════════════╗
-    ║                    PROCESSOR SERVICE                          ║
-    ║              Transcripciones → FAISS + Resúmenes              ║
-    ╚═══════════════════════════════════════════════════════════════╝
+╔═══════════════════════════════════════════════════════════════╗
+║                    PROCESSOR SERVICE                          ║
+║         Escuchando MySQL — procesamiento automático           ║
+╚═══════════════════════════════════════════════════════════════╝
     """)
-    
-    # Esperar a que MySQL esté listo
+
     wait_for_mysql()
-    
-    print(f"📦 Tamaño de batch: {BATCH_SIZE} reportes")
-    print(f"\n🚀 Procesando reportes pendientes...\n")
-    
-    try:
-        print(f"\n{'#'*80}")
-        print(f"# PROCESAMIENTO ÚNICO - {time.strftime('%Y-%m-%d %H:%M:%S')}")
-        print(f"{'#'*80}")
-        
-        # Procesar batch
-        process_batch(BATCH_SIZE)
-        
-        print("\n✅ Procesamiento completado exitosamente")
-        
-    except Exception as e:
-        print(f"\n❌ Error en el procesamiento: {e}")
-        traceback.print_exc()
-        raise  # Re-lanzar error para que Docker lo capture
-    
-    print("\n👋 Processor terminado")
+
+    print(f"⚙️  Batch size: {BATCH_SIZE} | Intervalo: {PROCESSING_INTERVAL}s")
+    print(f"🔁 Iniciando bucle de procesamiento...\n")
+
+    while True:
+        try:
+            process_pending()
+        except Exception as e:
+            print(f"❌ Error inesperado en el bucle: {e}")
+            traceback.print_exc()
+
+        print(f"😴 Esperando {PROCESSING_INTERVAL}s hasta el próximo ciclo...")
+        time.sleep(PROCESSING_INTERVAL)
 
 
 if __name__ == "__main__":

@@ -20,19 +20,6 @@ if SHAREPOINT_ENABLED:
     from sharepoint_uploader import create_uploader_from_env
 
 
-def run_processor():
-    bridge_path = '/app/src/run_processor.py'
-    if not os.path.exists(bridge_path):
-        print(f"❌ No se encontró run_processor.py en {bridge_path}")
-        return False
-
-    import importlib.util
-    spec = importlib.util.spec_from_file_location("run_processor", bridge_path)
-    bridge = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(bridge)
-    return bridge.run()
-
-
 async def main():
     wait_for_mysql()
 
@@ -109,20 +96,9 @@ async def main():
     else:
         print(f"\n[SharePoint] Deshabilitado. Archivo local: {filepath}")
 
-    # ── 7) Ejecutar Processor ─────────────────────────────────────────────
     print("\n" + "="*80)
-    print("🔄 FASE 4: PROCESAMIENTO")
+    print("✅ EXTRACCIÓN COMPLETA — el processor procesará el reporte automáticamente")
     print("="*80)
-
-    processor_success = run_processor()
-
-    if processor_success:
-        print("\n" + "="*80)
-        print("🎉 PROCESO COMPLETO EXITOSO")
-        print("="*80)
-    else:
-        print("\n⚠️  Extracción OK pero procesamiento falló")
-        print("   El reporte está en MySQL pero NO en FAISS")
 
 
 if __name__ == "__main__":

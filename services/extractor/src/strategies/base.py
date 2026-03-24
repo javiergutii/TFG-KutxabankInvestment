@@ -9,7 +9,7 @@ import re
 M3U8_RE = re.compile(r"\.m3u8(\?|$)", re.I)
 MPD_RE  = re.compile(r"\.mpd(\?|$)", re.I)
 MP4_RE  = re.compile(r"\.mp4(\?|$)", re.I)
-KEYWORDS = ["m3u8", "mpd", "manifest", "master", "playlist", ".mp4", "dash", "hls"]
+KEYWORDS = ["m3u8", "mpd", "master", "playlist", ".mp4", "dash", "hls"]
 
 def looks_like_stream(u: str) -> bool:
     if not u:
@@ -244,3 +244,11 @@ class StreamStrategy(ABC):
         except Exception as e:
             print(f"  ⚠️  Error en login: {e}")
             return False
+    
+    def _on_request(self, req):
+        if self.found_stream is None and looks_like_stream(req.url):
+            self.found_stream = req.url
+            print(f"  🎯 Stream detectado (iframe): {req.url[:80]}...")
+    
+    def _attach_listener(self, page: Page):
+        page.on("request", self._on_request)

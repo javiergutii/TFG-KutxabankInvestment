@@ -1,6 +1,9 @@
 # Iniciar el proyecto
 
 ## De cero:
+
+docker compose up -d db extractor
+
 docker compose up --build
 
 #### Descargar modelo y verificar
@@ -11,8 +14,12 @@ docker compose exec ollama ollama list
 docker compose --profile manual run --rm extractor
 
 ## Processor
+#### Ejecución manual
 docker compose run --rm processor python main.py
+#### Ver los logs
+docker compose logs processor --follow
 
+## Consultas
 #### Ejecutar queries sobre empresas
 docker compose run --rm processor python query_faiss.py search
 
@@ -33,7 +40,7 @@ docker compose exec db mysql -u reports_user -preports_pass -D reports -e "UPDAT
 docker compose exec db mysql -u reports_user -preports_pass -D reports -e "UPDATE reports SET resumen = '' WHERE id = 1;"
 
 #### Mirar indices
-ls -lh shared/faiss_index/
+Get-ChildItem shared/faiss_index/
 
 #### Borrar faiss
 Remove-Item -Recurse -Force .\shared\faiss_index\*

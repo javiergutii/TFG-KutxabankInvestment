@@ -1,8 +1,10 @@
 import subprocess
-from faster_whisper import WhisperModel
 import os
 
-from config import WHISPER_MODEL_NAME, WHISPER_DEVICE, WHISPER_COMPUTE_TYPE
+from config import ARTIFACTS_DIR
+
+
+AUDIO_COMPRESSED = os.path.join(ARTIFACTS_DIR, "audio_compressed.mp3")
 
 
 def download_with_ffmpeg(url: str, output: str):
@@ -10,37 +12,60 @@ def download_with_ffmpeg(url: str, output: str):
     subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-i", url, "-c", "copy", output], check=True)
     print("✅ Descarga completada:", output)
 
+
 def extract_audio(video_file: str, audio_file: str):
-    print("🎧 Extrayendo audio…")
+    """
+    Extrae y comprime el audio a MP3 32kbps mono 16kHz.
+    Groq acepta hasta 25MB — a 32kbps una hora de audio ocupa ~14MB.
+    """
+    print("🎧 Extrayendo y comprimiendo audio…")
     cmd = [
         "ffmpeg", "-y",
         "-i", video_file,
         "-vn",
         "-ac", "1",
         "-ar", "16000",
-        "-c:a", "pcm_s16le",
-        audio_file
+        "-b:a", "32k",
+        AUDIO_COMPRESSED
     ]
     subprocess.run(cmd, check=True)
-    print("✅ Audio listo:", audio_file)
+    size_mb = os.path.getsize(AUDIO_COMPRESSED) / (1024 * 1024)
+    print(f"✅ Audio comprimido: {size_mb:.1f} MB → {AUDIO_COMPRESSED}")
+    return AUDIO_COMPRESSED
+
 
 def transcribe(audio_file: str) -> str:
-    print("🧠 Cargando modelo Whisper…")
-    model = WhisperModel(WHISPER_MODEL_NAME, device=WHISPER_DEVICE, compute_type=WHISPER_COMPUTE_TYPE)
+    """
+    Transcribe el audio usando la API de Groq (whisper-large-v3-turbo).
+    Requiere GROQ_API_KEY en variables de entorno.
+    """
+    from groq import Groq
+    import time
 
-    print("📝 Transcribiendo…")
-    segments, info = model.transcribe(
-        audio_file,
-        task="transcribe",
-        language=None,
-        temperature=0.0,
-        beam_size=5,
-        vad_filter=True,
-        initial_prompt="The speech may contain in both english and spanish sentences. Focus on the enterprises names.",
-    )
+    api_key = os.getenv("GROQ_API_KEY", "")
+    if not api_key:
+        raise SystemExit("❌ GROQ_API_KEY no definida")
 
-    out = []
-    for s in segments:
-        out.append(s.text.strip())
-    text = "\n".join([t for t in out if t])
-    return text
+    # Groq admite hasta 25MB — avisar si se supera
+    size_mb = os.path.getsize(AUDIO_COMPRESSED) / (1024 * 1024)
+    if size_mb > 24:
+        raise SystemExit(f"❌ Audio demasiado grande ({size_mb:.1f} MB). Groq acepta hasta 25MB.")
+
+    client = Groq(api_key=api_key)
+
+    print(f"🎙️ Transcribiendo con Groq ({size_mb:.1f} MB)…")
+    start = time.time()
+
+    with open(AUDIO_COMPRESSED, "rb") as f:
+        transcription = client.audio.transcriptions.create(
+            file=f,
+            model="whisper-large-v3-turbo",
+            language="en",
+            response_format="text",
+        )
+
+    elapsed = time.time() - start
+    words = len(transcription.split())
+    print(f"✅ Transcripción completada en {elapsed:.1f}s — {words} palabras")
+
+    return transcription

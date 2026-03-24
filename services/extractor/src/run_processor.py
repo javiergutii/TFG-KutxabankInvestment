@@ -12,7 +12,7 @@ def run():
     Se llama desde el main.py del extractor.
     """
     print("\n" + "="*80)
-    print("🧠 INICIANDO PROCESAMIENTO CON FAISS Y OLLAMA")
+    print("🧠 INICIANDO PROCESAMIENTO CON FAISS Y GROQ")
     print("="*80 + "\n")
 
     # Path del processor (montado como volumen en el extractor)
@@ -46,7 +46,7 @@ def run():
         import db as proc_db
         from text_cleaner import clean_text, split_into_chunks, get_text_stats
         from faiss_manager import FAISSManager
-        from summarizer import OllamaSummarizer
+        from summarizer import GroqSummarizer
 
         # 5. Obtener reportes pendientes
         proc_db.wait_for_mysql()
@@ -59,7 +59,7 @@ def run():
         print(f"📋 Encontrados {len(reports)} reporte(s) para procesar")
 
         faiss_manager = FAISSManager()
-        summarizer = OllamaSummarizer()
+        summarizer = GroqSummarizer()
 
         successful = 0
         failed = 0
@@ -106,7 +106,7 @@ def run():
                 print(f"   ✅ {len(chunks)} chunks indexados en FAISS")
 
                 # Generar resumen
-                print("📄 Generando resumen con Ollama...")
+                print("📄 Generando resumen con Groq...")
                 resumen = summarizer.generate_summary(texto_limpio, empresa)
                 if not resumen:
                     print("   ⚠️  Sin resumen de Ollama, usando texto truncado")

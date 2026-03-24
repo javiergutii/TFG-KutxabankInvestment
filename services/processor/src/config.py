@@ -8,8 +8,6 @@ MYSQL_USER = os.getenv("MYSQL_USER", "reports_user")
 MYSQL_PASSWORD = os.getenv("MYSQL_PASSWORD", "reports_pass")
 
 # Modelo Embeddings
-# CAMBIO: paraphrase-multilingual-mpnet-base-v2 es más potente para búsqueda cross-language
-# (español → inglés) que el MiniLM anterior
 EMBEDDING_MODEL = os.getenv(
     "EMBEDDING_MODEL",
     "sentence-transformers/paraphrase-multilingual-mpnet-base-v2"
@@ -17,7 +15,7 @@ EMBEDDING_MODEL = os.getenv(
 
 # Configuración de chunks
 CHUNK_SIZE = int(os.getenv("CHUNK_SIZE", "200"))
-CHUNK_OVERLAP = int(os.getenv("CHUNK_OVERLAP", "100"))  # subido de 30 a 50
+CHUNK_OVERLAP = int(os.getenv("CHUNK_OVERLAP", "100"))
 
 # Directorio FAISS
 FAISS_INDEX_DIR = os.getenv("FAISS_INDEX_DIR", "/app/shared/faiss_index")
@@ -28,8 +26,7 @@ FAISS_METADATA_FILE = os.getenv("FAISS_METADATA_FILE", "metadata.pkl")
 PROCESSING_INTERVAL = int(os.getenv("PROCESSING_INTERVAL", "60"))
 BATCH_SIZE = int(os.getenv("BATCH_SIZE", "10"))
 
-# Ollama configuración
-OLLAMA_HOST = os.getenv("OLLAMA_HOST", "http://ollama:11434")
-OLLAMA_MODEL = os.getenv("OLLAMA_MODEL", "qwen2.5:14b")
-OLLAMA_TIMEOUT = int(os.getenv("OLLAMA_TIMEOUT", "3600"))
-OLLAMA_MAX_TOKENS = int(os.getenv("OLLAMA_MAX_TOKENS", "1200"))
+# Groq configuración
+GROQ_API_KEY = os.getenv("GROQ_API_KEY", "")
+GROQ_MODEL = os.getenv("GROQ_MODEL", "llama-3.3-70b-versatile")
+GROQ_MAX_TOKENS = int(os.getenv("GROQ_MAX_TOKENS", "3000"))

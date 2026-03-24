@@ -15,13 +15,13 @@ from db import (
 )
 from text_cleaner import clean_text, split_into_chunks, get_text_stats
 from faiss_manager import FAISSManager
-from summarizer import OllamaSummarizer
+from summarizer import GroqSummarizer
 
 
 def process_single_report(
     report: Dict,
     faiss_manager: FAISSManager,
-    summarizer: OllamaSummarizer
+    summarizer: GroqSummarizer
 ) -> bool:
     """
     Procesa un único reporte: limpia, chunking, embeddings, FAISS, resumen
@@ -86,7 +86,7 @@ def process_single_report(
             faiss_manager.save()
         
         # 4. Generar resumen (siempre, incluso si ya existe en FAISS)
-        print("📄 Generando resumen con Ollama...")
+        print("📄 Generando resumen con Groq...")
         resumen = summarizer.generate_summary(texto_limpio, empresa)
         
         # Validar resumen
@@ -149,7 +149,7 @@ def process_batch(batch_size: int = BATCH_SIZE):
     print(f"📋 Encontrados {len(reports)} reportes para procesar")
     
     faiss_manager = FAISSManager()
-    summarizer = OllamaSummarizer()
+    summarizer = GroqSummarizer()
     
     successful = 0
     failed = 0

@@ -1,239 +1,166 @@
 """
-Generador de resúmenes usando Ollama
+Generador de resúmenes usando Groq (llama-3.3-70b)
 """
-import requests
-import json
 from typing import Optional
+from groq import Groq
 
-from config import OLLAMA_HOST, OLLAMA_MODEL, OLLAMA_TIMEOUT
+from config import GROQ_API_KEY, GROQ_MODEL, GROQ_MAX_TOKENS
 
 
-class OllamaSummarizer:
+class GroqSummarizer:
     """
-    Genera resúmenes de texto usando Ollama
+    Genera resúmenes de texto usando Groq API
     """
-    
+
     def __init__(self):
+        print(f"🤖 Inicializando Groq Summarizer")
+        print(f"   Modelo: {GROQ_MODEL}")
+
+        if not GROQ_API_KEY:
+            raise ValueError("❌ GROQ_API_KEY no configurada. Añádela como variable de entorno.")
+
+        self.client = Groq(api_key=GROQ_API_KEY)
+        self.model = GROQ_MODEL
+        self.max_tokens = GROQ_MAX_TOKENS
+
+        self._check_availability()
+
+    def _check_availability(self):
         """
-        Inicializa el generador de resúmenes
-        """
-        self.host = OLLAMA_HOST
-        self.model = OLLAMA_MODEL
-        self.timeout = OLLAMA_TIMEOUT
-        
-        print(f"🤖 Inicializando Ollama Summarizer")
-        print(f"   Host: {self.host}")
-        print(f"   Modelo: {self.model}")
-        
-        # Verificar que Ollama esté disponible
-        self._check_ollama_availability()
-    
-    def _check_ollama_availability(self):
-        """
-        Verifica que Ollama esté disponible y el modelo descargado
+        Verifica que la API key sea válida haciendo una llamada mínima
         """
         try:
-            response = requests.get(
-                f"{self.host}/api/tags",
-                timeout=10
-            )
-            response.raise_for_status()
-            
-            models = response.json().get('models', [])
-            model_names = [m.get('name', '').split(':')[0] for m in models]
-            
-            if self.model.split(':')[0] not in model_names:
-                print(f"   ⚠️  Modelo '{self.model}' no encontrado en Ollama")
-                print(f"   📋 Modelos disponibles: {', '.join(model_names)}")
-                print(f"   💡 Para descargar el modelo, ejecuta: ollama pull {self.model}")
-            else:
-                print(f"   ✅ Ollama disponible con modelo '{self.model}'")
-                
-        except requests.exceptions.RequestException as e:
-            print(f"   ⚠️  No se pudo conectar a Ollama: {e}")
-            print(f"   💡 Asegúrate de que Ollama esté ejecutándose")
-    
-    def _fix_encoding(self, text: str) -> str:
-        """
-        Corrige problemas de encoding comunes en texto generado por Ollama
-        """
-        # Mapeo de caracteres mal codificados a correctos
-        replacements = {
-            '├│': 'ó',
-            '├í': 'á',
-            '├®': 'é',
-            '├¡': 'í',
-            '├║': 'ú',
-            '├▒': 'ñ',
-            '┬░': '°',
-            '├Ç': 'Á',
-            '├ë': 'É',
-            '├ô': 'Ó',
-            '├Ü': 'Ú',
-            '├æ': 'Ñ',
-            '┬¿': '¿',
-            '┬í': '¡',
-            '├¿': 'ü',
-            '├ô': 'Ô',
-        }
-        
-        for bad, good in replacements.items():
-            text = text.replace(bad, good)
-        
-        return text
-    
+            self.client.models.list()
+            print(f"   ✅ Groq disponible con modelo '{self.model}'")
+        except Exception as e:
+            print(f"   ⚠️  No se pudo conectar a Groq: {e}")
+            print(f"   💡 Verifica que GROQ_API_KEY sea correcta")
+
     def generate_summary(
         self,
         text: str,
         empresa: str,
-        max_tokens: int = 1200
     ) -> Optional[str]:
         """
-        Genera un resumen del texto
+        Genera un resumen prospectivo del texto
         """
         if not text or len(text.strip()) < 100:
             print(f"   ⚠️  Texto demasiado corto para resumir")
             return None
-        
-        # Crear prompt mejorado
+
         prompt = self._create_summary_prompt(text, empresa)
-        
+
         try:
-            response = requests.post(
-                f"{self.host}/api/generate",
-                json={
-                    "model": self.model,
-                    "prompt": prompt,
-                    "stream": False,
-                    "options": {
-                        "temperature": 0.15,
-                        "num_predict": max_tokens,
-                        "top_p": 0.9,
-                        "num_ctx": 32768,
-                    }
-                },
-                timeout=self.timeout
+            response = self.client.chat.completions.create(
+                model=self.model,
+                messages=[{"role": "user", "content": prompt}],
+                temperature=0.15,
+                max_tokens=self.max_tokens,
             )
-            response.raise_for_status()
-            
-            result = response.json()
-            summary = result.get('response', '').strip()
-            
+            summary = response.choices[0].message.content.strip()
+
             if summary:
-                # Corregir encoding
-                summary = self._fix_encoding(summary)
                 return summary
             else:
-                print(f"   ⚠️  Respuesta vacía de Ollama")
+                print(f"   ⚠️  Respuesta vacía de Groq")
                 return None
-                
-        except requests.exceptions.Timeout:
-            print(f"   ⏱️  Timeout esperando respuesta de Ollama ({self.timeout}s)")
-            return None
-        except requests.exceptions.RequestException as e:
-            print(f"   ❌ Error llamando a Ollama: {e}")
-            return None
+
         except Exception as e:
-            print(f"   ❌ Error inesperado generando resumen: {e}")
+            print(f"   ❌ Error llamando a Groq: {e}")
             return None
-    
+
     def _create_summary_prompt(self, text: str, empresa: str) -> str:
-        
-        prompt = f"""Eres un extractor de información financiera. Tu tarea es ÚNICAMENTE copiar y reorganizar datos que aparezcan literalmente en el texto. No eres un analista, no interpretas, no complementas.
 
-        REGLA ABSOLUTA: Antes de escribir cualquier cifra o dato, pregúntate: "¿Puedo señalar con el dedo exactamente dónde aparece esto en la transcripción?". Si la respuesta es no, escribe "no mencionado en la transcripción". Esto incluye cifras que te parezcan razonables o que conozcas de {empresa}.
+        prompt = f"""Eres un analista de inteligencia prospectiva especializado en conferencias de resultados corporativos. Tu único objetivo es extraer lo que se dice sobre el FUTURO: perspectivas, tendencias, riesgos y preocupaciones. No resumes el pasado; identificas señales hacia adelante.
 
-        TRANSCRIPCIÓN:
-        {text}
+TRANSCRIPCIÓN:
+{text}
 
-        INSTRUCCIONES:
+EMPRESA: {empresa}
 
-        1. ESTRUCTURA - usa estas secciones:
-        - Resultados Financieros Consolidados
-        - Métricas por Geografía (solo geografías y métricas con cita literal posible)
-        - Transacciones y Movimientos Estratégicos
-        - Guidance y Proyecciones
-        - Otros puntos relevantes
+---
 
-        2. FORMATO:
-        - Bullet points dentro de cada sección
-        - Solo español, sin caracteres corruptos
-        - Sin negritas ni asteriscos
-        - Máximo 1000 palabras
+SECCIÓN 1 — PERSPECTIVAS DE LA COMPAÑÍA
 
-        3. EJEMPLOS DE COMPORTAMIENTO CORRECTO:
-        - La transcripción dice "revenue reached almost 9 billion euro" → escribes "Revenue: casi 9.000 millones de euros"
-        - La transcripción NO menciona el churn de Brasil → escribes "Churn Brasil: no mencionado en la transcripción"
-        - Conoces el ARPU de España de tu entrenamiento → NO lo incluyas, escribe "no mencionado en la transcripción"
-    """
+Extrae únicamente declaraciones explícitas sobre el futuro de la compañía: guidance, objetivos, planes estratégicos, inversiones previstas, cambios de modelo de negocio, expansión geográfica, lanzamientos de productos, M&A, etc.
+
+- Solo incluye lo que aparezca literalmente en la transcripción.
+- ANTES DE ESCRIBIR CUALQUIER DATO: localiza la frase exacta en la transcripción. Si no puedes citar textualmente de dónde viene, NO lo incluyas y escribe "no mencionado". Esto aplica especialmente a cifras y porcentajes.
+- Si no se menciona guidance o proyecciones concretas, escribe: "no se proporcionó guidance en esta conferencia".
+- Formato: bullet points con la métrica o tema, el horizonte temporal si se menciona, y la cifra o dirección indicada.
+
+---
+
+SECCIÓN 2 — PERSPECTIVAS DEL SECTOR
+
+Extrae lo que la dirección dice sobre el entorno macroeconómico, la industria, la competencia, los cambios regulatorios o tecnológicos que se esperan. Solo lo que ellos mencionan; no aportes contexto externo. No añadas observaciones generales del sector que no aparezcan explícitamente en la transcripción.
+
+---
+
+SECCIÓN 3 — INQUIETUDES DE LOS ANALISTAS
+
+Esta es la sección más importante. Sigue estos pasos en orden:
+
+PASO 1: Recorre la transcripción de principio a fin e identifica CADA pregunta formulada por un analista. Haz una lista numerada exhaustiva de todas ellas, indicando el nombre del analista y su banco si aparecen en la transcripción.
+
+PASO 2: Con esa lista, responde:
+
+a) TEMAS MÁS REPETIDOS: Agrupa las preguntas por tema e indica cuántas preguntas corresponden a cada tema y qué analistas las formularon. Ordena por frecuencia descendente.
+
+b) PREOCUPACIONES PRINCIPALES: ¿Qué subyace en las preguntas? Identifica la inquietud real detrás de cada bloque temático (ej: si varios preguntan por el capex, la inquietud real puede ser la presión sobre el flujo de caja libre).
+
+c) PREGUNTAS SIN RESPUESTA CLARA: Señala preguntas donde la dirección esquivó, respondió de forma vaga, redirigió, o dijo explícitamente que no puede dar detalles hasta completar la revisión estratégica. Para cada una, indica textualmente qué respondió la dirección.
+
+---
+
+REGLAS ABSOLUTAS:
+- Nada de datos históricos salvo que sirvan de base para una proyección explícita.
+- Si algo no aparece en la transcripción, escribe "no mencionado".
+- Solo español. Sin negritas, sin asteriscos.
+- Máximo 1200 palabras en total."""
 
         return prompt
-    
+
     def generate_answer(
         self,
         question: str,
         context_chunks: list,
         empresa: Optional[str] = None,
-        max_tokens: int = 1200
     ) -> Optional[str]:
         """
         Genera una respuesta basada en chunks de contexto (para RAG)
         """
         if not context_chunks:
             return "No se encontró información relevante para responder a tu pregunta."
-        
-        # Combinar chunks en contexto
+
         context = "\n\n".join([
             f"[Fragmento {i+1}]: {chunk}"
             for i, chunk in enumerate(context_chunks[:5])
         ])
-        
-        # Crear prompt para Q&A
+
         prompt = self._create_qa_prompt(question, context, empresa)
-        
+
         try:
-            response = requests.post(
-                f"{self.host}/api/generate",
-                json={
-                    "model": self.model,
-                    "prompt": prompt,
-                    "stream": False,
-                    "options": {
-                        "temperature": 0.15,
-                        "num_predict": max_tokens,
-                        "top_p": 0.9,
-                        "num_ctx": 32768,
-                    }
-                },
-                timeout=self.timeout
+            response = self.client.chat.completions.create(
+                model=self.model,
+                messages=[{"role": "user", "content": prompt}],
+                temperature=0.15,
+                max_tokens=self.max_tokens,
             )
-            response.raise_for_status()
-            
-            result = response.json()
-            answer = result.get('response', '').strip()
-            
-            if answer:
-                # Corregir encoding
-                answer = self._fix_encoding(answer)
-                return answer
-            else:
-                return None
-                
+            return response.choices[0].message.content.strip()
+
         except Exception as e:
             print(f"   ❌ Error generando respuesta: {e}")
             return None
-    
+
     def _create_qa_prompt(
         self,
         question: str,
         context: str,
         empresa: Optional[str] = None
     ) -> str:
-        """
-        Prompt para responder preguntas con contexto
-        """
         empresa_text = f" de {empresa}" if empresa else ""
-        
+
         prompt = f"""Eres un asistente experto en análisis de transcripciones financieras{empresa_text}.
 
 CONTEXTO RELEVANTE:
@@ -250,5 +177,5 @@ INSTRUCCIONES:
 6. IMPORTANTE: "billion" en inglés = mil millones (no billón español)
 
 RESPUESTA:"""
-        
+
         return prompt

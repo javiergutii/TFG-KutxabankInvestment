@@ -1,0 +1,488 @@
+TRANSCRIPCIÓN - Telefónica
+Fecha: 2026-03-18 09:49:55
+================================================================================
+
+Good morning and welcome to Telefonica's conference call to discuss January to December 2025
+results. I'm Thorsten Achtmann from Investor Relations. Before proceeding, let me mention
+that the financial information contained in this document has been prepared under international
+financial reporting standards as adopted by the European Union. This financial information
+is unaudited. This conference call and webcast including the Q&A session may contain forward
+looking statements and information relating to the Telefonica group. These statements may include
+financial or operating forecasts and estimates or statements regarding plans objectives and
+expectations regarding different matters. All forward looking statements involve risks and
+uncertainties that could cause the final developments and results to materially differ
+from those expressed or implied by such statements. We encourage you to review
+our publicly available disclosure documents filed with the relevant securities market regulators.
+If you don't have a copy of the relevant press release and the slides,
+please contact Telefonica's Investor Relations team.
+Now let me turn the call over to our chairman and CEO Mr. Mark Murtra.
+Good morning everyone and welcome to Telefonica's fourth quarter and full year results call.
+I am here today with Emilio Rallo, Chief Operating Officer, Juan Azpue, Chief Financial
+and Corporate Development Officer and Lutz Schuler, CEO of Virgin Media O2. Last November
+at our Capital Markets Day we presented our strategic plan Transform and Grow that had
+the clear challenge to provide citizens the best access to digital technologies.
+The fundamental access on a high level are clear for us. We are committed to offering additional
+and enhanced customer services to drive growth in our core markets. We are building a more
+innovative and competitive company, simplifying business units and shifting operational
+responsibility to markets with an ambitious and effective management focused on growth
+and efficiency. Absolute commitment to guidance and financial discipline and we are building a
+stronger more competitive European operator. These access and purpose fit our 2025 results
+where we delivered on our commitments and where we achieved important milestones.
+Let me highlight the 2025 results where we have delivered on our financial commitments in
+2025. At the same time we made significant progress setting the business up for a stronger
+future. Importantly we exited the year with improving momentum. In the quarter momentum
+continued with adjusted EBITDA and operating cash flow after leases accelerated. Adjusted EBITDA
+constant Forex growth reached 2.8 percent and adjusted operating cash flow after leases grew
+nearly 13 percent. B2B was particularly highlight growing 7.3 percent in the quarter.
+Our business performance was equally encouraging. In Spain we delivered the strongest growth in
+more than seven years on the back of our premium positioning and improved commercial
+performance. In Brazil our customer base grew to record levels and in Germany
+consumer perception of the O2 brand continued its positive strength trend.
+Beyond the financial results we continued to both simplify and drive long-term value creation for
+the Telefonica group. We accelerated the pace of our portfolio transformation significantly
+reducing our exposure in hispan and have now more or less exited the region with six
+out of eight markets sold. We also reached a formal agreement with our label unions to improve
+productivity in Spain and this agreement is currently being implemented. This is an important
+step to build a leaner and faster moving organization. These are part of a broader
+efficiency drive that is already flowing through our cost base. Taken together these
+achievements represent a solid foundation for 2026 execution. Moving to slide three
+at the capital markets day we define the six strategic pillars underpinning our transform
+and grow strategy. During the end of 2025 we have already executed on these pillars.
+The first three are delivering a best-in-class customer experience expanding B2C offering and
+scaling B2B. Let me highlight some of our achievements here that we are looking to build
+on in the future. In 2025 our network leadership drove commercial results.
+We want customers retain them longer and delivered services they value as our NPS
+and customer lifetime value reflected. We also secured our leading position with for example
+the renewal of La Liga and the UEFA rights in Spain. In Brazil Vivo Total represents 43 percent
+of FTHH customers and we believe that we will grow that as we expand the customer proposition.
+We are building out the ecosystem into smart home security fintech and consumer electronics.
+In Germany fixed broadband expansion is the path to converge our strong mobile base.
+The fourth pillar evolving technological capabilities we continue to invest in the
+best network experience for our customers. Beyond building networks we are changing how
+we operate them with advanced automation for example. The fifth pillar is simplifying our
+operating model. The goal is making a leaner more agile Telefonica ensuring our investments
+deliver improved returns. Copper switch-off in Spain was a milestone this year and has already
+started in Brazil. The workforce transformation agreement is concluded and on track to deliver
+approximately 0.6 billion euros in run rate savings by 2028. We made clear progress on
+portfolio management execution completing four ESPAM exits in 2025. Let me now turn to the
+priorities for 2026 in a transform and grow plan that will drive the next phase of growth.
+Delivering best-in-class customer experience is one of the clearest way to drive long-term
+value. When interactions are simpler and more tailored satisfaction increases leading to greater
+loyalty higher ARPU lower churn and higher customer lifetime value. At a group level we are
+focused on ensuring faster incident resolution and we are also rolling out AI based hyper
+personalization across key channels. This effect is included in the 2026 capex of the group.
+In B2C we are further driving convergence and deepening customer relationship by bringing
+more into each household. Customers who bundle multiple service such as connectivity,
+content devices and other services stay longer, spend more and churn less. This creates a
+structural opportunity to grow ARPU efficiently. In B2B we are scaling our digital services
+portfolio across the group with a particular focus on cyber security and cloud as well as
+defense in Spain. Our trusted position with enterprise and public sector clients give us
+a strong foundation to grow recurring revenues. 2026 is already a significant year for cost
+efficiencies. We are accelerating the simplification, optimizing leases, renegotiation
+team, vendor contracts and streamlining structures. In Brazil we're now shutting
+down our copper network to concentrate our resources on a single modern infrastructure.
+We continue to focus on the spam exit already have closed two transactions in the year to date.
+Last week Nextfiber announced the acquisition of Netomnia to become the largest full fiber
+outlet in the UK and will reach 8 million premise passed. We achieve this without a
+significant equity contribution from Telefonica. These initiatives show how transform and grow
+comes to life. We enter 2026 with a focused portfolio, stronger commercial momentum in core
+markets and a clear set of priorities already in execution. Moving to guidance for 2026.
+We expect constant revenue and adjusted the bidder growth of 1.5 to 2.5 percent
+and capex to sales ratio of around 12 percent. We expected an adjusted operating cash flow after
+leases growth of more than 2 percent, demonstrating operating leverage at the adjusted operating
+cash flow after leases level. We expect free cash flow of 3 billion euros, an upgrade to
+the upper end of the range given at the capital market state supported by the Q4 momentum.
+We continue to expect leverage to progress towards our target of 2.5 times net depth
+divided by adjusted the bid down in 2028 to which we are fully committed to.
+We reconfirm our 15 euro cents dividend per share in 2026. We also reconfirm all of our
+three and five-year targets outlined at the capital market state. Now let me hand over to
+Emilio to take you through our operation performance in more detail.
+Thank you Mark. On to slide six to review our domestic business.
+2025 was a landmark year for Telefónica Spain delivering growth and record-breaking
+achievements. We recorded excellent commercial performance reporting in 2025 the best KPIs
+since 2018. This is the result of a strict daily execution to deliver excellent service.
+Leveraging our superior network and quality, strong ecosystem and digital services and smart
+cementation. All driving high customer satisfaction with the best MPS being a
+competitive advantage. I am proud to highlight the record fiber and TV net ads and a robust
+portability ratios. We achieved the highest customer base ever in contract mobile and fixed
+broadband. Convergent ARPU remains at leading levels around 90 euros and churn reached 0.7%
+in Q4, the lowest level since we launched our convergent proposition.
+The key drivers of churn reduction is the improved customer experience. Our focus on
+operational excellence and improvement in key processes allowed us to reduce call volumes
+by 10% and claims by 50% in just three years. In B2C our digital ecosystem and premium content
+are key levers to increase loyalty and customer lifetime value. Customers with alarms exceeded
+600,000. Customers with football grew year on year and three out of four customers have a device.
+All these customers have a significant lower chance while driving revenues up.
+In B2B we also have a strong momentum. We are the best positioned player in the IT business
+which is a growth engine. Lungs such as Titan connect assure continuous connectivity for
+businesses and drives new digital services that will foster further growth. From a
+financial standpoint Spain is delivering profitable growth and solid cash generation
+with all key financial methods growing at the same time for the first time since 2008.
+Prevenance growth steadily supported by both residential and B2B with IT maintaining double
+digit growth. Adjusted EBITDA continues to grow year on year with margins around
+57% reflecting operating leverage and cost discipline. New personal efficiency initiatives
+signed at the end of 2025 will deliver more than 250 million euros in savings by 2026.
+Finally our capacity support sustainable adjusted EBITDA and cash flow growth with
+fiber and 5G networks already deployed. 2025 has been a remarkable year for our business
+in Spain delivering strong performance and better positioning us to capture growth ahead.
+In 2026 we aim to accelerate year on year growth rates across key financial metrics
+leveraging further commercial momentum and execution of our efficiency agenda.
+Onto the next slide. Telefonica Brazil consolidated its position as the leading
+digital platform in the market delivering a strong commercial and financial performance
+in 2025. Our operating strategy brought successful in vivo reached an all-time high
+in the access base. At the same time our focus on upselling data new B2C digital services
+and convergence and convergence enhance the lifetime value of our accesses.
+In mobile differentiating network quality and customer experience drive growth in the contract
+segment with positive portability versus all operators. APU continues to grow while
+charge remains at very low levels. In fixed fiber connection increased
+double-digit mainly driven by our flexed conversion offer and charge reduction.
+Vivo total saw an impressive increase year on year and already accounts for 53% of fiber
+connections setting a new standard for quality and customer retention. On financial let me
+highlight the solid growth above inflation in key metrics. Revenue adjusted the data
+and operating cash generation increased year on year in real terms with growth rates
+accelerating across all metrics showing vivo's operating leverage. Revenue increase over 7%.
+Thanks to the robust acceleration in mobile service revenue in the fourth quarter and
+the strong growth in new businesses. In B2C revenue from the ecosystem including health and
+wellness consumer electronics financial services and entertainment rose more than 20%.
+The penetration of these services provide a significant upside. In parallel the B2B segment
+marked is a stronger revenue growth in last years. This performance reflects the growing demand for
+digital solutions which already represent close to 40% of B2B revenues. Adjusted EBITDA grew
+8% in the quarter while adjusted operating cash flow after leases rose almost 20% thanks to
+the sound revenue growth and solid operating cost structure. In summary once again vivo
+delivered a set of strong results showing real growth across main financial KPIs boosted by
+quality commercial growth and the focus on customer experience. Our ambition for 2026 is
+to continue growing revenue and adjusted EBITDA about inflation supported by mobile fiber B2B
+digital services and new B2C businesses as well as by the benefit unlocked by the migration from
+concession to authorization. Moving to slide eight to discuss Germany. Our core business momentum
+continued in the fourth quarter in a market where we have recently seen sickness pointing
+towards a reduction in promotional activity. The auto brand was a key driver of mobile
+contract trading benefiting from our key strength network quality. Network rollout
+and diversification continued at a high pace bringing 5G population coverage to 99%.
+We achieved the target of quasi nationwide coverage according to plan.
+The connect magazine rated O2 network quality as very good and we made a quantum leap forward
+to achieve second place for the first time. In the five biggest German cities connect even
+rated the network as outstanding. Contra netals were robust in the quarter while chan remained
+at a low level of 1.1%. Notably IOT accesses growth accelerated in the fourth quarter.
+Fixed broadband reaffirmed is returned to slight growth for the second quarter in a row
+while RPU continue to increase. B2B segment offer huge growth opportunities.
+We shown initiatives already paying off and supporting underlying revenue growth in 2025.
+Regarding financial results, revenue and adjusted debt declined mainly reflecting
+the completion of one-on-one customer migration by gear end and that comes with Q4-24.
+We continue to deliver on our efficiency plan and strict cost control but the
+contribution is not linear. To highlight in 2025 the underlying financial performance was positive
+year on year. With an issue already in place we continue working on identifying and executing
+further transformational growth and efficiency initiatives in Germany. Our high quality network
+and a solid positioning laid the foundation for a return to growth in 2027 after leaving
+behind one-on-one impacts along this year. Moving to slide nine. Virgin Media 2 ended
+2025 delivering guidance with a strong progress in the fiber network and 5G deployment.
+We improved fixed line trading for the second consecutive quarter reflecting progress in
+commercial initiatives such as Netflix and an improved retention strategy despite strong market
+headwinds. Mobile contract ratio grew 1.2% year on year while net ads were affected mainly
+due to the October price rise announcement elevating chance in the no close Saturday exit
+window. Revenue and adjusted EBITDA trends continue to be impacted by lower handset sales,
+net fiber construction and the intense competition which mainly impacted the consumer
+fixed revenue. However, 2025 guided revenue increased 0.2% year on year and guided EBITDA
+increased 0.9%. Summary, Virgin Media 2 is scaling its infrastructure while streamlining
+operations to pave the way for long-term profitable growth. The revenue and adjusted
+EBITDA expectation for 2026 reflects increased promotional intensity and ongoing uncertainty
+in the consumer fixed market alongside planned simplification for the B2B product portfolio.
+Continued cost efficiency will support profitability but will be partially offset by
+a higher number of customers on net fiber footprint with associated wholesale fees.
+Finally, net fiber announced last week the agreement for the acquisition of Netonia.
+This acquisition will strengthen our network, accelerating fiber rollout and penetration
+with a clear value creation through VNO2 and xFiber. On to slide 10, review our global units.
+First, in 2025, Telefónica Tech confirmed its position as the engine for our B2B growth
+in digital services. Revenue grew great, accelerated quarter on quarter, boosted by
+Spain where we recorded a strong growth in IoT beacon sales. In 2025, revenue increased
+close to 20%. This performance is driven by the strong demand in Europe where we see huge
+opportunity to grow. We continue to scale our capabilities to capture the digitization
+opportunity while making progress on the operating model simplification.
+Additionally, we have solved the operation in Hispen.
+Regarding Telefónica infra, let me highlight that our fiber cost represented
+24% of group deployment in 2025. Also, our subsequent business delivers sustained
+profitability in 2025 with an EBITDA margin of over 45%. Now, let me hand it over to Juan,
+who will present the main financial topics and ESG.
+Thank you, Emilio. It's a pleasure to be speaking with you for the first time as
+Chief Financial and Corporate Development Officer. Let me take you through the
+financial details for the quarter and the full year. Starting with the full year,
+revenue reached 35.1 billion euros, growing 1.5% year on year in constant terms. Adjusted EBITDA
+came in at 11.9 billion euro, up 2%, and adjusted operating cash flow after releases grew
+5.9% to just over 5 billion euro. CapEx to sale came in at 12.4% within our target.
+We reported free cash flow of 2.8 billion euro, above our base for guidance of approximately
+2.7 billion. The free cash flow, including employee restructuring commitments and V-MEDO2
+dividends reached 2.1 billion, exceeding our updated guidance for 2025. Net financial debt
+decreased 1.2% year on year to 26.8 billion euro, held by our exits in Hispen. Q4 trends
+reflected the underlying momentum in the business. Revenue grew 1.3% in constant terms,
+adjusted EBITDA 2.8%, and adjusted operating cash flow after releases nearly 13%.
+Free cash flow accelerated to 1.4 billion euros in Q4, with net debt down by the same amount.
+Foreign exchange was a meaningful headwind through 2025. A drag of around 3 percentage
+points in revenue, adjusted EBITDA, and adjusted operating cash flow after releases.
+That impact lessened in Q4. A quick note on perimeter. After Hispen disposals, Argentina,
+Peru, Ecuador, Uruguay, Colombia, and other small companies are classified as discontinued
+operations, alongside the settlement reclassification of Hispen with Chile, Venezuela,
+and Mexico now reported under other companies. These are the portfolio decisions Mark referred
+earlier. They affect comparability, but they create a stronger, more focused business going
+forward. Looking at the revenue mix. B2B grew 7.1% in constant terms for the full year,
+and 7.3% in Q4. B2C revenue increased to 2.1% in Q4, up 1.8% for the full year.
+To summarize, we deliver on our 2025 guidance. The business exited the year with
+improving trends, and the underlying quality of earnings is strengthened as we head into 2026.
+On to the next slide. I'm turning to free cash flow. As usual, the majority of cash generation
+was concentrated in Q4, consistent with our typical seasonability. In 2025, we generated
+free cash flow of 2.8 billion euros, exceeding our initial free cash flow base for guidance of
+2.7 billion euros. For 2026, we are upgrading our guidance to approximately 3 billion euros,
+the upper end of the range given at the capital market day. The path to get there is underpinned
+by a positive operating performance and efficient cost management of all lines below.
+In the next slide, our net debt to EBITDA ratio fell to 2.78 times in December,
+from 287 times in September. Net financial debt at year end declined to 26 billion euros,
+including the sale of Colombia, Chile, and the Fiber Pass stake. Net debt fell to 24.6 billion
+euros. Telefonica is well on track to achieve our leverage target of around 2.5 times by
+2028. At the end of December, we had liquidity of 17.4 billion euros, which is
+a significant higher than our upcoming debt maturities. The average cost of debt has been
+reduced by 0.21 percentage points year on year to 2.98 percent in December.
+We continued with our proactive refinancing approach during the first months of the year.
+We already successfully issued a green hybrid bond of 1.8 euros to refinance hybrids with
+reset dates in December 26 and November 28 at very attractive conditions. Therefore,
+we have ample flexibility to refinance the next hybrid with the first reset date in May 27.
+On top of that, Telefonica issued a 170 million Swiss franc bond and a 1 billion euro green
+bond, demonstrating strong market access and ESG financing leadership. We will continue with
+our present financial policy and free cash flow management, which are key priorities for us.
+On to the next slide. Let me spend a few moments highlighting Telefonica's financial
+priorities. Growing our free cash flow in a predictable manner is central to everything we
+do. Strong and growing free cash flow give us the optionality to invest in our business,
+return cash to shareholders, and do value accretive M&A if it makes sense.
+We will deploy that cash flow to grow Telefonica sustainably, with a clear guardrail to maintain
+our investment rate rating and continue on our delivery path towards a 2.5 ratio by 2028.
+Our dividend policy is sustainable and aligned to free cash flow generation.
+As our cash flow grows, so does our capacity to reward shareholders.
+On M&A, our framework is clear. We will be opportunistic and disciplined. Any transaction
+must deliver clear, compelling, and measurable synergies, create value for our shareholders,
+be within our leverage target ambitions, and compatible with our commitments to our
+investment rate rating. We will not compromise our balance sheet to just add revenues. We
+have no interest in transactions that dilute the quality of the business we're building.
+Every opportunity will be judged on its merits, and if it doesn't meet our criteria,
+we won't pursue it. More broadly, our focus is on building improved financial flexibility.
+The combination of risk and growing free cash flow, a clear delivery trajectory,
+and a disciplined capital allocation is what positions Telefonica to create sustainable value
+for our shareholders. Turning to our sustainability initiatives. On the environmental front,
+we continue to cut emissions, making the business more efficient while ensuring stable
+energy costs. On the social side, we highlight the expansion of our rural mobile
+broadband coverage, which allows us to provide more communities with secure digital services.
+Moving to governance, we are actively strengthening our supply chain's resilience,
+including over 17,000 sustainability-related audits in 2025. Lastly, we are proud to
+report leadership positions across several prestigious international rankings.
+I will now hand back to Mark, who will wrap up.
+Thank you, Juan. Let me close with where we stand and where we are heading. Telefonica
+delivered on all its 2025 commitments with accelerating momentum in Q4. Across our
+four markets, Spain, Brazil, Germany, and the UK, we made strong operating progress,
+with each market advancing on its strategic priorities. We continued to simplify the
+business. Our efficiency initiatives are ramping, and the workforce restructuring
+is on track. Telefonica is a leaner and more focused company than it was a year ago.
+Looking ahead, our 2026 guidance reflects continued momentum, with growth in revenue
+and adjusted EBITDA, accelerating in adjusted operating cash flow after leases,
+and free cash flow upgrading to approximately 3.0 billion euro, supporting both our dividend
+and our deleveraging path. During 2026, we already executed the sale of Chile and Colombia
+and Anatomia acquisition. We are executing on transform and grow with a clear framework,
+driving growth with consolidation as an upside. We have a strong foundation and the best plan to
+become a world-class European telco with profitable scale. I'm confident in our strategy
+that will drive shareholder value creation. Thank you for your time. We're now happy to
+take your questions. Thank you. If you would like to ask a question, please press star followed
+by 1 1 on your telephone keypad. Once again, that is star 1 1 to register a question. You
+will then hear an automated message advising your hand is raised. To answer your question,
+please press star 1 1 again. We will kindly ask you to ask a maximum of two questions per
+participant. There will be a short silence where questions are being registered. This
+question comes from the line of Andrew Lee from Goldman Sachs. Please go ahead.
+Good morning, everyone. I had a couple of questions on operational organic issues,
+firstly on Spanish growth and then secondly on free cash flow generation outside the 3 billion
+you're guiding for for 2026. Just on Spain, obviously you're growing and it's improved
+versus a year ago, but the growth seems stuck on 1% service revenue and 1% EBITDA growth
+over the past few quarters. You talked quite clearly about an acceleration and expectation of
+an acceleration in growth in 2026 today. Do you think the EBITDA growth is accelerating
+or will accelerate without the 250 million of restructuring efficiencies? If so, why is the
+underlying EBITDA growth accelerating and if not, why not? The second question is on free
+cash flow generation. Your previous guidance that employee contributions in 2026 would be
+higher than the 1 billion originally planned in 2025. Do you still expect employee contributions
+to be higher than 1 billion in 2026? Also, we know that UK dividends will be lower this year.
+Are there any other below-the-line free cash flow movements we should be aware of below the line?
+By that I mean below the 3 billion that you're guiding for 2026.
+Are there any other below-the-line movements we should be aware of that you are anticipating?
+Thanks very much. Thanks, Andrew. Emilio will answer the first question and Juan your second
+question. Okay, Andrew, thank you for the question. All the saving measures that we are
+taking in Spain is part of our guidance for 2026. We are seeing acceleration in all the
+financial key metrics of the revenues EBITDA and operating cash flow after leases, but it's
+true that the restructural savings coming from the agreements is part of this equation.
+The reason that not all the savings of the restructural savings goes to the EBITDA is
+because there are other parts, for example, wholesale revenues that are declining. As you
+know, in 2024 we signed several agreements that led us to have a very sustainable business
+for the next coming year in wholesale, but at the same time in the first years of the
+agreement means a declining of revenues. Other costs that increase, for example,
+is the personal cost that is not included in the restructural agreement.
+Of course, we are facing a change in the revenue mix that brings business or revenues
+with less margin and because of that we are looking for saving in all the company that is
+possible. Technology and the evolution of the company permit us to find saving in a lot of
+activities. For example, I had to highlight the saving that we expect for the procurement
+and purchase processes that we are working now in a group level, but of course in Spain too.
+Thank you. I will take your second question on free cash flow 26 generation and commitments.
+As we pointed out, we upgraded our 26 free cash flow to approximately 3 billion euros at the
+upper range given at the CMD. This is underpinned by a positive operational performance
+and the efficient management of all lines below. The operational performance we are
+seeing it already in Q4 and that is the reason why we are guiding to over 2% constant
+growth in 26 for adjusted operating cash flow. On the parts below we do see at the risk free
+cash flow with a free cash flow profile that has changed meaningfully and is more predictable
+and less volatile. Below operating cash flow there are different lines that compensate
+once with another, but overall my answer would be that the reason for us to increase and be
+more positive on the 3 billion is related to operational performance. Your second question was
+on commitments. We guided to 1 billion commitments in 25. 26 will be a year of transition and
+although the amounts are not fully finalized because there might be changes between which
+part goes as one of pay and severance and how much is deferred, you should think about
+a figure around 1.2 billion as the peak. That will be the peak of the commitments and
+then they will go downwards and fade away over time. You mentioned the dividend and the
+impact on the dividend on 26, but as you know the dividend on 26 it's a fixed amount of 15
+euro cents that will be paid in June 27, so this increase in peak commitments should not
+affect it. Thank you. Just two clarifications, so you're still expecting the positives and
+negatives below the 3 billion, i.e. employee commitments and UK dividends, etc. And then
+just on Spain, thanks for your help on that. Am I right in saying that your expectation is
+that EBITDA growth X, the 250 million saving, won't be accelerating given the headwinds you
+measured including wholesale declines and the low margin growth or weaker revenue growth mix
+Okay, I will take the first part of the question. So yes, the guide I gave you on
+commitments on peak commitments of 26, 1.2 billion. On UK dividend you should compute
+what was guided by DIMERO 2, which was a free cash flow distribution for its shareholders
+of around 200 million pounds, if I recall correctly that was the guidance. In the case
+of Spain, Andrew, again we are expecting to accelerate EBITDA, that is a mix of the
+different measures both in revenues and in cost savings. Again, thank you.
+Thank you. We will now take the next question from the line of Keval Kiroja from Dolce Bank,
+please go ahead. Thank you for sharing the questions and I have two please. So firstly,
+your off-free cash flow margin in Germany is less than 10% and approximately half the level
+of Spain. How do you expect the German free cash flow margin to evolve? And I appreciate
+you've talked about return to growth, but can you detail a little bit more what's key to get
+there across the revenue OPEX and CAPEX levers? And then secondly, you've been quite vocal on
+the desire for consolidation across your core markets. What do you think are the main barriers
+to striking deals? And do you think we now have enough regulatory clarity for you to
+actually present deals to regulators should they arise? Thank you. Okay, thanks for your
+question. I'll start with your second question. So with regards to consolidation,
+the main barriers that have existed to date is the mergers and acquisitions guideline
+managed by the European Commission. I think we can hear good messages in this line and I'm
+happy to discuss them further and some mixed messages, but what will matter is exactly how
+the specifics advance and we are still not there. So I would say that is the main limitation
+that we've had as a European market. And then there is, of course, the usual difficulties
+of reaching large and complex agreements that have to do with getting the right price
+and getting the right synergies. Regarding the Germany question,
+as I mentioned in the presentation, our expectation is to grow in 2027.
+During this year, we expect to improve around the year while we are leaving behind the
+comes with the revenues that we leave. That's very clear, thank you.
+Thank you. We will now take the next question from the line of Joshua Mead from Vienna.
+Hi guys, hopefully you can hear me. So my first question was on the difference between
+the EBITDA and EBITDAO growth numbers. If I look at Spain, you actually saw a slowdown
+in EBITDAO growth this year and this is the metric most of us are focused on. So
+you went from having plus 0.9 to plus 0.4% in the quarter and I understand your commentary
+on the acceleration and reported EBITDA pre-leases, but how should we think about Spanish
+EBITDA after lease growth developing in 2026 and what should we assume for lease costs
+increasing? Maybe if I can add a second part to that. On the Germany EBITDA after lease
+development, you saw minus 22% declines in Q4. I understand you want to grow this in 2027,
+but it would be great to get a steer on how the 2026 number will shake out,
+whether that's down 10, down 20, down more than that, given that there's so many moving
+parts and limited visibility. Finally, the second-ish question, but on the free cash flow
+guidance, I see that you raised the starting point for 2025. So the starting point for
+the base has gone from 2.8 to 2.9 billion. If I take your 3% to 5% midterm free cash flow
+category, that would imply some upside to midterm free cash flow. Are you implicitly
+raising the midterm pre-cash flow guidance as well today, or is it still within the range you
+initially expected? Thank you. As the outlook for the guidance, you should expect leases to
+continue a moderate at-work trend, mainly driven by 5G deployment in those core markets.
+CPI updates apply to both new and renewed contracts for mobile sites rolled out for 5G,
+as well as new sites required for such expansion. We remain very focused on
+driving efficiencies in all lines as a top priority, and leases will be one of our
+focus for sure. On your second question, regarding the free cash flow base, yes,
+we reported 2.8 billion of free cash flow base versus the 2.7 reference we had in
+the capital market day. Plus, once the consortium is in Chile, that base goes to 2.9.
+On your question on whether we're implicitly increasing guidance, we are increasing guidance
+for 2026 explicitly, 3 billion. And then on the long term, we feel it's still too short
+time since the capital market day to change the range, so we keep the 3 to 5% range.
+But obviously mathematically, we increase the base. We are implicitly giving a message,
+which is what we see, which is we expect 2028 free cash flow to be higher than the
+initial guidance given at the CMD. So that will be the message. We keep the 3.5,
+and then we'll see where we see us within that range, but definitely we do see a higher
+2028 free cash flow. Great. Maybe just to simplify the first question a bit,
+do you expect to grow Spanish EBITDA after lease in 2026?
+Great. Thank you. Thank you. Thank you. We will now take the next question.
+From the line of Nick from Berenberg, please go ahead.
+Hi, guys. Morning. I hope you can hear me. First question was on German mobile ARPU, please.
+It looks like the contract telephonic ARPU, so X, the one-on-one subs is down quite sharply.
+So down about 14% year-on-year, but maybe it's flattened out sequentially. Could you
+give us a bit of an idea of what the outlook is for 2026, please? Just given your comments
+particularly about the promotional activity being quite heavy in Germany.
+Secondly, just come back to Kevil's question on the merger guidelines. I think on the merger
+guidelines you said were the biggest barrier to consolidation. Could you just clarify for us
+exactly what that means in terms of timing? Does that mean you have to wait for a resolution
+to Teresa Rivera's merger guidelines in that 2027 investigation first, or are you prepared
+to do something before the merger guidelines are clarified, please? Thanks very much.
+Unfortunately, my answer has to be ambiguous. We understand that within the current framework
+of merger guidelines, large operations can happen if the interpretation
+applied wishes that to happen. We understand that in the review that will be made public
+shortly, we can either hear of a review of the guidelines or we can either read of a new
+interpretation or a modernization of the interpretation of the merger and acquisition
+guidelines. From our point of view, we're going to work on that on a case-by-case
+basis and have nothing else to add at this stage. Okay. Thank you very much. Thank you.
+We will now take the next question from the line of James Ruther from New Street Research.
+Please go ahead. Yes, thank you very much indeed and good morning. I have two questions.
+The first one was just regarding the UK and Virgin Media 02 where I see you've taken a
+write down on the asset, but the new valuation you're putting on VM 02 still looks as if it's
+around nine and a half times EBITDA. So I was wondering if you could just run through
+what forecasts you are using for that impairment review, please, to justify that value
+and does that include the impact of the new Netomnia transaction?
+Secondly, there was a press article a month or so ago where Mr. Domomouz in Germany
+suggested that he might be interested in potentially acquiring Telefonica Deutschland.
+So could you see a scenario where you might actually be a seller in that market? Thank you.
+Every year with a good will included that every year through our audit process we have to
+do a test to see if there's an impairment. The impairment that we have that we have
+registered, this is 25, has to do with more negative view or projections at the end of
+the year based on the changes in the open reach equinox studies that took place in fall.
+So that took the team to do a sensitivity around their business plan, so it's a sensitivity
+and that sensitivity was the one that KPNG took as a base for their valuation.
+To your question, does that include the Netomnia deal? No, sadly no because that valuation is
+done as of 31st of December. We do believe that the Netomnia transaction will enhance the
+financial and operational performance of the asset and therefore that's not included in the
+impairment test and we think that the outcome of it might have been different if that had
+been the case, so that's for the email too. Regarding your Germany question,
+Jimson, by the way, good morning to you and everybody and we can hear you all loud and clear.
+As you know we have defined four core markets that include Germany, the UK, Brazil and Spain
+and whilst we're always a rational operator and we manage our assets very rationally,
+we also take all media comments such as media comments. So what we can say is that we are
+committed to Germany, we are committed to the German market in the short term, in the medium
+term and in the long term as an industrial operator and up and above this we don't really
+have any other comments. Thanks. Thank you very much. We have time for one last question.
+Thank you. One moment please. Our last question comes from the line of
+Emmett Kelly from Morgan Stanley. Please go ahead. Yes, good morning everybody and
+thank you for taking the questions. I have two questions please. Firstly, Mark, can we just
+come back to some of the comments you made earlier on consolidation and antitrust. You
+said that you had received some good messages and also some mixed messages. Can you just say a few
+words more about those comments please? And secondly, just in your home market in Spain,
+can you talk a little bit about the competition you're seeing in Spain, in particular what
+you're seeing from Vodafone, Zagona and from Digi at the bottom end of the market
+and whether your premium positioning is keeping you reasonably sheltered from we'd say the
+competitive intensity at the bottom end. Thank you. Question, I'll answer the first one. Public
+messages. I always keep any communication with private communications private, but
+we have heard Antonio Costa defending a European telecoms consolidation that would allow
+more scale and more capacity to invest profitably. And then we've read public messages
+with regards to mergers and acquisitions that follow a fine line of ambiguity that we think
+we understand is deliberate. That is what I was referring to. With regards to Antonio Costa,
+if you haven't seen the message, we'd be happy to forward it to you. I think it was
+something like 10 or 15 days ago. With regards to competition, I'll hand it over to Emilio.
+Thanks. Okay. Regarding the competition in Spain, first of all to remind that in Spain
+we see clearly two segments of clients. First of all, the high-end clients where we have a
+very strong position based on our superior proposal. Our ecosystem and network and brand
+commercial approach permit to be very optimistic, even taking into account the
+effort of our competitors to gain market share. The fact is that we are winning market share and
+we are maintaining the lowest chance in this segment. In the low-end segment, we have to
+say that we are competing very well. That's true. That is a more competitive segment where
+Vodafone and Digi clearly are trying to push the fat. If you see the portability numbers,
+it's that Telefónica Spain clearly maintains a very good performance comparing with this
+competitor. Again, we think that our superior network within our superior proposal in terms
+of ecosystem, even in the low-end and the approach that we have in terms of customer service
+that at the end is the more sustainable competitive advantage,
+permit that to be again a positive in the trends with our competitors. The efforts of
+these two competitors in the low-end, at least we don't see that it affects too much
+to Telefónica. Thank you. At this time, no further questions will be taken.
+Everybody, for your quality time, you've heard what our analysis of the data is and
+what our commitments are in a qualitative and quantitative way for 2026 and moving forward.
+You have channels of communication with us that are ongoing and open, so if there's any
+questions that remain to be answered, we'll be delighted to address them and share with you
+our analysis. Have a great day, everybody. Thanks.

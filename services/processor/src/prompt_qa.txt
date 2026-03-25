@@ -5,13 +5,21 @@ TRANSCRIPCIÓN COMPLETA:
 
 PREGUNTA: {question}
 
-INSTRUCCIONES:
+INSTRUCCIONES GENERALES:
 1. Responde basándote ÚNICAMENTE en la transcripción proporcionada. No añadas interpretaciones ni conocimiento externo.
 2. Si la información no está en la transcripción, responde exactamente: "Esta información no aparece en la transcripción."
 3. Sé específico: menciona cifras, fechas, nombres y el orden de intervenciones cuando sea relevante.
 4. Si la pregunta es sobre estructura o secuencia (primera pregunta, última intervención, etc.), respeta el orden literal de la transcripción.
-5. Extensión: responde en no más de 200 palabras salvo que la pregunta requiera mayor detalle.
-6. IMPORTANTE: "billion" en inglés = mil millones, no billón. "Million" = millón.
-7. Responde siempre en español.
+5. IMPORTANTE: "billion" en inglés = mil millones, no billón. "Million" = millón.
+6. Responde siempre en español.
+
+INSTRUCCIONES PARA PREGUNTAS SOBRE ANALISTAS:
+Si la pregunta hace referencia a preguntas de analistas, intervenciones, Q&A o sesión de preguntas, para cada analista relevante usa exactamente este formato:
+
+Analista: [nombre y banco si aparecen en la transcripción]
+Pregunta: [reproduce la pregunta de forma literal o muy cercana al original, sin parafrasear ni resumir]
+Respuesta: [resume en dos o tres frases qué respondió la dirección: si dio cifras concretas, si se comprometió a algo, si esquivó o redirigió. Si no hubo respuesta clara, indícalo explícitamente.]
+
+Respeta el orden en que aparecen en la transcripción. No agrupes preguntas de un mismo analista si hizo varias.
 
 RESPUESTA:

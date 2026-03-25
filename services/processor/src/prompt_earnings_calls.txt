@@ -13,20 +13,23 @@ Extrae únicamente declaraciones explícitas sobre el futuro de la compañía: g
 SECCIÓN 2 — PERSPECTIVAS DEL SECTOR
 Extrae lo que la dirección dice sobre el entorno macroeconómico, la industria, la competencia, los cambios regulatorios o tecnológicos que se esperan. Solo lo que ellos mencionan; no aportes contexto externo. No añadas observaciones generales del sector que no aparezcan explícitamente en la transcripción.
 ---
-SECCIÓN 3 — INQUIETUDES DE LOS ANALISTAS
-Esta es la sección más importante. Sigue estos pasos en orden:
-PASO 1: Recorre la transcripción de principio a fin e identifica CADA pregunta formulada por un analista. Para cada una, incluye:
-- Número de orden
-- Nombre del analista y banco, si aparecen en la transcripción
-- Descripción detallada de la pregunta: qué pide exactamente, qué métrica o situación cuestiona, y qué preocupación subyace
-- Respuesta breve de la dirección: en dos o tres frases, resume qué respondió la dirección, si dio cifras concretas, si se comprometió a algo, o si esquivó la pregunta
-PASO 2: Con esa lista, responde:
-a) TEMAS MÁS REPETIDOS: Agrupa las preguntas por tema e indica cuántas preguntas corresponden a cada tema y qué analistas las formularon. Ordena por frecuencia descendente.
-b) PREOCUPACIONES PRINCIPALES: ¿Qué subyace en las preguntas? Identifica la inquietud real detrás de cada bloque temático (ej: si varios preguntan por el capex, la inquietud real puede ser la presión sobre el flujo de caja libre).
-c) PREGUNTAS SIN RESPUESTA CLARA: Señala preguntas donde la dirección esquivó, respondió de forma vaga, redirigió, o dijo explícitamente que no puede dar detalles hasta completar la revisión estratégica. Para cada una, indica textualmente qué respondió la dirección.
+SECCIÓN 3 — PREGUNTAS DE LOS ANALISTAS
+Esta es la sección más importante. Recorre la transcripción de principio a fin e identifica CADA pregunta formulada por un analista. Para cada una, escribe un bloque con el siguiente formato exacto:
+
+Analista: [nombre y banco si aparecen en la transcripción]
+Pregunta: [reproduce la pregunta de forma literal o muy cercana al original, sin parafrasear ni resumir]
+Respuesta: [resume en dos o tres frases qué respondió exactamente la dirección: si dio cifras concretas, si se comprometió a algo, si esquivó la pregunta o redirigió. Si no hubo respuesta clara, indícalo explícitamente.]
+
+Escribe un bloque por cada pregunta, en el orden en que aparecen en la transcripción. No agrupes preguntas de un mismo analista si hizo varias.
+
+Una vez listados todos los bloques, añade:
+
+RESUMEN DE TEMAS:
+Agrupa las preguntas por tema e indica cuántas corresponden a cada uno y qué analistas las formularon. Ordena por frecuencia descendente. Para cada bloque temático, identifica la inquietud real que subyace (ej: si varios preguntan por el capex, la inquietud real puede ser la presión sobre el flujo de caja libre).
 ---
 REGLAS ABSOLUTAS:
 - Nada de datos históricos salvo que sirvan de base para una proyección explícita.
 - Si algo no aparece en la transcripción, escribe "no mencionado".
 - Solo español. Sin negritas, sin asteriscos.
-- Máximo 1500 palabras en total.
+- Sin límite de palabras en la Sección 3: incluye todos los bloques de preguntas aunque sean muchos.
+- Las Secciones 1 y 2 juntas no deben superar 400 palabras.

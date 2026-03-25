@@ -14,7 +14,7 @@ class GroqSummarizer:
     """
 
     def __init__(self):
-        print(f"🤖 Inicializando Groq Summarizer")
+        print(f"Inicializando Groq Summarizer")
         print(f"   Modelo: {GROQ_MODEL}")
 
         if not GROQ_API_KEY:
@@ -32,7 +32,7 @@ class GroqSummarizer:
         """
         try:
             self.client.models.list()
-            print(f"   ✅ Groq disponible con modelo '{self.model}'")
+            print(f"   Groq disponible con modelo '{self.model}'")
         except Exception as e:
             print(f"   ⚠️  No se pudo conectar a Groq: {e}")
             print(f"   💡 Verifica que GROQ_API_KEY sea correcta")
@@ -86,21 +86,16 @@ class GroqSummarizer:
     def generate_answer(
         self,
         question: str,
-        context_chunks: list,
+        transcript: str,
         empresa: Optional[str] = None,
     ) -> Optional[str]:
         """
-        Genera una respuesta basada en chunks de contexto (para RAG)
+        Genera una respuesta basada en la transcripción completa
         """
-        if not context_chunks:
-            return "No se encontró información relevante para responder a tu pregunta."
+        if not transcript or len(transcript.strip()) < 100:
+            return "No se encontró transcripción para responder a tu pregunta."
 
-        context = "\n\n".join([
-            f"[Fragmento {i+1}]: {chunk}"
-            for i, chunk in enumerate(context_chunks[:5])
-        ])
-
-        prompt = self._create_qa_prompt(question, context, empresa)
+        prompt = self._create_qa_prompt(question, transcript, empresa)
 
         try:
             response = self.client.chat.completions.create(
@@ -117,7 +112,7 @@ class GroqSummarizer:
     def _create_qa_prompt(
         self,
         question: str,
-        context: str,
+        transcript: str,
         empresa: Optional[str] = None
     ) -> str:
         empresa_text = f" de {empresa}" if empresa else ""
@@ -135,6 +130,6 @@ class GroqSummarizer:
         return (
             template
             .replace("{empresa_text}", empresa_text)
-            .replace("{context}", context)
+            .replace("{context}", transcript)
             .replace("{question}", question)
         )

@@ -9,6 +9,28 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 from faiss_manager import FAISSManager
 from summarizer import GroqSummarizer
+from db import mysql_conn
+
+
+def get_transcript(empresa: str) -> tuple:
+    """Obtiene la transcripción completa de una empresa desde MySQL."""
+    conn = mysql_conn()
+    cur = conn.cursor()
+    try:
+        cur.execute(
+            """
+            SELECT texto_transcrito FROM reports
+            WHERE empresa = %s AND procesado = 1
+            ORDER BY fecha DESC
+            LIMIT 1
+            """,
+            (empresa,)
+        )
+        result = cur.fetchone()
+        return result[0] if result else None
+    finally:
+        cur.close()
+        conn.close()
 
 
 def print_separator(char='=', length=80):
@@ -37,9 +59,9 @@ def show_stats():
 
 
 def search_interactive():
-    """Modo interactivo de búsqueda con RAG y filtro automático"""
+    """Modo interactivo de búsqueda con transcripción completa"""
     print_separator()
-    print("🔍 BÚSQUEDA INTERACTIVA CON RAG")
+    print("🔍 BÚSQUEDA INTERACTIVA — TRANSCRIPCIÓN COMPLETA")
     print_separator()
     print("\nEscribe 'exit' para salir\n")
 
@@ -48,7 +70,7 @@ def search_interactive():
 
     while True:
         try:
-            query = input("🔍 Pregunta: ").strip()
+            query = input("Pregunta: ").strip()
 
             if query.lower() in ['exit', 'quit', 'salir']:
                 print("\n👋 ¡Hasta luego!")
@@ -56,128 +78,48 @@ def search_interactive():
 
             if not query:
                 continue
-            
-            # 🆕 AUTO-DETECTAR EMPRESA en la pregunta
+
+            # Auto-detectar empresa en la pregunta
             empresas_disponibles = manager.get_all_empresas()
-            empresas_mencionadas = []
-            for empresa in empresas_disponibles:
-                if empresa.lower() in query.lower():
-                    empresas_mencionadas.append(empresa)
-            
-            # Solo filtrar si menciona UNA empresa (no comparaciones)
+            empresas_mencionadas = [e for e in empresas_disponibles if e.lower() in query.lower()]
+
             if len(empresas_mencionadas) == 1:
-                empresa_filter = empresas_mencionadas[0]
-                print(f"🔍 Filtrando automáticamente por: {empresa_filter}")
+                empresa = empresas_mencionadas[0]
+                print(f"🏢 Empresa detectada: {empresa}")
             elif len(empresas_mencionadas) > 1:
-                empresa_filter = None
-                print(f"🔍 Comparación detectada: {', '.join(empresas_mencionadas)} → buscando en ambas")
+                print(f"⚠️  Varias empresas detectadas: {', '.join(empresas_mencionadas)}")
+                print(f"   Usando la primera: {empresas_mencionadas[0]}")
+                empresa = empresas_mencionadas[0]
+            elif empresas_disponibles:
+                empresa = empresas_disponibles[0]
+                print(f"🏢 Usando empresa por defecto: {empresa}")
             else:
-                empresa_filter = None
-            
-            # Traducir términos financieros clave ES → EN
-            translations = {
-                'ingresos': 'revenue',
-                'beneficios': 'profit',
-                'deuda': 'debt',
-                'trimestre': 'quarter',
-                'semestre': 'half',
-                'dividendo': 'dividend',
-                'acciones': 'shares',
-                'crecimiento': 'growth',
-                'resultados': 'results',
-                'ventas': 'sales',
-                'facturación': 'revenue',
-                'ganancias': 'earnings',
-                'pérdidas': 'losses',
-                'margen': 'margin',
-                'capex': 'capex',
-                'ebitda': 'ebitda',
-                'flujo': 'cash flow',
-                'caja': 'cash',
-                'apalancamiento': 'leverage',
-                'latinoamérica': 'latin america',
-                'países': 'countries',
-                'vendido': 'sold sale',
-                'venta': 'sale',
-                'comprado': 'acquired',
-                'adquisición': 'acquisition',
-            }
-            query_en = query.lower()
-            for es, en in translations.items():
-                query_en = query_en.replace(es, en)
-
-            # Buscar con ambas queries y combinar
-            print("\n🔎 Buscando en índice FAISS...")
-            
-            # 🆕 Si es comparación, asegurar chunks de ambas empresas
-            if empresas_mencionadas and len(empresas_mencionadas) > 1:
-                # Buscar chunks de cada empresa por separado para garantizar mezcla
-                all_results = []
-                for empresa in empresas_mencionadas:
-                    results_empresa_es = manager.search(query, k=10, filter_empresa=empresa)
-                    results_empresa_en = manager.search(query_en, k=10, filter_empresa=empresa)
-                    
-                    # Combinar y eliminar duplicados de esta empresa
-                    seen_empresa = set()
-                    results_empresa = []
-                    for r in results_empresa_es + results_empresa_en:
-                        pos = r[0].get('index_position')
-                        if pos not in seen_empresa:
-                            seen_empresa.add(pos)
-                            results_empresa.append(r)
-                    
-                    # Tomar top 5 de ESTA empresa (garantiza diversidad)
-                    results_empresa = sorted(results_empresa, key=lambda x: x[1], reverse=True)[:5]
-                    all_results.extend(results_empresa)
-                
-                # Ya tenemos 5 de cada empresa, no hace falta reducir más
-                results = all_results
-            else:
-                # Búsqueda normal (una empresa o sin filtro)
-                results_es = manager.search(query, k=7, filter_empresa=empresa_filter)
-                results_en = manager.search(query_en, k=7, filter_empresa=empresa_filter)
-                
-                # Combinar evitando duplicados
-                seen = set()
-                results = []
-                for r in results_es + results_en:
-                    pos = r[0].get('index_position')
-                    if pos not in seen:
-                        seen.add(pos)
-                        results.append(r)
-                results = sorted(results, key=lambda x: x[1], reverse=True)[:10]
-
-            if not results:
-                print("❌ No se encontraron resultados\n")
+                print("❌ No hay empresas procesadas en la base de datos")
                 continue
 
-            # Mostrar resultados
-            print(f"\n✅ Encontrados {len(results)} resultados:\n")
+            # Obtener transcripción completa de MySQL
+            print(f"📄 Cargando transcripción de {empresa}...")
+            transcript = get_transcript(empresa)
 
-            context_chunks = []
-            for i, (meta, score) in enumerate(results, 1):
-                print(f"--- Resultado {i} (similitud: {score:.3f}) ---")
-                print(f"🏢 Empresa: {meta['empresa']}")
-                print(f"📅 Fecha: {meta.get('fecha', 'N/A')}")
-                print(f"📄 Chunk: {meta['chunk_index'] + 1}/{meta['total_chunks']}")
-                print(f"💬 Texto: {meta['text'][:200]}...")
-                print()
-                context_chunks.append(meta['text'])
+            if not transcript:
+                print(f"❌ No se encontró transcripción para {empresa}\n")
+                continue
 
-            # Generar respuesta con Groq
+            print(f"   ✅ {len(transcript.split())} palabras cargadas")
+
+            # Generar respuesta con la transcripción completa
             print("🤖 Generando respuesta con Groq...")
             answer = summarizer.generate_answer(
                 question=query,
-                context_chunks=context_chunks,
-                empresa=results[0][0].get('empresa') if results else None,
+                transcript=transcript,
+                empresa=empresa,
             )
 
             if answer:
                 print(f"\n💡 RESPUESTA:")
                 print(f"{answer}\n")
             else:
-                print("\n⚠️  No se pudo generar respuesta con Groq")
-                print("💡 Pero aquí tienes los fragmentos relevantes encontrados arriba\n")
+                print("\n⚠️  No se pudo generar respuesta\n")
 
             print_separator('-')
             print()
@@ -189,47 +131,49 @@ def search_interactive():
             print(f"\n❌ Error: {e}\n")
 
 
-def search_once(query: str, k: int = 10):
-    """Realizar una única búsqueda"""
+def search_once(query: str):
+    """Realizar una única consulta con transcripción completa"""
     print_separator()
-    print(f"🔍 BÚSQUEDA: {query}")
+    print(f"🔍 CONSULTA: {query}")
     print_separator()
 
     manager = FAISSManager()
-    
-    # Auto-detectar empresa
-    empresas_disponibles = manager.get_all_empresas()
-    empresas_mencionadas = []
-    for empresa in empresas_disponibles:
-        if empresa.lower() in query.lower():
-            empresas_mencionadas.append(empresa)
-    
-    # Solo filtrar si menciona UNA empresa
-    if len(empresas_mencionadas) == 1:
-        empresa_filter = empresas_mencionadas[0]
-        print(f"🔍 Filtrando por: {empresa_filter}")
-    elif len(empresas_mencionadas) > 1:
-        empresa_filter = None
-        print(f"🔍 Comparación: {', '.join(empresas_mencionadas)} → sin filtro")
-    else:
-        empresa_filter = None
-    
-    results = manager.search(query, k=k, filter_empresa=empresa_filter)
+    summarizer = GroqSummarizer()
 
-    if not results:
-        print("\n❌ No se encontraron resultados")
+    empresas_disponibles = manager.get_all_empresas()
+    empresas_mencionadas = [e for e in empresas_disponibles if e.lower() in query.lower()]
+
+    if len(empresas_mencionadas) >= 1:
+        empresa = empresas_mencionadas[0]
+        print(f"🏢 Empresa detectada: {empresa}")
+    elif empresas_disponibles:
+        empresa = empresas_disponibles[0]
+        print(f"🏢 Usando empresa por defecto: {empresa}")
+    else:
+        print("❌ No hay empresas procesadas en la base de datos")
         return
 
-    print(f"\n✅ Encontrados {len(results)} resultados:\n")
+    print(f"📄 Cargando transcripción de {empresa}...")
+    transcript = get_transcript(empresa)
 
-    for i, (meta, score) in enumerate(results, 1):
-        print(f"--- Resultado {i} (similitud: {score:.3f}) ---")
-        print(f"🏢 Empresa: {meta['empresa']}")
-        print(f"📅 Fecha: {meta.get('fecha', 'N/A')}")
-        print(f"🔗 URL: {meta.get('url', 'N/A')}")
-        print(f"📄 Chunk: {meta['chunk_index'] + 1}/{meta['total_chunks']}")
-        print(f"\n💬 Texto:")
-        print(f"{meta['text']}\n")
+    if not transcript:
+        print(f"❌ No se encontró transcripción para {empresa}")
+        return
+
+    print(f"   ✅ {len(transcript.split())} palabras cargadas")
+    print("🤖 Generando respuesta con Groq...")
+
+    answer = summarizer.generate_answer(
+        question=query,
+        transcript=transcript,
+        empresa=empresa,
+    )
+
+    if answer:
+        print(f"\n💡 RESPUESTA:")
+        print(f"{answer}\n")
+    else:
+        print("\n⚠️  No se pudo generar respuesta")
 
 
 def main():

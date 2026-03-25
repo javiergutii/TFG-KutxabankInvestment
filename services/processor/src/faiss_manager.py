@@ -26,7 +26,7 @@ class FAISSManager:
 
         os.makedirs(FAISS_INDEX_DIR, exist_ok=True)
 
-        print(f"🧠 Cargando modelo de embeddings: {EMBEDDING_MODEL}")
+        print(f"Cargando modelo de embeddings: {EMBEDDING_MODEL}")
         self.model = SentenceTransformer(EMBEDDING_MODEL)
         self.dimension = self.model.get_sentence_embedding_dimension()
         print(f"   ✅ Modelo cargado (dimensión: {self.dimension})")

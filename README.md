@@ -1,5 +1,7 @@
 # Iniciar el proyecto
 
+
+
 ## De cero:
 
 docker compose up -d db extractor
@@ -10,14 +12,22 @@ docker compose up --build
 docker exec -it tfg-ollama-1 ollama pull qwen2.5:14b
 docker compose exec ollama ollama list
 
+
+
 ## Extractor
+docker compose up -d
 docker compose --profile manual run --rm extractor
 
+
+
 ## Processor
+
 #### Ejecución manual
 docker compose run --rm processor python main.py
 #### Ver los logs
 docker compose logs processor --follow
+
+
 
 ## Consultas
 #### Ejecutar queries sobre empresas
@@ -27,14 +37,18 @@ docker compose run --rm processor python query_faiss.py search
 docker compose run --rm processor python regenerate_summaries.py
 
 
+
 -----------------------------------------------------------------------------------
+
+
+
 # Comandos extra:
 
 #### Mirar la bbdd 
 docker compose exec db mysql -u reports_user -preports_pass -D reports -e "SELECT id, empresa, procesado, LENGTH(resumen) as resumen_length FROM reports;"
 
 #### Cambiar el estado del report de procesado a no procesado
-docker compose exec db mysql -u reports_user -preports_pass -D reports -e "UPDATE reports SET procesado = 0 WHERE id = 1;"
+docker compose exec db mysql -u reports_user -preports_pass -D reports -e "UPDATE reports SET procesado = 0 WHERE id = 3;"
 
 #### Borrar el resumen que tenía
 docker compose exec db mysql -u reports_user -preports_pass -D reports -e "UPDATE reports SET resumen = '' WHERE id = 1;"

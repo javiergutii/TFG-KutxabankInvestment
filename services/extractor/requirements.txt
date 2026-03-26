@@ -3,6 +3,7 @@ playwright
 mysql-connector-python
 requests
 python-dotenv
+yt-dlp
 
 # 🆕 Dependencias del processor (para ejecutarlo integrado)
 sentence-transformers==2.5.1

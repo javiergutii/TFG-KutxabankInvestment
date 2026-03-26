@@ -2,28 +2,35 @@
 main.py — Extractor de streams con sistema de estrategias adaptativo.
 """
 import asyncio
-import sys
 import os
 
 from db import wait_for_mysql, insert_report, save_transcription_to_file
 from scraping import extract_candidates_from_har, choose_best_stream
 from strategy_manager import StrategyManager
-from video import download_with_ffmpeg, extract_audio, transcribe
+from video import download_with_ffmpeg, download_with_ytdlp, extract_audio, transcribe, AUDIO_COMPRESSED, _needs_ytdlp
 from config import (
     TARGET_URL, TIMEOUT_MS, VIDEO_FILE, AUDIO_FILE, EMPRESA, HAR_PATH,
     SHAREPOINT_ENABLED,
     FORM_FIRST_NAME, FORM_LAST_NAME, FORM_EMAIL, FORM_COMPANY,
-    FORM_COUNTRY_TEXT, FORM_OCCUPATION_TEXT,
+    FORM_COUNTRY_TEXT, FORM_OCCUPATION_TEXT, ARTIFACTS_DIR,
 )
+
+import glob
 
 if SHAREPOINT_ENABLED:
     from sharepoint_uploader import create_uploader_from_env
 
 
 async def main():
+
+    for f in glob.glob(os.path.join(ARTIFACTS_DIR, "*.mp4")) + \
+         glob.glob(os.path.join(ARTIFACTS_DIR, "*.mp3")) + \
+         glob.glob(os.path.join(ARTIFACTS_DIR, "*.wav")):
+        os.remove(f)
+
+    print(f"🗑️  Limpiado: {f}")
     wait_for_mysql()
 
-    # Datos del formulario centralizados
     form_data = {
         "first_name":      FORM_FIRST_NAME,
         "last_name":       FORM_LAST_NAME,
@@ -33,47 +40,53 @@ async def main():
         "occupation_text": FORM_OCCUPATION_TEXT,
     }
 
-    # ── 1) Detectar stream con el sistema de estrategias ──────────────────
+    # ── 1) Detectar stream ────────────────────────────────────────────────
     print("\n" + "="*80)
     print("🔍 FASE 1: EXTRACCIÓN DE STREAM")
     print("="*80)
 
-    manager = StrategyManager(form_data=form_data, timeout_ms=TIMEOUT_MS)
-    stream_live = await manager.find_stream(TARGET_URL)
+    # Vimeo y similares: yt-dlp descarga directamente desde la URL original
+    if _needs_ytdlp(TARGET_URL):
+        print(f"⚡ Dominio soportado por yt-dlp, saltando scraping...")
+        best = TARGET_URL
+    else:
+        manager = StrategyManager(form_data=form_data, timeout_ms=TIMEOUT_MS)
+        stream_live = await manager.find_stream(TARGET_URL)
 
-    print("\nSTREAM live:", stream_live)
+        print("\nSTREAM live:", stream_live)
 
-    # Complementar con candidatos del HAR
-    # Complementar con candidatos del HAR
-    cands = extract_candidates_from_har(HAR_PATH, limit=200)
+        cands = extract_candidates_from_har(HAR_PATH, limit=200)
+        print(f"\n📡 Candidatos HAR ({len(cands)}):")
+        for c in cands[:20]:
+            print(f"   {c[:120]}")
 
-    print(f"\n📡 Candidatos HAR ({len(cands)}):")
-    for c in cands[:20]:
-        print(f"   {c[:120]}")
+        best = stream_live or choose_best_stream(None, cands)
 
-    best = choose_best_stream(stream_live, cands)
-
-    if not best:
-        print("\n⚠️  Historial de estrategias conocidas:")
-        stats = manager.get_domain_stats()
-        for domain, strategy in stats["domains"].items():
-            print(f"   {domain}: {strategy}")
-        raise SystemExit("❌ No se encontró URL .m3u8/.mpd/.mp4. Revisa debug.png")
+        if not best:
+            print("\n⚠️  Historial de estrategias conocidas:")
+            stats = manager.get_domain_stats()
+            for domain, strategy in stats["domains"].items():
+                print(f"   {domain}: {strategy}")
+            raise SystemExit("❌ No se encontró URL .m3u8/.mpd/.mp4. Revisa debug.png")
 
     print("\n✅ URL final:", best)
 
-    # ── 2) Descargar vídeo ────────────────────────────────────────────────
+    # ── 2) Descargar y extraer audio ──────────────────────────────────────
     print("\n" + "="*80)
     print("⬇️  FASE 2: DESCARGA DE VÍDEO")
     print("="*80)
-    download_with_ffmpeg(best, VIDEO_FILE)
 
-    # ── 3) Audio y transcripción ──────────────────────────────────────────
+    if _needs_ytdlp(TARGET_URL):
+        download_with_ytdlp(TARGET_URL, AUDIO_COMPRESSED)
+    else:
+        download_with_ffmpeg(best, VIDEO_FILE)
+        extract_audio(VIDEO_FILE, AUDIO_FILE)
+
+    # ── 3) Transcripción ──────────────────────────────────────────────────
     print("\n" + "="*80)
     print("🎧 FASE 3: TRANSCRIPCIÓN")
     print("="*80)
-    extract_audio(VIDEO_FILE, AUDIO_FILE)
-    texto_final = transcribe(AUDIO_FILE)
+    texto_final = transcribe(AUDIO_COMPRESSED)
 
     print("\n--- MUESTRA DEL TEXTO ---")
     print(texto_final[:2000])

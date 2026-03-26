@@ -1,0 +1,63 @@
+RESUMEN EJECUTIVO - Amadeus
+================================================================================
+
+SECCIÓN 1 — PERSPECTIVAS DE LA COMPAÑÍA
+
+Amadeus espera un crecimiento de ingresos del grupo a una tasa de crecimiento anual compuesta (CAGR) de un dígito alto en el período de 2026 a 2028, con una expansión de la margen de beneficio ajustado y un crecimiento de las ganancias por acción (EPS) ajustadas diluidas a una tasa de crecimiento anual compuesta del 10%. También se espera generar un flujo de efectivo libre sólido y consistente, con un crecimiento a una tasa de CAGR de un dígito alto. La empresa tiene como objetivo distribuir dividendos y realizar compras de acciones para crear valor para los accionistas.
+
+SECCIÓN 2 — PERSPECTIVAS DEL SECTOR
+
+No se mencionaron perspectivas de sector en esta conferencia.
+
+SECCIÓN 3 — PREGUNTAS DE LOS ANALISTAS
+
+Analistas identificados: 7 — Michael Brist, George Webb, James Goodall, Toby, Alex Irving, Christina, Deshys
+
+Analista 1: Michael Brist, UBS
+Pregunta: 
+1. ¿Cuál es la preocupación de que los clientes de aerolíneas puedan expandirse orgánicamente en lugar de comprar módulos de Amadeus?
+2. ¿Están trabajando con OpenAI o Anthropic?
+Respuesta: La empresa está trabajando con Google y Microsoft, y también está en diálogo con otras plataformas de IA. Los clientes de aerolíneas están enfocados en la generación de ingresos y la eficiencia, y Amadeus puede ayudarles a lograrlo.
+
+Analista 2: George Webb, Morgan Stanley
+Pregunta: 
+1. ¿Cómo caracterizaría la estrategia operativa de Amadeus con respecto a la IA?
+2. ¿Cómo se ve el pipeline para Nevio?
+Respuesta: Amadeus ha estado trabajando con IA durante 20 años y está implementando nuevas características y funciones en su portfolio. La empresa está en una buena posición para orquestar la necesidad de plataformas de IA en el sector de viajes. El pipeline para Nevio es fuerte, con varias aerolíneas importantes comprometidas con la plataforma.
+
+Analista 3: James Goodall, Redburn
+Pregunta: 
+1. ¿Cómo puede Amadeus compartir los beneficios de los ingresos más altos de las aerolíneas?
+2. ¿Por qué no se realizó una recompra de acciones más grande?
+3. ¿Hay una suposición de recompra de acciones en la guía de EPS?
+Respuesta: Amadeus puede compartir los beneficios a través de una mayor facturación por pasajero y una mayor eficiencia. La empresa está comprometida con la creación de valor para los accionistas y ha anunciado una recompra de acciones de 500 millones de euros. La guía de EPS incluye una suposición de recompra de acciones.
+
+Analista 4: Toby, JP Morgan
+Pregunta: 
+1. ¿Qué impulsa el crecimiento potencialmente más rápido de las reservas en 2026?
+2. ¿Cómo se verá afectado el crecimiento del ingreso por reserva?
+Respuesta: El crecimiento de las reservas se debe a la firma de nuevos clientes, el aumento de los acuerdos de distribución de NDC y la reintroducción de contenido. El crecimiento del ingreso por reserva se verá afectado por la mezcla de reservas y los precios.
+
+Analista 5: Alex Irving, Bernstein
+Pregunta: 
+1. ¿Cómo está utilizando Amadeus las herramientas de IA para mejorar la productividad de sus desarrolladores de software?
+2. ¿Refleja la adquisición de Skylink la visión de la empresa sobre la evolución de la industria de viajes?
+Respuesta: Amadeus está utilizando herramientas de IA para mejorar la productividad de sus desarrolladores de software y espera que la eficiencia mejore con el tiempo. La adquisición de Skylink es parte de la estrategia de la empresa para mejorar la experiencia del usuario y la productividad en la industria de viajes.
+
+Analista 6: Deshys
+Pregunta: 
+1. ¿Cómo ve Amadeus el impacto de la IA en la industria de viajes?
+2. ¿Cómo puede la empresa aprovechar las oportunidades de la IA?
+Respuesta: Amadeus ve la IA como una oportunidad para mejorar la eficiencia y la experiencia del usuario en la industria de viajes. La empresa está trabajando para aprovechar las oportunidades de la IA a través de la implementación de nuevas características y funciones en su portfolio.
+
+Analista 7: (no se proporcionó el nombre del analista)
+Pregunta: No se proporcionó
+Respuesta: No se proporcionó
+
+RESUMEN DE TEMAS:
+- IA y tecnología: 4 preguntas, formuladas por Michael Brist, George Webb, Alex Irving y Deshys. La inquietud real es cómo Amadeus está utilizando la IA para mejorar la eficiencia y la experiencia del usuario en la industria de viajes.
+- Crecimiento y perspectivas: 2 preguntas, formuladas por James Goodall y Toby. La inquietud real es cómo Amadeus puede compartir los beneficios de los ingresos más altos de las aerolíneas y cómo se verá afectado el crecimiento del ingreso por reserva.
+- Adquisiciones y estrategia: 1 pregunta, formulada por Alex Irving. La inquietud real es cómo la adquisición de Skylink refleja la visión de la empresa sobre la evolución de la industria de viajes.
+
+================================================================================
+Reporte ID: 3

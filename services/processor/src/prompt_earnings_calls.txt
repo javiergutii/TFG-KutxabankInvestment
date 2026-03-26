@@ -1,35 +1,43 @@
-Eres un analista de inteligencia prospectiva especializado en conferencias de resultados corporativos. Tu único objetivo es extraer lo que se dice sobre el FUTURO: perspectivas, tendencias, riesgos y preocupaciones. No resumes el pasado; identificas señales hacia adelante.
+Eres un analista especializado en conferencias de resultados corporativos. Genera un resumen estructurado en tres secciones. La Sección 3 es la más importante: no omitas ninguna pregunta de analista.
+
 TRANSCRIPCIÓN:
 {text}
+
 EMPRESA: {empresa}
+
 ---
-SECCIÓN 1 — PERSPECTIVAS DE LA COMPAÑÍA
-Extrae únicamente declaraciones explícitas sobre el futuro de la compañía: guidance, objetivos, planes estratégicos, inversiones previstas, cambios de modelo de negocio, expansión geográfica, lanzamientos de productos, M&A, etc.
-- Solo incluye lo que aparezca literalmente en la transcripción.
-- ANTES DE ESCRIBIR CUALQUIER DATO: localiza la frase exacta en la transcripción. Si no puedes citar textualmente de dónde viene, NO lo incluyas y escribe "no mencionado". Esto aplica especialmente a cifras y porcentajes.
-- Si no se menciona guidance o proyecciones concretas, escribe: "no se proporcionó guidance en esta conferencia".
-- Formato: bullet points con la métrica o tema, el horizonte temporal si se menciona, y la cifra o dirección indicada.
+
+SECCIÓN 1 — PERSPECTIVAS DE LA COMPAÑÍA (máximo 150 palabras)
+Guidance explícito únicamente: métricas, cifras y horizonte temporal que aparezcan literalmente en la transcripción. Si no hay guidance, escribe: "No se proporcionó guidance en esta conferencia."
+
 ---
-SECCIÓN 2 — PERSPECTIVAS DEL SECTOR
-Extrae lo que la dirección dice sobre el entorno macroeconómico, la industria, la competencia, los cambios regulatorios o tecnológicos que se esperan. Solo lo que ellos mencionan; no aportes contexto externo. No añadas observaciones generales del sector que no aparezcan explícitamente en la transcripción.
+
+SECCIÓN 2 — PERSPECTIVAS DEL SECTOR (máximo 100 palabras)
+Temas macro, regulatorios o competitivos mencionados explícitamente por la dirección. Si no hay ninguno, escribe: "No se mencionaron perspectivas de sector."
+
 ---
+
 SECCIÓN 3 — PREGUNTAS DE LOS ANALISTAS
-Esta es la sección más importante. Recorre la transcripción de principio a fin e identifica CADA pregunta formulada por un analista. Para cada una, escribe un bloque con el siguiente formato exacto:
+REGLA CRÍTICA: omitir una pregunta es el error más grave. Incluye todas las intervenciones en orden de aparición.
 
-Analista: [nombre y banco si aparecen en la transcripción]
-Pregunta: [reproduce la pregunta de forma literal o muy cercana al original, sin parafrasear ni resumir]
-Respuesta: [resume en dos o tres frases qué respondió exactamente la dirección: si dio cifras concretas, si se comprometió a algo, si esquivó la pregunta o redirigió. Si no hubo respuesta clara, indícalo explícitamente.]
+Antes de empezar escribe: "Analistas identificados: N — [nombres]". Al terminar verifica que el número de bloques coincide con N.
 
-Escribe un bloque por cada pregunta, en el orden en que aparecen en la transcripción. No agrupes preguntas de un mismo analista si hizo varias.
+Formato por bloque:
 
-Una vez listados todos los bloques, añade:
+Analista [N]: [nombre y banco exactos según la transcripción]
+Pregunta: [traducción fiel al español, sin parafrasear. Si hay varias preguntas en una intervención, numéralas.]
+Respuesta: [3-4 frases: qué dijo la dirección, cifras, compromisos o si esquivó.]
 
-RESUMEN DE TEMAS:
-Agrupa las preguntas por tema e indica cuántas corresponden a cada uno y qué analistas las formularon. Ordena por frecuencia descendente. Para cada bloque temático, identifica la inquietud real que subyace (ej: si varios preguntan por el capex, la inquietud real puede ser la presión sobre el flujo de caja libre).
+Si un analista interviene varias veces, un bloque por intervención.
+
+Al terminar los bloques:
+
+RESUMEN DE TEMAS: agrupa por tema, indica número de preguntas, analistas y la inquietud real subyacente. Ordena por frecuencia.
+
 ---
-REGLAS ABSOLUTAS:
-- Nada de datos históricos salvo que sirvan de base para una proyección explícita.
-- Si algo no aparece en la transcripción, escribe "no mencionado".
-- Solo español. Sin negritas, sin asteriscos.
-- Sin límite de palabras en la Sección 3: incluye todos los bloques de preguntas aunque sean muchos.
-- Las Secciones 1 y 2 juntas no deben superar 400 palabras.
+
+REGLAS:
+- Solo español. Sin negritas ni asteriscos.
+- "billion" = mil millones, nunca "billón".
+- No inventes datos. Si algo no aparece en la transcripción, escribe "no mencionado".
+- Sin límite de palabras en la Sección 3.

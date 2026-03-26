@@ -103,7 +103,17 @@ def process_single_report(
 
         # 4. Generar resumen
         print("📄 Generando resumen con Groq...")
-        resumen = summarizer.generate_summary(texto_limpio, empresa)
+
+
+        MAX_WORDS_FOR_SUMMARY = 8000
+        palabras = texto_limpio.split()
+        if len(palabras) > MAX_WORDS_FOR_SUMMARY:
+            print(f"   ✂️  Texto truncado de {len(palabras)} a {MAX_WORDS_FOR_SUMMARY} palabras")
+            texto_para_resumen = ' '.join(palabras[-MAX_WORDS_FOR_SUMMARY:])
+        else:
+            texto_para_resumen = texto_limpio
+
+        resumen = summarizer.generate_summary(texto_para_resumen, empresa)
         resumen_valido = bool(resumen and len(resumen) > 500)
 
         if resumen_valido:

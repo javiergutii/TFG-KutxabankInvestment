@@ -3,8 +3,8 @@ import re
 
 
 
-TARGET_URL = os.getenv("TARGET_URL", "https://edge.media-server.com/mmc/p/4phi6xni/")
-EMPRESA = os.getenv("EMPRESA", "Telefónica")
+TARGET_URL = os.getenv("TARGET_URL", "")
+EMPRESA = os.getenv("EMPRESA", "")
 
 
 FECHA = os.getenv("FECHA", "")  # opcional; si viene vacío usamos now()

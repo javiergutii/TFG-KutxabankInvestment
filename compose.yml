@@ -26,17 +26,20 @@ services:
         HTTPS_PROXY: http://proxy.norbolsa.es:8080
         NO_PROXY: localhost,127.0.0.1,::1,db
     environment:
+
       # MySQL
       MYSQL_HOST: db
       MYSQL_PORT: "3306"
       MYSQL_DATABASE: reports
       MYSQL_USER: reports_user
       MYSQL_PASSWORD: reports_pass
+
       # Metadata / app config
-      EMPRESA: "Tubacex"                          # antes COMPANY_NAME — alinear con config.py
+      EMPRESA: "Caixa"
       VIDEO_TITLE: "Conference demo"
-      TARGET_URL: "https://connectstudio-portal.world-television.com/es/6662bf3dc17eeb24a83e4506/session?current=696f5fd3def8f23ffe1921bb"            # antes VIDEO_URL — alinear con config.py
-      FECHA: "2026-02-03 10:00"                     # antes VIDEO_DATE — alinear con config.py
+      TARGET_URL: "https://edge.media-server.com/mmc/p/ev33c56y/"
+      FECHA: "2026-02-03 10:00"
+
       # Datos del formulario de registro
       FORM_FIRST_NAME: "Javier"
       FORM_LAST_NAME: "Gutiérrez"
@@ -44,6 +47,7 @@ services:
       FORM_COMPANY: "Empresa A"
       FORM_COUNTRY_TEXT: "sp"
       FORM_OCCUPATION_TEXT: "o"
+
       # Configuración del processor
       CHUNK_SIZE: "200"
       CHUNK_OVERLAP: "100"
@@ -51,14 +55,17 @@ services:
       FAISS_INDEX_DIR: "/app/shared/faiss_index"
       FAISS_INDEX_FILE: "index.faiss"
       FAISS_METADATA_FILE: "metadata.pkl"
+
       # Groq
       GROQ_API_KEY: ${GROQ_API_KEY}                 # 🔑 leer del .env, no hardcodear
-      GROQ_MODEL: "llama-3.3-70b-versatile"
+      GROQ_MODEL: "moonshotai/kimi-k2-instruct" #llama-3.3-70b-versatile
       GROQ_MAX_TOKENS: "2000"
+
       # Proxy
       HTTP_PROXY: ""
       HTTPS_PROXY: ""
       NO_PROXY: "localhost,127.0.0.1,db"
+
     depends_on:
       db:
         condition: service_healthy
@@ -104,7 +111,7 @@ services:
       FAISS_METADATA_FILE: "metadata.pkl"
       # Groq
       GROQ_API_KEY: ${GROQ_API_KEY}
-      GROQ_MODEL: "llama-3.3-70b-versatile"
+      GROQ_MODEL: "moonshotai/kimi-k2-instruct"
       GROQ_MAX_TOKENS: "2000"
     depends_on:
       db:

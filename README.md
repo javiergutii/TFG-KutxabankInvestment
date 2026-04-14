@@ -41,7 +41,6 @@ docker compose run --rm processor python regenerate_summaries.py
 -----------------------------------------------------------------------------------
 
 
-
 # Comandos extra:
 
 #### Mirar la bbdd 

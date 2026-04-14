@@ -1,11 +1,15 @@
-# Dependencias originales del extractor
+# Dependencias del extractor
 playwright
 mysql-connector-python
 requests
 python-dotenv
 yt-dlp
 
-# 🆕 Dependencias del processor (para ejecutarlo integrado)
+# 🆕 Formulario dinámico interactivo
+fastapi==0.111.0
+uvicorn[standard]==0.29.0
+
+# Dependencias del processor (integrado)
 sentence-transformers==2.5.1
 faiss-cpu==1.8.0
 numpy==1.26.4

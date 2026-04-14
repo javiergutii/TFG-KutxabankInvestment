@@ -26,9 +26,8 @@ services:
         HTTPS_PROXY: http://proxy.norbolsa.es:8080
         NO_PROXY: localhost,127.0.0.1,::1,db
     ports:
-      - "8000:8000"        # 🆕 Formulario dinámico accesible en http://localhost:8000
+      - "8000:8000"
     environment:
-
       # MySQL
       MYSQL_HOST: db
       MYSQL_PORT: "3306"
@@ -41,9 +40,6 @@ services:
       VIDEO_TITLE: "Conference demo"
       TARGET_URL: "https://edge.media-server.com/mmc/p/4phi6xni/"
       FECHA: "2026-02-03 10:00"
-
-      # NOTA: Las variables FORM_* ya no son necesarias.
-      # El formulario se rellena interactivamente en http://localhost:8000
 
       # Configuración del processor
       CHUNK_SIZE: "200"
@@ -61,7 +57,18 @@ services:
       # Proxy
       HTTP_PROXY: ""
       HTTPS_PROXY: ""
-      NO_PROXY: "localhost,127.0.0.1,db"
+      NO_PROXY: "localhost,127.0.0.1,db,frontend"
+
+      # Azure AD — para validar tokens del frontend
+      AZURE_TENANT_ID: ${AZURE_TENANT_ID:-}
+      AZURE_CLIENT_ID: ${AZURE_CLIENT_ID:-}
+
+      # SharePoint
+      SHAREPOINT_ENABLED: ${SHAREPOINT_ENABLED:-false}
+      SHAREPOINT_TENANT_ID: ${SHAREPOINT_TENANT_ID:-}
+      SHAREPOINT_CLIENT_ID: ${SHAREPOINT_CLIENT_ID:-}
+      SHAREPOINT_SITE_ID: ${SHAREPOINT_SITE_ID:-}
+      SHAREPOINT_FOLDER: ${SHAREPOINT_FOLDER:-Transcripciones}
 
     depends_on:
       db:
@@ -73,9 +80,22 @@ services:
       - ./outputs:/app/outputs
       - ./shared:/app/shared
       - ./exports:/app/exports
-    profiles:
-      - manual
-    command: ["python", "-m", "main"]
+    # 🆕 Ahora arranca como API REST en lugar de script standalone
+    command: ["python", "-m", "uvicorn", "api:app", "--host", "0.0.0.0", "--port", "8000"]
+
+  # 🆕 Frontend React
+  frontend:
+    build:
+      context: ./services/frontend
+    ports:
+      - "3000:3000"
+    environment:
+      VITE_AZURE_CLIENT_ID: ${AZURE_CLIENT_ID:-TU_CLIENT_ID}
+      VITE_AZURE_TENANT_ID: ${AZURE_TENANT_ID:-TU_TENANT_ID}
+      VITE_API_URL: http://localhost:8000
+      VITE_REDIRECT_URI: http://localhost:3000
+    depends_on:
+      - extractor
 
   processor:
     build:

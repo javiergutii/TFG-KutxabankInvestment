@@ -1,17 +1,21 @@
-# Dependencias del extractor
+# ── Extractor base ────────────────────────────────────────
 playwright
 mysql-connector-python
 requests
 python-dotenv
 yt-dlp
 
-# 🆕 Formulario dinámico interactivo
+# ── API REST (reemplaza al form_server simple) ─────────────
 fastapi==0.111.0
 uvicorn[standard]==0.29.0
+pydantic>=2.0
 
-# Dependencias del processor (integrado)
+# ── Autenticación Microsoft (validar tokens JWT) ───────────
+python-jose[cryptography]==3.3.0
+httpx==0.27.2
+
+# ── Processor (integrado) ─────────────────────────────────
 sentence-transformers==2.5.1
 faiss-cpu==1.8.0
 numpy==1.26.4
 groq==0.9.0
-httpx==0.27.2

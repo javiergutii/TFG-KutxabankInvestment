@@ -4,21 +4,20 @@ session_manager.py — Gestiona toda la interacción con el navegador en una ún
 Flujo:
   1. Abre el browser y navega a la URL (un solo viaje)
   2. Detecta los campos del formulario en el DOM ya cargado
-  3. Espera a que el usuario rellene el formulario en localhost:8000
+  3. Si form_data_override viene del frontend → rellena directamente (sin formulario web)
+     Si no → espera a que el usuario rellene el formulario en localhost:8000
   4. Rellena el formulario real y captura el stream
   5. Cierra el browser
-
-De esta forma la sesión/token generado en la primera visita no caduca.
 """
 from __future__ import annotations
 import asyncio
 import os
+from typing import Optional
 
 from playwright.async_api import async_playwright, Page, BrowserContext
 
 from config import M3U8_RE, MPD_RE, MP4_RE, KEYWORDS, HAR_PATH, DEBUG_PNG, ARTIFACTS_DIR
 from form_inspector import FieldInfo, _accept_cookies, _wait_for_form, _extract_fields
-from form_server import collect_form_data
 
 
 # ──────────────────────────────────────────────────────────────────────────────
@@ -52,20 +51,16 @@ _EXCLUDE_DOMAINS = ("cdn.jsdelivr.net", "unpkg.com", "cdnjs.cloudflare.com")
 _EXCLUDE_EXTS = (".js", ".css", ".woff", ".woff2", ".png", ".jpg", ".svg", ".ico", ".json", ".html")
 
 
-
 def _is_real_stream(u: str) -> bool:
     """True solo si la URL es un stream real, no un asset estático o librería JS."""
     if not u:
         return False
-    # Excluir CDNs de librerías JS
     from urllib.parse import urlparse
     domain = urlparse(u).netloc.lower()
     if any(d in domain for d in _EXCLUDE_DOMAINS):
         return False
-    # Debe matchear patrón de stream
     if not (M3U8_RE.search(u) or MPD_RE.search(u) or MP4_RE.search(u)):
         return False
-    # No debe tener extensión de asset estático
     path = u.split("?")[0].lower()
     if any(path.endswith(ext) for ext in _EXCLUDE_EXTS):
         return False
@@ -74,15 +69,12 @@ def _is_real_stream(u: str) -> bool:
 
 def choose_best_stream(stream_live: str | None, cands: list[str]) -> str | None:
     all_urls = ([stream_live] if stream_live else []) + (cands or [])
-    # Prioridad 1: .m3u8 (HLS)
     for u in all_urls:
         if _is_real_stream(u) and M3U8_RE.search(u):
             return u
-    # Prioridad 2: .mpd (DASH)
     for u in all_urls:
         if _is_real_stream(u) and MPD_RE.search(u):
             return u
-    # Prioridad 3: .mp4 directo
     for u in all_urls:
         if _is_real_stream(u) and MP4_RE.search(u):
             return u
@@ -138,7 +130,6 @@ async def _fill_field(page, field: FieldInfo, value: str):
 
 async def _fill_js_dropdown(page: Page, field: FieldInfo, text: str):
     """Maneja dropdowns JS (ng-select, react-select, custom comboboxes)."""
-    # Buscar el control cerca del label
     control = None
     for sel in ['[role="combobox"]', 'button', '[class*="select"]', '[class*="dropdown"]']:
         c = page.locator(
@@ -175,7 +166,6 @@ async def _fill_js_dropdown(page: Page, field: FieldInfo, text: str):
 
 
 async def _submit_form(page: Page) -> bool:
-    # Selectores en orden de prioridad — más específico primero
     submit_selectors = [
         'button[type="submit"]',
         'input[type="submit"]',
@@ -184,7 +174,7 @@ async def _submit_form(page: Page) -> bool:
         'button:has-text("Register")',
         'button:has-text("Continue")',
         'button:has-text("Next")',
-        'button:visible',  # último recurso: cualquier botón visible
+        'button:visible',
     ]
     submit = None
     for sel in submit_selectors:
@@ -230,22 +220,27 @@ async def _click_play(page: Page):
 
 
 # ──────────────────────────────────────────────────────────────────────────────
-# Sesión principal — todo en un único browser
+# Sesión principal
 # ──────────────────────────────────────────────────────────────────────────────
 
-async def run_session(url: str, timeout_ms: int = 45000, form_server_port: int = 8000) -> str | None:
+async def run_session(
+    url: str,
+    timeout_ms: int = 45000,
+    form_server_port: Optional[int] = 8000,
+    form_data_override: Optional[dict] = None,   # 🆕 datos del frontend React
+) -> str | None:
     """
-    Gestiona todo el proceso en una única sesión de Playwright:
-      1. Abre el browser y navega a la URL
-      2. Detecta campos del formulario
-      3. Muestra formulario web al usuario (localhost:8000)
-      4. Rellena el formulario real con los datos del usuario
-      5. Captura y devuelve la URL del stream
+    Gestiona todo el proceso en una única sesión de Playwright.
+
+    Modos de operación:
+      - form_data_override = None  → muestra formulario web al usuario (modo legacy)
+      - form_data_override = {...} → usa los datos del frontend directamente (modo API)
 
     Args:
-        url:              URL de la conferencia
-        timeout_ms:       Tiempo de espera de red tras el submit
-        form_server_port: Puerto del servidor FastAPI
+        url:                URL de la conferencia
+        timeout_ms:         Tiempo de espera de red tras el submit
+        form_server_port:   Puerto del servidor FastAPI del formulario (None en modo API)
+        form_data_override: Datos del formulario enviados desde el frontend React
 
     Returns:
         URL del stream o None
@@ -264,15 +259,12 @@ async def run_session(url: str, timeout_ms: int = 45000, form_server_port: int =
         )
         page = await context.new_page()
 
-        # Listener de stream activo durante toda la sesión.
-        # Se adjunta al contexto completo (no solo a la página principal)
-        # para capturar requests de iframes y popups.
         def on_request(req):
             if found["stream"] is None and _is_real_stream(req.url):
                 found["stream"] = req.url
                 print(f"🎯 Stream (live): {req.url}")
 
-        context.on("request", on_request)   # ← contexto, no page
+        context.on("request", on_request)
 
         # ── PASO 1: Navegar ───────────────────────────────────────────────────
         print(f"\n🌐 Abriendo (sesión única): {url}")
@@ -280,12 +272,10 @@ async def run_session(url: str, timeout_ms: int = 45000, form_server_port: int =
         await _accept_cookies(page)
         await _wait_for_form(page, timeout_ms=15000)
 
-        # ── PASO 2: Detectar campos (sobre el DOM ya cargado) ─────────────────
+        # ── PASO 2: Detectar campos ───────────────────────────────────────────
         print("\n📋 Detectando campos del formulario…")
 
         async def extract_fields_all_frames() -> list:
-            """Busca campos en la página principal y en todos los iframes."""
-            # Esperar a que los iframes carguen
             await page.wait_for_timeout(2000)
             frames = page.frames
             print(f"  🖼️  Buscando en {len(frames)} frame(s)…")
@@ -297,24 +287,20 @@ async def run_session(url: str, timeout_ms: int = 45000, form_server_port: int =
                 try:
                     frame_url = frame.url[:60] if frame.url else 'about:blank'
                     fields_in_frame = await _extract_fields(frame)
-                    # Deduplicar por id
                     new_fields = [f for f in fields_in_frame if f.id not in seen_ids]
                     if new_fields:
                         print(f"  ✅ {len(new_fields)} campo(s) en '{frame_url}'")
                         for f in new_fields:
                             seen_ids.add(f.id)
-                            # Guardar referencia al frame para rellenar después
                             f._frame = frame
                         all_fields.extend(new_fields)
-                except Exception as e:
+                except Exception:
                     continue
 
             return all_fields
 
-        # Primer intento
         fields = await extract_fields_all_frames()
 
-        # Si no encontró nada, esperar 3s más y reintentar
         if not fields:
             print("  ⏳ Sin campos, esperando 3s más...")
             await page.wait_for_timeout(3000)
@@ -323,18 +309,24 @@ async def run_session(url: str, timeout_ms: int = 45000, form_server_port: int =
         if fields:
             print(f"✅ {len(fields)} campo(s) detectado(s): {[f.label for f in fields]}")
         else:
-            print("⚠️  No se detectaron campos. Se mostrará campo email por defecto.")
+            print("⚠️  No se detectaron campos.")
 
-        # ── PASO 3: Formulario web para el usuario ────────────────────────────
-        form_data: dict = {}
-        # Levantar siempre el servidor, aunque no se hayan detectado campos.
-        # Si la lista esta vacia, collect_form_data muestra campos por defecto (email).
-        print(f"\n🖥️  Levantando formulario web en localhost:{form_server_port}…")
+        # ── PASO 3: Obtener datos del formulario ──────────────────────────────
+        if form_data_override is not None:
+            # 🆕 MODO API: datos vienen del frontend React, sin formulario web
+            print(f"\n📥 Usando datos del frontend: {list(form_data_override.keys())}")
+            form_data = form_data_override
+        else:
+            # MODO LEGACY: mostrar formulario web al usuario
+            from services.extractor.src.api import collect_form_data
+            print(f"\n🖥️  Levantando formulario web en localhost:{form_server_port}…")
+            form_data = await collect_form_data(
+                fields=fields,
+                url=url,
+                port=form_server_port,
+            )
 
-        # Esperar a que el usuario rellene el formulario
-        form_data = await collect_form_data(fields=fields, url=url, port=form_server_port)
-
-        # ── PASO 4: Rellenar formulario real ────────────────────────────────────
+        # ── PASO 4: Rellenar formulario real ──────────────────────────────────
         if form_data:
             print("\n📝 Rellenando formulario real con datos del usuario:")
             field_map = {f.id: f for f in fields}
@@ -345,13 +337,12 @@ async def run_session(url: str, timeout_ms: int = 45000, form_server_port: int =
                     continue
 
                 if field_id in field_map:
-                    # Campo detectado por inspector — usar frame y selector exactos
                     f = field_map[field_id]
                     target_frame = getattr(f, '_frame', page)
                     await _fill_field(target_frame, f, value)
                 else:
-                    # Fallback para email sin FieldInfo
-                    if field_id != 'email':
+                    # Fallback para email sin FieldInfo detectado
+                    if field_id not in ('email',):
                         continue
                     for frame in page.frames:
                         for sel in [
@@ -373,13 +364,9 @@ async def run_session(url: str, timeout_ms: int = 45000, form_server_port: int =
                             continue
                         break
 
-            # Submit: en cada frame que tenga campos rellenados
-            frames_to_submit = set()
-            for f in fields:
-                target_frame = getattr(f, '_frame', page)
-                frames_to_submit.add(id(target_frame))
+            # Submit en cada frame con campos rellenados
+            frames_to_submit = {id(getattr(f, '_frame', page)) for f in fields}
             frame_map = {id(fr): fr for fr in page.frames}
-            # Si no hay fields detectados, buscar el frame con el formulario
             if not frames_to_submit:
                 frames_to_submit = submitted_frames or {id(page.frames[-1])}
 
@@ -398,12 +385,11 @@ async def run_session(url: str, timeout_ms: int = 45000, form_server_port: int =
                         await btn.click(timeout=5000)
                         print(f"   ✅ Submit en '{frame_url}'")
                         break
-
         else:
             print("⚠️  Sin datos de formulario, intentando continuar…")
 
-        # ── PASO 5: Intentar play y esperar tráfico ───────────────────────────
-        await page.wait_for_timeout(5000)  # pausa para que el iframe cargue
+        # ── PASO 5: Play y esperar tráfico ────────────────────────────────────
+        await page.wait_for_timeout(5000)
         await _click_play(page)
         print(f"\n⏳ Esperando tráfico de red ({timeout_ms / 1000:.0f}s)…")
         await page.wait_for_timeout(timeout_ms)

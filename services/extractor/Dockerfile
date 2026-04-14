@@ -29,4 +29,4 @@ COPY src ./src
 
 RUN mkdir -p /app/out
 
-CMD ["python", "-m", "main.py"]
+CMD ["uvicorn", "src.api:app", "--host", "0.0.0.0", "--port", "8000"]

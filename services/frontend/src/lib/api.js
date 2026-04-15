@@ -5,7 +5,7 @@
 const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:8000";
 
 async function getAuthHeaders(msalInstance, accounts) {
-  const { loginRequest } = await import("./authConfig");
+  const { loginRequest } = await import("../authConfig");
   const response = await msalInstance.acquireTokenSilent({
     ...loginRequest,
     account: accounts[0],

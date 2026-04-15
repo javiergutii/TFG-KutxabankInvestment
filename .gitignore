@@ -1,7 +1,10 @@
+.env
+.env.local
+.env.*.local
+
 # Python
 __pycache__/
 *.pyc
-.env
 
 # Docker
 *.log
@@ -18,3 +21,11 @@ Thumbs.db
 
 # Data
 artifacts/*
+outputs/*
+exports/*
+data/*
+shared/*
+
+# Node
+services/frontend/node_modules/
+services/frontend/dist/

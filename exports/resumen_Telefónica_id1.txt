@@ -1,74 +1,7 @@
 RESUMEN EJECUTIVO - Telefónica
 ================================================================================
 
-Analistas identificados: 7 — Andrew Lee (Goldman Sachs), Keval Kiroya (Deutsche Bank), Joshua Mead (Berenberg), Nick (Berenberg), James Ratzer (New Street Research), Emmett Kelly (Morgan Stanley)
-
----
-
-SECCIÓN 1 — PERSPECTIVAS DE LA COMPAÑÍA
-Guidance explícito únicamente:
-- 2026: crecimiento de ingresos y EBITDA ajustado 1,5-2,5 %; ratio CAPEX/ventas ~12 %; crecimiento del flujo de caja operativo ajustado tras arrendamientos >2 %; free cash flow 3.000 millones €; dividendo 0,15 €/acción; deuda neta/EBITDA hacia 2,5 veces en 2028.
-- Peak de compromisos por reestructuración en 2026: ~1.200 millones €.
-- Dividendos Virgin Media O2 2026: ~200 millones £ (guía Dimeo 2).
-- CAPEX 2025: 12,4 % de ventas.
-- Free cash flow 2025: 2.800 millones € (base 2.700 millones €); incluyendo reestructuración y dividendos VMO2: 2.100 millones €.
-- Deuda neta diciembre 2025: 26.800 millones € (26.000 millones € tras ventas Chile/Colombia/Fever Pass); ratio deuda/EBITDA 2,78 veces (vs 2,87 en septiembre).
-- Coste medio deuda: 2,98 % (–21 pb vs 2024).
-- Liquidez diciembre 2025: 17.400 millones €.
-
----
-
-SECCIÓN 2 — PERSPECTIVAS DEL SECTOR
-La directiva mencionó que la principal barrera para la consolidación europea son las “Directrices de concentración” de la Comisión Europea; esperan que la revisión próxima pueda modernizar su interpretación. Señalaron mensajes públicos contradictorios sobre consolidación, aunque destacaron declaraciones de Antonio Costa a favor de una consolidación que permita escala e inversión. No se mencionaron temas macro ni competitivos adicionales.
-
----
-
-SECCIÓN 3 — PREGUNTAS DE LOS ANALISTAS
-
-Analista 1: Andrew Lee (Goldman Sachs)
-Pregunta 1: Respecto a España, ¿esperan que el crecimiento de EBITDA acelere en 2026 sin los 250 millones de ahorros por reestructuración? Si es así, ¿por qué? Si no, ¿por qué no?
-Respuesta: La aceleración de todas las métricas en 2026 incluye los ahorros del acuerdo. Parte de esos ahorros no llega íntegramente al EBITDA por caída de ingresos mayoristas (primeros años de acuerdos sostenibles) y por aumento de otros costes (personal fuera del acuerdo). Se compensan con ahorros en compras y procesos a nivel grupo.
-
-Pregunta 2: ¿Sigue previsto que los compromisos por reestructuración en 2026 superen los 1.000 millones? ¿Hay otros movimientos por debajo de la línea de los 3.000 millones de free cash flow (dividendo UK, etc.)?
-Respuesta: 2026 será año de transición; cifra peak ~1.200 millones. Por debajo de la línea, los distintos conceptos se compensan; el dividendo UK se guía por Dimeo 2 (~200 millones £). La subida del free cash flow a 3.000 millones se debe al desempeño operativo.
-
-Analista 2: Keval Kiroya (Deutsche Bank)
-Pregunta 1: El margen de free cash flow en Alemania es <10 %, la mitad que en España. ¿Cómo evolucionará y qué claves (ingresos, OPEX, CAPEX) lo impulsarán?
-Respuesta: Se espera mejora en 2026 y crecimiento en 2027 al dejar atrás impactos de migración one-on-one. El margen de flujo de caja operativo tras arrendamientos mejorará más que el de ingresos/EBITDA por crecimiento superior del primero.
-
-Pregunta 2: ¿Cuáles son las principales barreras para la consolidación y hay suficiente claridad regulatoria para presentar operaciones?
-Respuesta: La principal barrera son las Directrices de concentración de la CE; se espera que la revisión próxima aclare su interpretación. No hay más detalles sobre timing ni sobre operaciones específicas.
-
-Analista 3: Joshua Mead (Berenberg)
-Pregunta 1: En España el crecimiento de EBITDA tras arrendamientos desaceleró a +0,4 % en Q4. ¿Se espera crecimiento de esta métrica en 2026 y cómo evolucionarán los costes de arrendamiento?
-Respuesta: Sí, se espera aceleración del EBITDA tras arrendamientos en España; los arrendamientos se mantendrán estables. Los mayores costes de lease vienen por despliegue 5G y actualizaciones por IPC, pero con foco en eficiencias.
-
-Pregunta 2: En Alemania el EBITDA tras arrendamientos cayó –22 % en Q4. ¿Cómo será la cifra en 2026?
-Respuesta: No se dio cifra exacta; se indicó que 2026 será año de mejora y 2027 de crecimiento tras absorber impactos one-on-one.
-
-Pregunta 3: Al elevar la base 2025 de free cash flow a 2.900 millones €, ¿están elevando implícitamente la guía intermedia (3-5 % CAGR) o mantienen rango?
-Respuesta: Se mantiene el rango 3-5 %, pero al subir la base 2025 implícitamente se espera un free cash flow 2028 mayor que el guía inicial.
-
-Analista 4: Nick (Berenberg)
-Pregunta 1: El ARPU móvil contrato en Alemania (ex-one-on-one) bajó ~14 % interanual. ¿Qué perspectiva para 2026 ante entorno promocional?
-Respuesta: Se espera mercado promocional pero más racional; el ARPU debería moverse en línea con los niveles de los MNO establecidos, compensando con más líneas secundarias en ofertas familiares.
-
-Pregunta 2: Sobre las Directrices de concentración, ¿deben esperar a la resolución de la investigación 2027 o pueden actuar antes?
-Respuesta: Respuesta ambigua: grandes operaciones pueden producirse con la interpretación actual; están a la espera de la revisión próxima y trabajarán caso por caso.
-
-Analista 5: James Ratzer (New Street Research)
-Pregunta 1: VMO2 reconoció deterioro pero se valora en ~9,5 veces EBITDA. ¿Qué hipótesis usaron para el impairment y si incluyen la compra de NetOmnia?
-Respuesta: El deterioro refleja proyecciones más bajas tras cambios en los estudios de equividad de Openreach; la valoración no incluye NetOmnia (posterior a cierre). Esperan que la transacción mejore resultados y habría podido evitar el deterioro.
-
-Pregunta 2: El presidente de Deutsche Telekom mostró interés en adquirir Telefónica Deutschland. ¿Podrían plantearse vender?
-Respuesta: Reiteran compromiso industrial con Alemania a corto, medio y largo plazo; no hacen más comentarios sobre rumores de prensa.
-
-Analista 6: Emmett Kelly (Morgan Stanley)
-Pregunta 1: Sobre consolidación y antitrust, ¿a qué “mensajes buenos y mixtos” se refieren?
-Respuesta: Se refieren a mensajes públicos: Antonio Costa defendió consolidación para escala e inversión; otros mensajes mantienen ambigüedad deliberada sobre las Directrices.
-
-Pregunta 2: En España, ¿qué competencia ven de Vodafone, Zagona y Digi y si su posicionamiento premium los protege?
-Respuesta: En el segmento alto mantienen liderazgo con red, marca y ecosistema; en el bajo comp
+Good morning and welcome to Telefonica s conference call to discuss January to December 2025 results. I m Trost Nachtmann from Investor Relations. Before proceeding, let me mention that the financial information contained in this document has been prepared under international financial reporting standards as adopted by the European Union. This financial information is unaudited. This conference call and webcast, including the Q A session, may contain forward-looking statements and information re...
 
 ================================================================================
 Reporte ID: 1

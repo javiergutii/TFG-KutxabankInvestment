@@ -66,9 +66,9 @@ async def verify_token(token: str) -> Optional[TokenData]:
             token,
             jwks,
             algorithms=["RS256"],
-            audience=CLIENT_ID,
+            audience=f"api://{CLIENT_ID}",   # ← cambiar esto
             issuer=ISSUER,
-        )
+)
         return TokenData(
             user_id=payload.get("oid") or payload.get("sub", ""),
             name=payload.get("name", ""),

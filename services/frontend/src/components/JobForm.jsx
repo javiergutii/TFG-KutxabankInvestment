@@ -1,70 +1,132 @@
 import { useState } from "react";
-import { launchJob } from "../lib/api";
+import { launchJob, inspectForm } from "../lib/api";
 
-const FIELD_TEMPLATES = [
-  { id: "email", label: "Email de registro", type: "email", placeholder: "tu@empresa.com", required: true },
-  { id: "nombre", label: "Nombre", type: "text", placeholder: "Tu nombre completo", required: false },
-  { id: "apellidos", label: "Apellidos", type: "text", placeholder: "Tus apellidos", required: false },
-  { id: "empresa", label: "Empresa", type: "text", placeholder: "Nombre de tu empresa", required: false },
-];
+// Pasos del formulario
+const STEP_URL    = "url";
+const STEP_FIELDS = "fields";
+const STEP_DONE   = "done";
 
 export default function JobForm({ msalInstance, accounts, onJobLaunched }) {
-  const [url, setUrl] = useState("");
-  const [empresa, setEmpresa] = useState("");
-  const [formFields, setFormFields] = useState({ email: "", nombre: "", apellidos: "", empresa_webcast: "" });
-  const [extraFields, setExtraFields] = useState([]);
-  const [status, setStatus] = useState(null); // null | 'loading' | 'success' | 'error'
+  const [step, setStep]         = useState(STEP_URL);
+  const [url, setUrl]           = useState("");
+  const [empresa, setEmpresa]   = useState("");
+  const [fields, setFields]     = useState([]);      // campos detectados por el scraping
+  const [formData, setFormData] = useState({});      // valores que rellena el usuario
+  const [status, setStatus]     = useState(null);    // null | 'loading' | 'error'
   const [errorMsg, setErrorMsg] = useState("");
 
-  const handleFieldChange = (id, value) => {
-    setFormFields((prev) => ({ ...prev, [id]: value }));
-  };
-
-  const addExtraField = () => {
-    setExtraFields((prev) => [...prev, { id: `extra_${Date.now()}`, label: "", value: "" }]);
-  };
-
-  const removeExtraField = (id) => {
-    setExtraFields((prev) => prev.filter((f) => f.id !== id));
-  };
-
-  const handleSubmit = async () => {
+  // ── Paso 1: obtener campos del formulario del webcast ─────────────────────
+  const handleInspect = async () => {
     if (!url.trim()) {
       setErrorMsg("La URL del webcast es obligatoria");
       setStatus("error");
       return;
     }
-
-    const allFormData = {
-      ...formFields,
-      ...Object.fromEntries(extraFields.map((f) => [f.label || f.id, f.value])),
-    };
-
     setStatus("loading");
     setErrorMsg("");
+    try {
+      const detected = await inspectForm(msalInstance, accounts, url.trim());
+      // Si no detecta campos, mostramos al menos el campo email por defecto
+      const result = detected.length > 0 ? detected : [
+        { id: "email", label: "Email", field_type: "email", placeholder: "tu@empresa.com" }
+      ];
+      setFields(result);
+      // Inicializar formData con los ids detectados
+      const initial = {};
+      result.forEach(f => { initial[f.id] = ""; });
+      setFormData(initial);
+      setStep(STEP_FIELDS);
+    } catch (e) {
+      setErrorMsg(e.message || "Error al inspeccionar el formulario");
+      setStatus("error");
+    } finally {
+      setStatus(null);
+    }
+  };
 
+  // ── Paso 2: lanzar transcripción con los datos rellenados ─────────────────
+  const handleLaunch = async () => {
+    setStatus("loading");
+    setErrorMsg("");
     try {
       const job = await launchJob(msalInstance, accounts, {
         url: url.trim(),
         empresa: empresa.trim() || "Sin especificar",
-        form_data: allFormData,
+        form_data: formData,
       });
-      setStatus("success");
+      setStep(STEP_DONE);
       onJobLaunched(job);
-      // Reset form
-      setUrl("");
-      setEmpresa("");
-      setFormFields({ email: "", nombre: "", apellidos: "", empresa_webcast: "" });
-      setExtraFields([]);
     } catch (e) {
+      setErrorMsg(e.message || "Error al lanzar el proceso");
       setStatus("error");
-      setErrorMsg(e.message || "Error desconocido al lanzar el proceso");
+    } finally {
+      setStatus(null);
     }
+  };
+
+  const handleReset = () => {
+    setStep(STEP_URL);
+    setUrl("");
+    setEmpresa("");
+    setFields([]);
+    setFormData({});
+    setStatus(null);
+    setErrorMsg("");
+  };
+
+  const renderField = (f) => {
+    const value = formData[f.id] || "";
+    const onChange = (e) => setFormData(prev => ({ ...prev, [f.id]: e.target.value }));
+
+    if (f.field_type === "select" && f.options?.length > 0) {
+      return (
+        <div className="field-group" key={f.id}>
+          <label>{f.label}</label>
+          <div className="select-wrap">
+            <select value={value} onChange={onChange} className="field-input">
+              <option value="">Selecciona…</option>
+              {f.options.map(o => <option key={o} value={o}>{o}</option>)}
+            </select>
+            <span className="select-arrow">▾</span>
+          </div>
+        </div>
+      );
+    }
+
+    if (f.field_type === "checkbox") {
+      return (
+        <div className="field-group field-group--check" key={f.id}>
+          <input
+            type="checkbox"
+            id={f.id}
+            checked={value === "true"}
+            onChange={e => setFormData(prev => ({ ...prev, [f.id]: e.target.checked ? "true" : "false" }))}
+          />
+          <label htmlFor={f.id} style={{ textTransform: "none", fontSize: "0.85rem", color: "#e2e8f0" }}>
+            {f.label}
+          </label>
+        </div>
+      );
+    }
+
+    return (
+      <div className="field-group" key={f.id}>
+        <label>{f.label}</label>
+        <input
+          type={f.field_type === "email" ? "email" : "text"}
+          value={value}
+          onChange={onChange}
+          placeholder={f.placeholder || `Introduce ${f.label.toLowerCase()}…`}
+          className="field-input"
+        />
+      </div>
+    );
   };
 
   return (
     <div className="job-form">
-      {/* Sección 1: Info del proceso */}
+
+      {/* ── PASO 1: URL + Empresa ── */}
       <div className="form-section">
         <div className="section-label">01 — Webcast</div>
         <div className="field-group">
@@ -75,6 +137,7 @@ export default function JobForm({ msalInstance, accounts, onJobLaunched }) {
             onChange={(e) => setUrl(e.target.value)}
             placeholder="https://edge.media-server.com/mmc/p/..."
             className="field-input mono"
+            disabled={step === STEP_FIELDS}
           />
         </div>
         <div className="field-group">
@@ -85,88 +148,60 @@ export default function JobForm({ msalInstance, accounts, onJobLaunched }) {
             onChange={(e) => setEmpresa(e.target.value)}
             placeholder="Nombre de la empresa que emite el webcast"
             className="field-input"
+            disabled={step === STEP_FIELDS}
           />
         </div>
+
+        {step === STEP_URL && (
+          <button
+            className="inspect-btn"
+            onClick={handleInspect}
+            disabled={status === "loading"}
+          >
+            {status === "loading"
+              ? "⏳ Analizando formulario…"
+              : "🔍 Obtener requisitos de acceso"}
+          </button>
+        )}
+
+        {step === STEP_FIELDS && (
+          <button className="reset-link" onClick={handleReset}>
+            ← Cambiar URL
+          </button>
+        )}
       </div>
 
-      {/* Sección 2: Datos del formulario de acceso */}
-      <div className="form-section">
-        <div className="section-label">02 — Datos de acceso al webcast</div>
-        <p className="section-note">
-          Estos datos se usarán para rellenar automáticamente el formulario de registro del webcast
-        </p>
-        <div className="fields-grid">
-          {FIELD_TEMPLATES.map((f) => (
-            <div className="field-group" key={f.id}>
-              <label>
-                {f.label}
-                {f.required && <span className="required"> *</span>}
-              </label>
-              <input
-                type={f.type}
-                value={formFields[f.id] || ""}
-                onChange={(e) => handleFieldChange(f.id, e.target.value)}
-                placeholder={f.placeholder}
-                className="field-input"
-              />
-            </div>
-          ))}
-        </div>
+      {/* ── PASO 2: Campos detectados ── */}
+      {step === STEP_FIELDS && (
+        <div className="form-section">
+          <div className="section-label">02 — Datos de acceso al webcast</div>
+          <p className="section-note">
+            {fields.length} campo(s) detectado(s) en el formulario de registro
+          </p>
 
-        {/* Campos extra */}
-        {extraFields.map((f) => (
-          <div className="extra-field" key={f.id}>
-            <input
-              type="text"
-              value={f.label}
-              onChange={(e) =>
-                setExtraFields((prev) =>
-                  prev.map((ef) => (ef.id === f.id ? { ...ef, label: e.target.value } : ef))
-                )
-              }
-              placeholder="Nombre del campo"
-              className="field-input extra-label-input"
-            />
-            <input
-              type="text"
-              value={f.value}
-              onChange={(e) =>
-                setExtraFields((prev) =>
-                  prev.map((ef) => (ef.id === f.id ? { ...ef, value: e.target.value } : ef))
-                )
-              }
-              placeholder="Valor"
-              className="field-input"
-            />
-            <button className="remove-btn" onClick={() => removeExtraField(f.id)}>✕</button>
+          <div className="fields-grid">
+            {fields.map(renderField)}
           </div>
-        ))}
-
-        <button className="add-field-btn" onClick={addExtraField}>
-          + Añadir campo extra
-        </button>
-      </div>
+        </div>
+      )}
 
       {/* Status */}
       {status === "error" && (
         <div className="status-bar error">❌ {errorMsg}</div>
       )}
-      {status === "success" && (
-        <div className="status-bar success">✅ Proceso lanzado. Puedes seguir el estado en el Historial.</div>
-      )}
 
-      {/* Submit */}
-      <button
-        className="submit-btn"
-        onClick={handleSubmit}
-        disabled={status === "loading"}
-      >
-        {status === "loading" ? (
-          <span className="loading-text">⏳ Lanzando proceso…</span>
-        ) : (
-          "▶  Iniciar transcripción"
-        )}
-      </button>
+      {/* Botón lanzar — solo en paso 2 */}
+      {step === STEP_FIELDS && (
+        <button
+          className="submit-btn"
+          onClick={handleLaunch}
+          disabled={status === "loading"}
+        >
+          {status === "loading"
+            ? "⏳ Lanzando proceso…"
+            : "▶  Iniciar transcripción"}
+        </button>
+      )}
 
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;800&display=swap');
@@ -217,6 +252,12 @@ export default function JobForm({ msalInstance, accounts, onJobLaunched }) {
           gap: 0.4rem;
         }
 
+        .field-group--check {
+          flex-direction: row;
+          align-items: center;
+          gap: 0.6rem;
+        }
+
         label {
           font-size: 0.75rem;
           font-weight: 600;
@@ -250,48 +291,71 @@ export default function JobForm({ msalInstance, accounts, onJobLaunched }) {
           box-shadow: 0 0 0 3px rgba(0,200,150,0.08);
         }
 
+        .field-input:disabled {
+          opacity: 0.5;
+          cursor: not-allowed;
+        }
+
         .field-input::placeholder { color: #2d3748; }
 
-        .extra-field {
-          display: flex;
-          gap: 0.5rem;
-          align-items: center;
+        .select-wrap {
+          position: relative;
         }
 
-        .extra-label-input { flex: 0 0 160px; }
-
-        .remove-btn {
-          background: transparent;
-          border: 1px solid rgba(255,255,255,0.07);
-          color: #4a5568;
-          border-radius: 6px;
-          width: 32px;
-          height: 32px;
+        select.field-input {
+          appearance: none;
+          padding-right: 2rem;
           cursor: pointer;
-          font-size: 0.75rem;
-          flex-shrink: 0;
-          transition: all 0.15s;
         }
 
-        .remove-btn:hover { color: #fc5b5b; border-color: rgba(252,91,91,0.3); }
-
-        .add-field-btn {
-          font-family: 'Space Mono', monospace;
-          font-size: 0.7rem;
+        .select-arrow {
+          position: absolute;
+          right: 0.85rem;
+          top: 50%;
+          transform: translateY(-50%);
           color: #4a5568;
+          pointer-events: none;
+          font-size: 0.75rem;
+        }
+
+        .inspect-btn {
+          padding: 0.85rem 1.5rem;
           background: transparent;
-          border: 1px dashed rgba(255,255,255,0.08);
-          padding: 0.5rem 1rem;
-          border-radius: 6px;
+          color: #00c896;
+          font-family: 'Space Mono', monospace;
+          font-size: 0.78rem;
+          font-weight: 700;
+          letter-spacing: 0.06em;
+          border: 1px solid rgba(0,200,150,0.3);
+          border-radius: 10px;
           cursor: pointer;
           transition: all 0.15s;
           align-self: flex-start;
         }
 
-        .add-field-btn:hover {
-          color: #00c896;
-          border-color: rgba(0,200,150,0.3);
+        .inspect-btn:hover:not(:disabled) {
+          background: rgba(0,200,150,0.08);
+          border-color: rgba(0,200,150,0.6);
         }
+
+        .inspect-btn:disabled {
+          opacity: 0.5;
+          cursor: not-allowed;
+        }
+
+        .reset-link {
+          background: transparent;
+          border: none;
+          color: #4a5568;
+          font-family: 'Space Mono', monospace;
+          font-size: 0.68rem;
+          cursor: pointer;
+          padding: 0;
+          align-self: flex-start;
+          transition: color 0.15s;
+        }
+
+        .reset-link:hover { color: #e2e8f0; }
 
         .status-bar {
           padding: 0.75rem 1rem;
@@ -304,12 +368,6 @@ export default function JobForm({ msalInstance, accounts, onJobLaunched }) {
           background: rgba(252,91,91,0.08);
           border: 1px solid rgba(252,91,91,0.2);
           color: #fc5b5b;
-        }
-
-        .status-bar.success {
-          background: rgba(0,200,150,0.08);
-          border: 1px solid rgba(0,200,150,0.2);
-          color: #00c896;
         }
 
         .submit-btn {

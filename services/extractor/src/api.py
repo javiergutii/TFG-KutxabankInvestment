@@ -38,10 +38,15 @@ _jobs: dict[str, dict] = {}
 
 # ── Modelos ───────────────────────────────────────────────────────────────────
 
+class InspectRequest(BaseModel):
+    url: str
+
+
 class LaunchJobRequest(BaseModel):
     url: str
     empresa: str
     form_data: dict = {}
+    graph_token: Optional[str] = None  # token de Graph API para SharePoint
 
 
 class JobResponse(BaseModel):
@@ -83,6 +88,30 @@ async def get_me(user: TokenData = Depends(get_current_user)):
     return {"name": user.name, "email": user.email, "user_id": user.user_id}
 
 
+
+
+@app.post("/api/inspect")
+async def inspect_form(
+    request: InspectRequest,
+    user: TokenData = Depends(get_current_user),
+):
+    try:
+        from form_inspector import inspect_form as do_inspect
+        fields = await do_inspect(request.url)
+        return [
+            {
+                "id": f.id,
+                "label": f.label,
+                "field_type": f.field_type,
+                "options": f.options,
+                "placeholder": f.placeholder,
+                "required": f.required,
+            }
+            for f in fields
+        ]
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
 @app.post("/api/jobs", response_model=JobResponse)
 async def launch_job(
     request: LaunchJobRequest,
@@ -98,7 +127,7 @@ async def launch_job(
         "created_at": datetime.now().isoformat(),
         "user_name": user.name,
         "user_email": user.email,
-        "user_token": user.access_token,
+        "user_token": request.graph_token or user.access_token,
         "sharepoint_url": None,
         "resumen": None,
         "error_msg": None,

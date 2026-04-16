@@ -1,15 +1,3 @@
-// ============================================================
-// authConfig.js — Configuración de Microsoft Authentication
-// ============================================================
-// Cuando el admin te dé las credenciales, rellena aquí:
-//   - VITE_AZURE_CLIENT_ID  → Application (client) ID
-//   - VITE_AZURE_TENANT_ID  → Directory (tenant) ID
-//
-// Puedes ponerlas en un archivo .env en la raíz del frontend:
-//   VITE_AZURE_CLIENT_ID=xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
-//   VITE_AZURE_TENANT_ID=xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
-// ============================================================
-
 export const msalConfig = {
   auth: {
     clientId: import.meta.env.VITE_AZURE_CLIENT_ID || "TU_CLIENT_ID_AQUI",
@@ -22,16 +10,18 @@ export const msalConfig = {
   },
 };
 
-// Permisos que pedimos al usuario cuando hace login
+// Scopes para autenticarse con TU backend
 export const loginRequest = {
+  scopes: [
+    `api://${import.meta.env.VITE_AZURE_CLIENT_ID || "TU_CLIENT_ID_AQUI"}/access_as_user`,
+  ],
+};
+
+// Scopes para Graph API (SharePoint) — se piden por separado cuando se necesitan
+export const graphRequest = {
   scopes: [
     "User.Read",
     "Files.ReadWrite",
     "Sites.ReadWrite.All",
   ],
-};
-
-// Permisos para llamar a Graph API (SharePoint)
-export const graphConfig = {
-  graphMeEndpoint: "https://graph.microsoft.com/v1.0/me",
 };

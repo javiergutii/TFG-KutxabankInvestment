@@ -45,14 +45,16 @@ class InspectRequest(BaseModel):
 class LaunchJobRequest(BaseModel):
     url: str
     empresa: str
+    year: Optional[str] = None        # año elegido por el usuario en el formulario
     form_data: dict = {}
-    graph_token: Optional[str] = None  # token de Graph API para SharePoint
+    graph_token: Optional[str] = None # token de Graph API para SharePoint
 
 
 class JobResponse(BaseModel):
     id: str
     url: str
     empresa: str
+    year: Optional[str] = None
     status: str
     created_at: str
     user_name: Optional[str] = None
@@ -88,8 +90,6 @@ async def get_me(user: TokenData = Depends(get_current_user)):
     return {"name": user.name, "email": user.email, "user_id": user.user_id}
 
 
-
-
 @app.post("/api/inspect")
 async def inspect_form(
     request: InspectRequest,
@@ -112,16 +112,22 @@ async def inspect_form(
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
+
 @app.post("/api/jobs", response_model=JobResponse)
 async def launch_job(
     request: LaunchJobRequest,
     user: TokenData = Depends(get_current_user),
 ):
     job_id = str(uuid.uuid4())
+
+    # Si el usuario no elige año (no debería ocurrir), fallback al año actual
+    year = request.year or datetime.now().strftime("%Y")
+
     job = {
         "id": job_id,
         "url": request.url,
         "empresa": request.empresa,
+        "year": year,
         "form_data": request.form_data,
         "status": "pending",
         "created_at": datetime.now().isoformat(),
@@ -190,6 +196,7 @@ async def _run_job(job_id: str):
 
         url = job["url"]
         empresa = job["empresa"]
+        year = job["year"]          # año elegido por el usuario en el formulario
         form_data = job["form_data"]
 
         # 1) Detectar stream
@@ -228,8 +235,14 @@ async def _run_job(job_id: str):
         sp_url = None
         if SHAREPOINT_ENABLED:
             from sharepoint_uploader import SharePointUploader
+
             uploader = SharePointUploader.from_user_token(job["user_token"])
-            resultado = await asyncio.to_thread(uploader.upload_file, filepath)
+            resultado = await asyncio.to_thread(
+                uploader.upload_file,
+                filepath,
+                empresa=empresa,   # crea/usa subcarpeta con el nombre de la empresa
+                year=year,         # año elegido por el usuario en el formulario
+            )
             sp_url = resultado.get("webUrl")
 
         job["status"] = "done"

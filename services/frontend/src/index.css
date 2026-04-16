@@ -6,23 +6,11 @@
 
 html, body, #root {
   height: 100%;
-  background: #080a0f;
-  color: #e2e8f0;
+  background: #ffffff;
+  color: #1A1A1A;
 }
 
-::-webkit-scrollbar {
-  width: 6px;
-}
-
-::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.08);
-  border-radius: 3px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.15);
-}
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: #f4f4f4; }
+::-webkit-scrollbar-thumb { background: #d8d8d8; border-radius: 2px; }
+::-webkit-scrollbar-thumb:hover { background: #7A7A7A; }

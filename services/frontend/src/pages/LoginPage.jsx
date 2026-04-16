@@ -3,227 +3,57 @@ import { loginRequest } from "../authConfig";
 
 export default function LoginPage() {
   const { instance } = useMsal();
-
-  const handleLogin = () => {
-    instance.loginRedirect(loginRequest).catch(console.error);
-  };
+  const handleLogin = () => instance.loginRedirect(loginRequest).catch(console.error);
 
   return (
     <div className="login-root">
-      <div className="login-bg">
-        <div className="grid-lines" />
-        <div className="glow" />
+      <div className="login-left">
+        <div className="left-content">
+          <div className="brand-line" />
+          <h1 className="brand-title">Kutxabank<br />Investment</h1>
+          <p className="brand-tagline">Plataforma de Análisis<br />de Conferencias</p>
+        </div>
+        <div className="left-footer">© {new Date().getFullYear()} Kutxabank Investment. Uso interno.</div>
       </div>
-
-      <div className="login-card">
-        <div className="login-card-inner">
-          <div className="logo-mark">
-            <span className="logo-icon">▶</span>
-          </div>
-
-          <div className="login-header">
-            <h1 className="login-title">
-              Transcriptor<span className="accent">.</span>
-            </h1>
-            <p className="login-subtitle">
-              Descarga · Transcribe · Archiva
-            </p>
-          </div>
-
-          <div className="login-divider">
-            <span>acceso corporativo</span>
-          </div>
-
-          <button className="ms-login-btn" onClick={handleLogin}>
-            <svg className="ms-logo" viewBox="0 0 21 21" fill="none">
-              <rect x="1" y="1" width="9" height="9" fill="#F25022" />
-              <rect x="11" y="1" width="9" height="9" fill="#7FBA00" />
-              <rect x="1" y="11" width="9" height="9" fill="#00A4EF" />
-              <rect x="11" y="11" width="9" height="9" fill="#FFB900" />
+      <div className="login-right">
+        <div className="login-card">
+          <div className="card-accent" />
+          <h2 className="card-title">Acceso corporativo</h2>
+          <p className="card-subtitle">Identifícate con tu cuenta de empresa para acceder a la plataforma.</p>
+          <button className="ms-btn" onClick={handleLogin}>
+            <svg width="20" height="20" viewBox="0 0 21 21" fill="none">
+              <rect x="1" y="1" width="9" height="9" fill="#F25022"/>
+              <rect x="11" y="1" width="9" height="9" fill="#7FBA00"/>
+              <rect x="1" y="11" width="9" height="9" fill="#00A4EF"/>
+              <rect x="11" y="11" width="9" height="9" fill="#FFB900"/>
             </svg>
-            Entrar con cuenta Microsoft
+            Iniciar sesión con Microsoft
           </button>
-
-          <p className="login-note">
-            Solo cuentas de la organización autorizadas
-          </p>
+          <p className="card-note">Solo usuarios autorizados de Kutxabank Investment pueden acceder.</p>
         </div>
       </div>
-
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;800&display=swap');
-
-        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-        .login-root {
-          font-family: 'Syne', sans-serif;
-          min-height: 100vh;
-          background: #080a0f;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          position: relative;
-          overflow: hidden;
-        }
-
-        .login-bg {
-          position: absolute;
-          inset: 0;
-          pointer-events: none;
-        }
-
-        .grid-lines {
-          position: absolute;
-          inset: 0;
-          background-image:
-            linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
-          background-size: 60px 60px;
-        }
-
-        .glow {
-          position: absolute;
-          top: -200px;
-          left: 50%;
-          transform: translateX(-50%);
-          width: 700px;
-          height: 500px;
-          background: radial-gradient(ellipse, rgba(0, 200, 150, 0.08) 0%, transparent 70%);
-        }
-
-        .login-card {
-          position: relative;
-          z-index: 1;
-          width: 100%;
-          max-width: 420px;
-          padding: 2px;
-          background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.02));
-          border-radius: 16px;
-          animation: cardIn 0.6s cubic-bezier(0.16,1,0.3,1) both;
-        }
-
-        @keyframes cardIn {
-          from { opacity: 0; transform: translateY(30px) scale(0.97); }
-          to   { opacity: 1; transform: translateY(0) scale(1); }
-        }
-
-        .login-card-inner {
-          background: #0d1117;
-          border-radius: 14px;
-          padding: 3rem 2.5rem;
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          gap: 1.5rem;
-        }
-
-        .logo-mark {
-          width: 56px;
-          height: 56px;
-          background: rgba(0, 200, 150, 0.1);
-          border: 1px solid rgba(0, 200, 150, 0.25);
-          border-radius: 14px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-        }
-
-        .logo-icon {
-          font-size: 1.4rem;
-          color: #00c896;
-        }
-
-        .login-header {
-          text-align: center;
-        }
-
-        .login-title {
-          font-size: 2.2rem;
-          font-weight: 800;
-          color: #f0f4f8;
-          letter-spacing: -0.03em;
-          line-height: 1;
-        }
-
-        .accent {
-          color: #00c896;
-        }
-
-        .login-subtitle {
-          font-family: 'Space Mono', monospace;
-          font-size: 0.7rem;
-          color: #4a5568;
-          letter-spacing: 0.15em;
-          text-transform: uppercase;
-          margin-top: 0.5rem;
-        }
-
-        .login-divider {
-          width: 100%;
-          display: flex;
-          align-items: center;
-          gap: 1rem;
-        }
-
-        .login-divider::before,
-        .login-divider::after {
-          content: '';
-          flex: 1;
-          height: 1px;
-          background: rgba(255,255,255,0.06);
-        }
-
-        .login-divider span {
-          font-family: 'Space Mono', monospace;
-          font-size: 0.62rem;
-          color: #2d3748;
-          text-transform: uppercase;
-          letter-spacing: 0.1em;
-          white-space: nowrap;
-        }
-
-        .ms-login-btn {
-          width: 100%;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          gap: 0.85rem;
-          padding: 0.9rem 1.5rem;
-          background: #fff;
-          color: #1a1a2e;
-          font-family: 'Syne', sans-serif;
-          font-size: 0.95rem;
-          font-weight: 600;
-          border: none;
-          border-radius: 10px;
-          cursor: pointer;
-          transition: all 0.15s ease;
-          letter-spacing: -0.01em;
-        }
-
-        .ms-login-btn:hover {
-          background: #f0f4f8;
-          transform: translateY(-1px);
-          box-shadow: 0 8px 24px rgba(0,0,0,0.3);
-        }
-
-        .ms-login-btn:active {
-          transform: translateY(0);
-        }
-
-        .ms-logo {
-          width: 21px;
-          height: 21px;
-          flex-shrink: 0;
-        }
-
-        .login-note {
-          font-family: 'Space Mono', monospace;
-          font-size: 0.65rem;
-          color: #2d3748;
-          text-align: center;
-          line-height: 1.6;
-        }
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=DM+Sans:wght@300;400;500&display=swap');
+        *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+        .login-root{font-family:'DM Sans',sans-serif;min-height:100vh;display:flex;background:#fff}
+        .login-left{width:45%;background:#1A1A1A;display:flex;flex-direction:column;justify-content:space-between;padding:3.5rem;position:relative;overflow:hidden}
+        .login-left::before{content:'';position:absolute;top:-100px;right:-100px;width:400px;height:400px;border-radius:50%;background:radial-gradient(circle,rgba(227,30,36,0.12) 0%,transparent 70%);pointer-events:none}
+        .login-left::after{content:'';position:absolute;bottom:0;left:0;right:0;height:3px;background:#E31E24}
+        .left-content{margin-top:3rem}
+        .brand-line{width:40px;height:3px;background:#E31E24;margin-bottom:2rem}
+        .brand-title{font-family:'Playfair Display',serif;font-size:2.8rem;font-weight:600;color:#fff;line-height:1.15;margin-bottom:1.5rem}
+        .brand-tagline{font-size:0.95rem;font-weight:300;color:#7A7A7A;line-height:1.7}
+        .left-footer{font-size:0.72rem;color:#4a4a4a}
+        .login-right{flex:1;display:flex;align-items:center;justify-content:center;padding:3rem;background:#f8f8f8}
+        .login-card{width:100%;max-width:420px;background:#fff;border:1px solid #e8e8e8;border-top:3px solid #E31E24;border-radius:2px;padding:2.5rem;box-shadow:0 4px 32px rgba(0,0,0,0.06);animation:cardIn 0.5s ease both}
+        @keyframes cardIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+        .card-accent{width:24px;height:2px;background:#E31E24;margin-bottom:1.25rem}
+        .card-title{font-family:'Playfair Display',serif;font-size:1.5rem;font-weight:600;color:#1A1A1A;margin-bottom:0.75rem}
+        .card-subtitle{font-size:0.85rem;color:#7A7A7A;line-height:1.6;font-weight:300;margin-bottom:2rem}
+        .ms-btn{width:100%;display:flex;align-items:center;justify-content:center;gap:0.75rem;padding:0.85rem 1.5rem;background:#1A1A1A;color:#fff;font-family:'DM Sans',sans-serif;font-size:0.9rem;font-weight:500;border:none;border-radius:2px;cursor:pointer;transition:all 0.2s ease;margin-bottom:1.5rem}
+        .ms-btn:hover{background:#E31E24;transform:translateY(-1px);box-shadow:0 4px 16px rgba(227,30,36,0.25)}
+        .card-note{font-size:0.72rem;color:#aaa;line-height:1.6;text-align:center}
+        @media(max-width:768px){.login-left{display:none}.login-right{background:#fff}}
       `}</style>
     </div>
   );

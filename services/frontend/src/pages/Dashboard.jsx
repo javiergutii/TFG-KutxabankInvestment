@@ -12,342 +12,97 @@ export default function Dashboard() {
   const [loading, setLoading] = useState(false);
 
   const fetchJobs = useCallback(async () => {
-    try {
-      setLoading(true);
-      const data = await getJobs(instance, accounts);
-      setJobs(data);
-    } catch (e) {
-      console.error("Error cargando trabajos:", e);
-    } finally {
-      setLoading(false);
-    }
+    try { setLoading(true); const data = await getJobs(instance, accounts); setJobs(data); }
+    catch (e) { console.error(e); } finally { setLoading(false); }
   }, [instance, accounts]);
 
-  useEffect(() => {
-    fetchJobs();
-    // Polling cada 15s para actualizar estados
-    const interval = setInterval(fetchJobs, 15000);
-    return () => clearInterval(interval);
-  }, [fetchJobs]);
+  useEffect(() => { fetchJobs(); const i = setInterval(fetchJobs, 15000); return () => clearInterval(i); }, [fetchJobs]);
 
-  const handleLogout = () => {
-    instance.logoutRedirect({ postLogoutRedirectUri: "/" });
-  };
-
-  const handleJobLaunched = (newJob) => {
-    setJobs((prev) => [newJob, ...prev]);
-    setActiveTab("history");
-  };
-
-  const firstName = account?.name?.split(" ")[0] || "Usuario";
-  const initials = account?.name
-    ?.split(" ")
-    .map((n) => n[0])
-    .slice(0, 2)
-    .join("") || "U";
+  const handleLogout = () => instance.logoutRedirect({ postLogoutRedirectUri: "/" });
+  const handleJobLaunched = (j) => { setJobs((p) => [j, ...p]); setActiveTab("history"); };
+  const initials = account?.name?.split(" ").map((n) => n[0]).slice(0, 2).join("") || "U";
 
   return (
-    <div className="dash-root">
-      {/* Sidebar */}
-      <aside className="sidebar">
-        <div className="sidebar-logo">
-          <span className="sidebar-logo-icon">▶</span>
-          <span className="sidebar-logo-text">Transcriptor</span>
+    <div className="dr">
+      <header className="tb">
+        <div className="tb-brand">
+          <div className="tb-dot" />
+          <span className="tb-name">Kutxabank Investment</span>
+          <span className="tb-sep" />
+          <span className="tb-prod">Transcriptor</span>
         </div>
-
-        <nav className="sidebar-nav">
-          <button
-            className={`nav-item ${activeTab === "new" ? "active" : ""}`}
-            onClick={() => setActiveTab("new")}
-          >
-            <span className="nav-icon">＋</span>
-            Nueva transcripción
-          </button>
-          <button
-            className={`nav-item ${activeTab === "history" ? "active" : ""}`}
-            onClick={() => setActiveTab("history")}
-          >
-            <span className="nav-icon">◎</span>
-            Historial
-            {jobs.length > 0 && (
-              <span className="nav-badge">{jobs.length}</span>
-            )}
-          </button>
-        </nav>
-
-        <div className="sidebar-footer">
-          <div className="user-chip">
-            <div className="user-avatar">{initials}</div>
-            <div className="user-info">
-              <span className="user-name">{firstName}</span>
-              <span className="user-email">{account?.username}</span>
-            </div>
+        <div className="tb-user">
+          <div className="u-av">{initials}</div>
+          <div className="u-info">
+            <span className="u-name">{account?.name}</span>
+            <span className="u-email">{account?.username}</span>
           </div>
-          <button className="logout-btn" onClick={handleLogout} title="Cerrar sesión">
-            ⎋
+          <button className="logout" onClick={handleLogout} title="Cerrar sesión">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/>
+            </svg>
           </button>
         </div>
-      </aside>
-
-      {/* Main content */}
-      <main className="dash-main">
-        <div className="dash-header">
-          <div>
-            <h2 className="dash-title">
-              {activeTab === "new" ? "Nueva transcripción" : "Historial de trabajos"}
-            </h2>
-            <p className="dash-subtitle">
-              {activeTab === "new"
-                ? "Introduce la URL del webcast y los datos de acceso"
-                : `${jobs.length} trabajo${jobs.length !== 1 ? "s" : ""} registrado${jobs.length !== 1 ? "s" : ""}`}
-            </p>
-          </div>
-          {activeTab === "history" && (
-            <button className="refresh-btn" onClick={fetchJobs} disabled={loading}>
-              {loading ? "↻" : "↺"} Actualizar
+      </header>
+      <div className="db">
+        <aside className="sb">
+          <nav className="sb-nav">
+            <button className={`ni ${activeTab==="new"?"active":""}`} onClick={() => setActiveTab("new")}>
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+              Nueva transcripción
             </button>
-          )}
-        </div>
-
-        <div className="dash-content">
-          {activeTab === "new" ? (
-            <JobForm
-              msalInstance={instance}
-              accounts={accounts}
-              onJobLaunched={handleJobLaunched}
-            />
-          ) : (
-            <JobHistory
-              jobs={jobs}
-              loading={loading}
-              msalInstance={instance}
-              accounts={accounts}
-              onRefresh={fetchJobs}
-            />
-          )}
-        </div>
-      </main>
-
+            <button className={`ni ${activeTab==="history"?"active":""}`} onClick={() => setActiveTab("history")}>
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              Historial
+              {jobs.length > 0 && <span className="nb">{jobs.length}</span>}
+            </button>
+          </nav>
+        </aside>
+        <main className="dm">
+          <div className="dh">
+            <div><div className="ha"/><h1 className="dt">{activeTab==="new"?"Nueva transcripción":"Historial de trabajos"}</h1>
+            <p className="ds">{activeTab==="new"?"Introduce la URL del webcast y obtén los datos de acceso":`${jobs.length} trabajo${jobs.length!==1?"s":""} registrado${jobs.length!==1?"s":""}`}</p></div>
+            {activeTab==="history" && <button className="rb" onClick={fetchJobs} disabled={loading}>Actualizar</button>}
+          </div>
+          <div className="dc">
+            {activeTab==="new"
+              ? <JobForm msalInstance={instance} accounts={accounts} onJobLaunched={handleJobLaunched}/>
+              : <JobHistory jobs={jobs} loading={loading} msalInstance={instance} accounts={accounts} onRefresh={fetchJobs}/>}
+          </div>
+        </main>
+      </div>
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;800&display=swap');
-
-        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-        .dash-root {
-          font-family: 'Syne', sans-serif;
-          min-height: 100vh;
-          background: #080a0f;
-          color: #e2e8f0;
-          display: flex;
-        }
-
-        /* ── Sidebar ── */
-        .sidebar {
-          width: 240px;
-          min-height: 100vh;
-          background: #0d1117;
-          border-right: 1px solid rgba(255,255,255,0.05);
-          display: flex;
-          flex-direction: column;
-          padding: 1.5rem 1rem;
-          position: sticky;
-          top: 0;
-          height: 100vh;
-        }
-
-        .sidebar-logo {
-          display: flex;
-          align-items: center;
-          gap: 0.6rem;
-          padding: 0.5rem 0.75rem;
-          margin-bottom: 2rem;
-        }
-
-        .sidebar-logo-icon {
-          font-size: 1rem;
-          color: #00c896;
-        }
-
-        .sidebar-logo-text {
-          font-size: 1.1rem;
-          font-weight: 800;
-          color: #f0f4f8;
-          letter-spacing: -0.02em;
-        }
-
-        .sidebar-nav {
-          flex: 1;
-          display: flex;
-          flex-direction: column;
-          gap: 0.25rem;
-        }
-
-        .nav-item {
-          display: flex;
-          align-items: center;
-          gap: 0.6rem;
-          padding: 0.65rem 0.75rem;
-          border-radius: 8px;
-          border: none;
-          background: transparent;
-          color: #4a5568;
-          font-family: 'Syne', sans-serif;
-          font-size: 0.85rem;
-          font-weight: 600;
-          cursor: pointer;
-          transition: all 0.15s;
-          text-align: left;
-          width: 100%;
-        }
-
-        .nav-item:hover {
-          background: rgba(255,255,255,0.04);
-          color: #e2e8f0;
-        }
-
-        .nav-item.active {
-          background: rgba(0,200,150,0.1);
-          color: #00c896;
-        }
-
-        .nav-icon {
-          font-size: 0.9rem;
-          width: 18px;
-          text-align: center;
-        }
-
-        .nav-badge {
-          margin-left: auto;
-          background: rgba(0,200,150,0.15);
-          color: #00c896;
-          font-family: 'Space Mono', monospace;
-          font-size: 0.65rem;
-          padding: 0.1rem 0.4rem;
-          border-radius: 4px;
-        }
-
-        .sidebar-footer {
-          display: flex;
-          align-items: center;
-          gap: 0.5rem;
-          padding-top: 1rem;
-          border-top: 1px solid rgba(255,255,255,0.05);
-        }
-
-        .user-chip {
-          flex: 1;
-          display: flex;
-          align-items: center;
-          gap: 0.6rem;
-          min-width: 0;
-        }
-
-        .user-avatar {
-          width: 32px;
-          height: 32px;
-          border-radius: 8px;
-          background: linear-gradient(135deg, #00c896, #0066cc);
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          font-size: 0.7rem;
-          font-weight: 700;
-          color: #fff;
-          flex-shrink: 0;
-        }
-
-        .user-info {
-          display: flex;
-          flex-direction: column;
-          min-width: 0;
-        }
-
-        .user-name {
-          font-size: 0.8rem;
-          font-weight: 600;
-          color: #e2e8f0;
-          white-space: nowrap;
-          overflow: hidden;
-          text-overflow: ellipsis;
-        }
-
-        .user-email {
-          font-family: 'Space Mono', monospace;
-          font-size: 0.58rem;
-          color: #4a5568;
-          white-space: nowrap;
-          overflow: hidden;
-          text-overflow: ellipsis;
-        }
-
-        .logout-btn {
-          background: transparent;
-          border: none;
-          color: #4a5568;
-          font-size: 1rem;
-          cursor: pointer;
-          padding: 0.25rem;
-          border-radius: 4px;
-          transition: color 0.15s;
-          flex-shrink: 0;
-        }
-
-        .logout-btn:hover { color: #e2e8f0; }
-
-        /* ── Main ── */
-        .dash-main {
-          flex: 1;
-          display: flex;
-          flex-direction: column;
-          min-height: 100vh;
-          overflow-y: auto;
-        }
-
-        .dash-header {
-          padding: 2rem 2.5rem 1.5rem;
-          border-bottom: 1px solid rgba(255,255,255,0.05);
-          display: flex;
-          align-items: flex-end;
-          justify-content: space-between;
-        }
-
-        .dash-title {
-          font-size: 1.5rem;
-          font-weight: 800;
-          color: #f0f4f8;
-          letter-spacing: -0.02em;
-        }
-
-        .dash-subtitle {
-          font-family: 'Space Mono', monospace;
-          font-size: 0.68rem;
-          color: #4a5568;
-          margin-top: 0.3rem;
-          text-transform: uppercase;
-          letter-spacing: 0.08em;
-        }
-
-        .refresh-btn {
-          font-family: 'Space Mono', monospace;
-          font-size: 0.72rem;
-          color: #4a5568;
-          background: transparent;
-          border: 1px solid rgba(255,255,255,0.07);
-          padding: 0.4rem 0.85rem;
-          border-radius: 6px;
-          cursor: pointer;
-          transition: all 0.15s;
-        }
-
-        .refresh-btn:hover:not(:disabled) {
-          color: #e2e8f0;
-          border-color: rgba(255,255,255,0.15);
-        }
-
-        .dash-content {
-          flex: 1;
-          padding: 2rem 2.5rem;
-        }
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=DM+Sans:wght@300;400;500&display=swap');
+        *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+        .dr{font-family:'DM Sans',sans-serif;min-height:100vh;background:#f4f4f4;color:#1A1A1A;display:flex;flex-direction:column}
+        .tb{height:56px;background:#1A1A1A;border-bottom:3px solid #E31E24;display:flex;align-items:center;justify-content:space-between;padding:0 2rem;position:sticky;top:0;z-index:100}
+        .tb-brand{display:flex;align-items:center;gap:.75rem}
+        .tb-dot{width:8px;height:8px;background:#E31E24;border-radius:50%}
+        .tb-name{font-family:'Playfair Display',serif;font-size:.95rem;font-weight:600;color:#fff}
+        .tb-sep{width:1px;height:16px;background:#3a3a3a}
+        .tb-prod{font-size:.75rem;color:#7A7A7A;font-weight:300;letter-spacing:.08em;text-transform:uppercase}
+        .tb-user{display:flex;align-items:center;gap:.75rem}
+        .u-av{width:30px;height:30px;border-radius:50%;background:#E31E24;display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:500;color:#fff;flex-shrink:0}
+        .u-info{display:flex;flex-direction:column}
+        .u-name{font-size:.78rem;font-weight:500;color:#fff;line-height:1.2}
+        .u-email{font-size:.65rem;color:#7A7A7A;line-height:1.2}
+        .logout{background:transparent;border:1px solid #3a3a3a;color:#7A7A7A;width:30px;height:30px;border-radius:2px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s}
+        .logout:hover{border-color:#E31E24;color:#E31E24}
+        .db{flex:1;display:flex}
+        .sb{width:220px;background:#fff;border-right:1px solid #e8e8e8;padding:1.5rem 0;flex-shrink:0}
+        .sb-nav{display:flex;flex-direction:column;gap:2px;padding:0 .75rem}
+        .ni{display:flex;align-items:center;gap:.6rem;padding:.65rem .85rem;border-radius:2px;border:none;background:transparent;color:#7A7A7A;font-family:'DM Sans',sans-serif;font-size:.83rem;font-weight:400;cursor:pointer;transition:all .15s;text-align:left;width:100%}
+        .ni:hover{background:#f4f4f4;color:#1A1A1A}
+        .ni.active{background:#fff5f5;color:#E31E24;font-weight:500;border-left:2px solid #E31E24;padding-left:calc(.85rem - 2px)}
+        .nb{margin-left:auto;background:#E31E24;color:#fff;font-size:.62rem;padding:.1rem .45rem;border-radius:10px;min-width:18px;text-align:center}
+        .dm{flex:1;display:flex;flex-direction:column;overflow-y:auto}
+        .dh{padding:2rem 2.5rem 1.5rem;background:#fff;border-bottom:1px solid #e8e8e8;display:flex;align-items:flex-end;justify-content:space-between}
+        .ha{width:24px;height:2px;background:#E31E24;margin-bottom:.85rem}
+        .dt{font-family:'Playfair Display',serif;font-size:1.5rem;font-weight:600;color:#1A1A1A;margin-bottom:.25rem}
+        .ds{font-size:.78rem;color:#7A7A7A;font-weight:300}
+        .rb{font-family:'DM Sans',sans-serif;font-size:.75rem;color:#7A7A7A;background:transparent;border:1px solid #e8e8e8;padding:.4rem .85rem;border-radius:2px;cursor:pointer;transition:all .15s}
+        .rb:hover:not(:disabled){color:#1A1A1A;border-color:#1A1A1A}
+        .dc{flex:1;padding:2rem 2.5rem}
       `}</style>
     </div>
   );

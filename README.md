@@ -16,7 +16,7 @@ docker compose exec ollama ollama list
 
 ## Extractor
 docker compose up -d
-docker compose --profile manual run --rm extractor
+docker compose --profile manual run --service-ports extractor
 
 
 
@@ -37,6 +37,10 @@ docker compose run --rm processor python query_faiss.py search
 docker compose run --rm processor python regenerate_summaries.py
 
 
+
+## Frontend
+#### Probar frontend
+npm run dev
 
 -----------------------------------------------------------------------------------
 

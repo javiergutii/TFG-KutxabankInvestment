@@ -4,10 +4,15 @@ Módulo para subir archivos a SharePoint utilizando Microsoft Graph API.
 Soporta dos modos de autenticación:
   - Client Credentials (app se autentica sola) → create_uploader_from_env()
   - Token de usuario delegado (usuario ya autenticado en el frontend) → from_user_token()
+
+La estructura de carpetas en SharePoint es:
+  <SHAREPOINT_FOLDER>/<año>/<empresa>/<archivo>
+  Ejemplo: Transcripciones/2026/Tubacex/tubacex_2026-04-16.txt
 """
 import os
 import requests
 from typing import Optional
+from datetime import datetime
 import logging
 
 logging.basicConfig(level=logging.INFO)
@@ -23,16 +28,16 @@ class SharePointUploader:
         client_id: str = "",
         client_secret: str = "",
         drive_id: Optional[str] = None,
-        user_token: Optional[str] = None,   # 🆕 token delegado del usuario
+        user_token: Optional[str] = None,
     ):
         self.tenant_id = tenant_id
         self.client_id = client_id
         self.client_secret = client_secret
         self.site_id = site_id
         self.drive_id = drive_id
-        self.access_token = user_token      # si viene token de usuario, lo usamos directamente
+        self.access_token = user_token
 
-    # ── 🆕 Constructor alternativo para token de usuario ─────────────────────
+    # ── Constructor alternativo para token de usuario ─────────────────────────
 
     @classmethod
     def from_user_token(cls, user_token: str) -> "SharePointUploader":
@@ -90,6 +95,104 @@ class SharePointUploader:
             logger.error(f"Error al obtener drive ID: {e}")
             raise
 
+    # ── Gestión de carpetas ───────────────────────────────────────────────────
+
+    def ensure_folder_path(self, folder_path: str) -> str:
+        """
+        Garantiza que la ruta de carpetas existe en SharePoint,
+        creando los niveles que falten uno a uno.
+
+        Args:
+            folder_path: Ruta completa, ej. "Transcripciones/2026/Tubacex"
+
+        Returns:
+            El ID de la carpeta final.
+        """
+        token = self._get_access_token()
+        drive_id = self._get_drive_id()
+        headers = {
+            "Authorization": f"Bearer {token}",
+            "Content-Type": "application/json",
+        }
+
+        parts = [p for p in folder_path.strip("/").split("/") if p]
+        current_path = ""
+
+        for part in parts:
+            parent_ref = f"/root:/{current_path}" if current_path else "/root"
+            current_path = f"{current_path}/{part}" if current_path else part
+
+            # Intentar obtener la carpeta para ver si ya existe
+            check_url = (
+                f"https://graph.microsoft.com/v1.0/sites/{self.site_id}"
+                f"/drives/{drive_id}/root:/{current_path}"
+            )
+            check_resp = requests.get(check_url, headers=headers)
+
+            if check_resp.status_code == 200:
+                folder_id = check_resp.json()["id"]
+                logger.info(f"📁 Carpeta ya existe: '{current_path}'")
+            elif check_resp.status_code == 404:
+                # Crear la carpeta en el nivel padre
+                create_url = (
+                    f"https://graph.microsoft.com/v1.0/sites/{self.site_id}"
+                    f"/drives/{drive_id}{parent_ref}:/children"
+                )
+                body = {
+                    "name": part,
+                    "folder": {},
+                    "@microsoft.graph.conflictBehavior": "fail",
+                }
+                create_resp = requests.post(create_url, headers=headers, json=body)
+
+                # "fail" lanza 409 si se creó en paralelo; en ese caso la leemos
+                if create_resp.status_code == 409:
+                    folder_id = requests.get(check_url, headers=headers).json()["id"]
+                    logger.info(f"📁 Carpeta ya existía (conflicto resuelto): '{current_path}'")
+                else:
+                    create_resp.raise_for_status()
+                    folder_id = create_resp.json()["id"]
+                    logger.info(f"✅ Carpeta creada: '{current_path}'")
+            else:
+                check_resp.raise_for_status()
+
+        return folder_id
+
+    def _build_folder_path(
+        self,
+        empresa: Optional[str],
+        year: Optional[str],
+        base_folder: Optional[str],
+    ) -> str:
+        """
+        Construye la ruta de destino:
+          <base_folder>/<year>/<empresa>
+          Ejemplo: Transcripciones/2026/Tubacex
+
+        Si empresa o year no se proporcionan, los niveles correspondientes
+        se omiten, manteniendo compatibilidad con el comportamiento anterior.
+        """
+        base = (base_folder or os.getenv("SHAREPOINT_FOLDER", "Transcripciones")).strip("/")
+        parts = [base]
+        if year:
+            parts.append(year.strip("/"))
+        if empresa:
+            # Sanear el nombre: quitar caracteres problemáticos para rutas de SharePoint
+            safe_empresa = (
+                empresa.strip()
+                .replace("/", "-")
+                .replace("\\", "-")
+                .replace(":", "-")
+                .replace("*", "")
+                .replace("?", "")
+                .replace('"', "")
+                .replace("<", "")
+                .replace(">", "")
+                .replace("|", "")
+            )
+            parts.append(safe_empresa)
+        return "/".join(parts)
+
     # ── Subida de archivo ─────────────────────────────────────────────────────
 
     def upload_file(
@@ -97,30 +200,35 @@ class SharePointUploader:
         file_path: str,
         sharepoint_folder: str = "",
         file_name: Optional[str] = None,
+        empresa: Optional[str] = None,
+        year: Optional[str] = None,
     ) -> dict:
         """
-        Sube un archivo local a SharePoint.
+        Sube un archivo local a SharePoint bajo la ruta:
+          <base_folder>/<year>/<empresa>/<file_name>
 
         Args:
-            file_path:          Ruta local del archivo
-            sharepoint_folder:  Carpeta destino en SharePoint (usa SHAREPOINT_FOLDER si está vacío)
-            file_name:          Nombre personalizado (usa el nombre original si no se indica)
+            file_path:          Ruta local del archivo.
+            sharepoint_folder:  Carpeta base (sobreescribe SHAREPOINT_FOLDER si se indica).
+            file_name:          Nombre personalizado (usa el nombre original si no se indica).
+            empresa:            Nombre de la empresa (crea subcarpeta automáticamente).
+            year:               Año (crea subcarpeta de año automáticamente).
 
         Returns:
-            Respuesta de Graph API con info del archivo (incluye webUrl)
+            Respuesta de Graph API con info del archivo (incluye webUrl).
         """
         if not os.path.exists(file_path):
             raise FileNotFoundError(f"Archivo no encontrado: {file_path}")
 
-        token = self._get_access_token()
-        drive_id = self._get_drive_id()
-
         if not file_name:
             file_name = os.path.basename(file_path)
 
-        folder = sharepoint_folder or os.getenv("SHAREPOINT_FOLDER", "Transcripciones")
-        folder = folder.lstrip("/")
-        upload_path = f"{folder}/{file_name}" if folder else file_name
+        folder = self._build_folder_path(empresa, year, sharepoint_folder or None)
+        self.ensure_folder_path(folder)
+
+        token = self._get_access_token()
+        drive_id = self._get_drive_id()
+        upload_path = f"{folder}/{file_name}"
 
         url = (
             f"https://graph.microsoft.com/v1.0/sites/{self.site_id}"
@@ -148,14 +256,29 @@ class SharePointUploader:
         text_content: str,
         file_name: str,
         sharepoint_folder: str = "",
+        empresa: Optional[str] = None,
+        year: Optional[str] = None,
     ) -> dict:
-        """Sube contenido de texto directamente sin archivo local."""
+        """
+        Sube contenido de texto directamente (sin archivo local) bajo la ruta:
+          <base_folder>/<year>/<empresa>/<file_name>
+
+        Args:
+            text_content:       Contenido de texto a subir.
+            file_name:          Nombre del archivo destino.
+            sharepoint_folder:  Carpeta base (sobreescribe SHAREPOINT_FOLDER si se indica).
+            empresa:            Nombre de la empresa (crea subcarpeta automáticamente).
+            year:               Año (crea subcarpeta de año automáticamente).
+
+        Returns:
+            Respuesta de Graph API con info del archivo (incluye webUrl).
+        """
+        folder = self._build_folder_path(empresa, year, sharepoint_folder or None)
+        self.ensure_folder_path(folder)
+
         token = self._get_access_token()
         drive_id = self._get_drive_id()
-
-        folder = sharepoint_folder or os.getenv("SHAREPOINT_FOLDER", "Transcripciones")
-        folder = folder.lstrip("/")
-        upload_path = f"{folder}/{file_name}" if folder else file_name
+        upload_path = f"{folder}/{file_name}"
 
         url = (
             f"https://graph.microsoft.com/v1.0/sites/{self.site_id}"
@@ -169,7 +292,7 @@ class SharePointUploader:
         try:
             response = requests.put(url, headers=headers, data=text_content.encode("utf-8"))
             response.raise_for_status()
-            logger.info(f"✅ Texto subido como '{file_name}'")
+            logger.info(f"✅ Texto subido como '{file_name}' en '{upload_path}'")
             return response.json()
         except requests.exceptions.RequestException as e:
             logger.error(f"Error al subir texto: {e}")
